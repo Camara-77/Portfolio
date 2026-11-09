@@ -1,22 +1,27 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { TextRevealDirective } from '../../core/directives/text-reveal.directive';
+import { ScrambleTextDirective } from '../../core/directives/scramble-text.directive';
 
 /**
  * En-tête éditorial de section :
  *   01 — À PROPOS
  *   Grand titre
- * L'animation (masque lettre par lettre + scramble) arrive en phase 2.
+ * Titre : masque lettre par lettre + brouillage ; label : brouillage mono.
  */
 @Component({
   selector: 'app-section-title',
+  imports: [TextRevealDirective, ScrambleTextDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <p class="section-title__label">
       <span class="section-title__index">{{ index() }}</span>
       <span class="section-title__dash" aria-hidden="true"></span>
-      <span>{{ label() }}</span>
+      <span appScrambleText [delay]="0.1">{{ label() }}</span>
     </p>
     @if (title()) {
-      <h2 class="section-title__title h2" [id]="headingId()">{{ title() }}</h2>
+      <h2 class="section-title__title h2" [id]="headingId()" appTextReveal trigger="scroll" [scramble]="true">
+        {{ title() }}
+      </h2>
     }
   `,
   styles: `

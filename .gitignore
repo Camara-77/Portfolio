@@ -42,3 +42,9 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# Python (scripts de préparation photo)
+scripts/.venv/
+__pycache__/
+scripts/.models/
+scripts/out/

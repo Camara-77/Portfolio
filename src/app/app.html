@@ -1,49 +1,17 @@
 <a class="skip-link" href="#main">Aller au contenu</a>
 
+<app-intro />
 <app-ambient-background />
 <app-navbar />
 
 <main id="main" class="page">
-  <!-- HERO — temporaire (phase 2 : nom animé, portrait, 3D, cartes flottantes) -->
-  <section id="top" class="hero-preview">
-    <div class="container">
-      <p class="mono muted">{{ data.identity.locationShort }}</p>
-      <h1 class="display hero-preview__name">{{ data.identity.name }}</h1>
-      <p class="hero-preview__title h3">{{ data.identity.title }}</p>
-      <p class="lead hero-preview__tagline">{{ data.identity.tagline }}</p>
-      <div class="hero-preview__actions">
-        <a appButton href="#projects">
-          Voir mes projets
-          <app-icon name="arrow-down" />
-        </a>
-        <a appButton variant="ghost" href="#contact">
-          Me contacter
-          <app-icon name="arrow-up-right" />
-        </a>
-      </div>
-    </div>
-  </section>
+  <app-hero />
 
-  <!-- SECTIONS — temporaires, pour valider le design system et la navbar -->
-  @for (s of placeholders; track s.id) {
+  <!-- Sections : titres en place, contenu réel ajouté aux phases 3 à 5 -->
+  @for (s of sections; track s.id) {
     <section class="section" [id]="s.id" [attr.aria-labelledby]="s.id + '-title'">
       <div class="container">
         <app-section-title [index]="s.index" [label]="s.label" [title]="s.label" [headingId]="s.id + '-title'" />
-
-        <div class="preview-grid">
-          <app-glass-card>
-            <app-badge>Phase 1</app-badge>
-            <p class="h3 preview-card__title">Carte en verre</p>
-            <p class="muted">Survolez : un halo blanc suit la souris. Le contenu réel de cette section arrive dans une phase suivante.</p>
-          </app-glass-card>
-          <app-glass-card>
-            <div class="preview-badges">
-              @for (item of data.skills[0].items; track item) {
-                <app-badge>{{ item }}</app-badge>
-              }
-            </div>
-          </app-glass-card>
-        </div>
       </div>
     </section>
   }

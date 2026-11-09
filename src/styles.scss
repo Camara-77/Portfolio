@@ -55,7 +55,7 @@
   // Espacements
   --gutter: clamp(1rem, 4vw, 3rem);
   --container: 1320px;
-  --section-y: clamp(5rem, 12vw, 10rem);
+  --section-y: clamp(4rem, 8vw, 7rem);
   --nav-h: 72px;
 
   // Mouvements
@@ -245,5 +245,37 @@ button {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+// =========================================================
+// Titres animés (appTextReveal) — éléments créés par SplitText
+// =========================================================
+.tr .tr-word {
+  white-space: nowrap;
+}
+
+// Masque de chaque lettre : un peu d'air en haut pour les accents (À, ï…)
+.tr .tr-char-mask {
+  padding-top: 0.12em;
+  margin-top: -0.12em;
+}
+
+.tr .tr-char {
+  display: inline-block;
+  transform-origin: 50% 100%;
+  transition: transform 0.6s var(--ease-out);
+  will-change: transform;
+}
+
+// Après l'apparition, les masques ne coupent plus l'inclinaison au survol
+.tr.is-revealed .tr-char-mask {
+  overflow: visible !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tr.is-revealed .tr-char:hover {
+    transform: skewX(-12deg) translateY(-4%);
+    transition-duration: 0.25s;
   }
 }

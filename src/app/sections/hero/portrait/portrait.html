@@ -1,0 +1,28 @@
+<figure class="portrait">
+  <div class="portrait__stage" #stage>
+    <!-- Base : noir et blanc (image LCP, chargée en priorité) -->
+    <img
+      class="portrait__img"
+      [src]="srcNb"
+      [alt]="alt()"
+      [width]="width"
+      [height]="height"
+      fetchpriority="high"
+      decoding="async"
+    />
+    <!-- Traînée orange qui s'estompe -->
+    <canvas class="portrait__trail" #trail aria-hidden="true"></canvas>
+    <!-- Cercle orange qui suit le curseur -->
+    <div class="portrait__reveal" #reveal aria-hidden="true">
+      <img
+        #orange
+        class="portrait__img"
+        [src]="srcOrange"
+        alt=""
+        [width]="width"
+        [height]="height"
+        decoding="async"
+      />
+    </div>
+  </div>
+</figure>
