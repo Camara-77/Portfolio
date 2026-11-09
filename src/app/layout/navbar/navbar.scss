@@ -1,0 +1,234 @@
+@use 'tokens' as *;
+
+:host {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  display: block;
+  padding: 0.75rem var(--gutter) 0;
+  pointer-events: none;
+  transition: transform 0.6s var(--ease-out);
+}
+
+:host(.is-hidden) {
+  transform: translateY(calc(-100% - 1rem));
+}
+
+.nav__bar {
+  @include glass(var(--radius-pill));
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: calc(var(--container) - 2 * var(--gutter));
+  height: 60px;
+  margin-inline: auto;
+  padding: 0 0.5rem 0 1.375rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: none;
+  transition:
+    background-color 0.5s var(--ease-out),
+    border-color 0.5s var(--ease-out),
+    box-shadow 0.5s var(--ease-out);
+
+  &::before {
+    @include glass-sheen;
+  }
+}
+
+:host(.is-scrolled) .nav__bar,
+:host(.is-open) .nav__bar {
+  background: var(--glass-bg);
+  border-color: var(--glass-border);
+  box-shadow: var(--shadow-glass);
+}
+
+.nav__logo {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.0625rem;
+  letter-spacing: 0.04em;
+  margin-right: auto;
+  padding: 0.5rem 0;
+}
+
+// --- Liens desktop -------------------------------------------------
+.nav__links {
+  display: none;
+  align-items: center;
+  gap: 0.25rem;
+
+  @include up($bp-lg) {
+    display: flex;
+  }
+}
+
+.nav__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.875rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.875rem;
+  color: var(--text-2);
+  transition:
+    color 0.3s var(--ease-out),
+    background-color 0.3s var(--ease-out);
+
+  // Point sous le lien actif
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0.15rem;
+    width: 4px;
+    height: 4px;
+    margin-left: -2px;
+    border-radius: 50%;
+    background: var(--text);
+    transform: scale(0);
+    transition: transform 0.4s var(--ease-out);
+  }
+
+  @include hover {
+    color: var(--text);
+  }
+
+  &.is-active {
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.06);
+
+    &::after {
+      transform: scale(1);
+    }
+  }
+}
+
+.nav__cta {
+  display: none;
+
+  @include up($bp-lg) {
+    display: inline-flex;
+  }
+}
+
+// --- Bouton menu mobile -------------------------------------------
+.nav__toggle {
+  position: relative;
+  display: grid;
+  place-content: center;
+  gap: 6px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+
+  @include up($bp-lg) {
+    display: none;
+  }
+}
+
+.nav__toggle-line {
+  display: block;
+  width: 18px;
+  height: 1.5px;
+  background: var(--text);
+  transition: transform 0.45s var(--ease-out);
+}
+
+:host(.is-open) .nav__toggle-line {
+  &:first-child {
+    transform: translateY(3.75px) rotate(45deg);
+  }
+  &:last-child {
+    transform: translateY(-3.75px) rotate(-45deg);
+  }
+}
+
+// --- Menu mobile plein écran --------------------------------------
+.menu {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: calc(var(--nav-h) + 3rem) var(--gutter) 2rem;
+  background: rgba(10, 10, 10, 0.86);
+  -webkit-backdrop-filter: blur(24px) saturate(130%);
+  backdrop-filter: blur(24px) saturate(130%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.5s var(--ease-out),
+    visibility 0s linear 0.5s;
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    background: rgba(10, 10, 10, 0.97);
+  }
+
+  @include up($bp-lg) {
+    display: none;
+  }
+}
+
+:host(.is-open) .menu {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition:
+    opacity 0.5s var(--ease-out),
+    visibility 0s;
+}
+
+.menu__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.menu__item {
+  overflow: hidden;
+}
+
+.menu__link {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.35rem 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 10vw, 3.5rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  transform: translateY(110%);
+  transition: transform 0.7s var(--ease-out);
+  transition-delay: calc(var(--i) * 50ms);
+}
+
+:host(.is-open) .menu__link {
+  transform: none;
+  transition-delay: calc(120ms + var(--i) * 60ms);
+}
+
+.menu__index {
+  @include mono-label(0.6875rem);
+  color: var(--text-3);
+}
+
+.menu__footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+  color: var(--text-2);
+  font-size: 0.9375rem;
+}
+
+.menu__place {
+  @include mono-label(0.6875rem);
+  color: var(--text-3);
+}

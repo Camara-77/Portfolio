@@ -1,0 +1,57 @@
+<header class="nav">
+  <nav class="nav__bar" aria-label="Navigation principale">
+    <a class="nav__logo" href="#top" (click)="closeMenu()" aria-label="{{ data.identity.name }} — retour en haut">
+      {{ data.identity.initials }}
+    </a>
+
+    <ul class="nav__links">
+      @for (link of links; track link.id) {
+        <li>
+          <a
+            class="nav__link"
+            [href]="'#' + link.id"
+            [class.is-active]="scroll.activeSection() === link.id"
+            [attr.aria-current]="scroll.activeSection() === link.id ? 'true' : null"
+          >
+            {{ link.label }}
+          </a>
+        </li>
+      }
+    </ul>
+
+    <a appButton size="sm" class="nav__cta" href="#contact">
+      Me contacter
+      <app-icon name="arrow-up-right" />
+    </a>
+
+    <button
+      class="nav__toggle"
+      type="button"
+      [attr.aria-expanded]="menuOpen()"
+      aria-controls="mobile-menu"
+      [attr.aria-label]="menuOpen() ? 'Fermer le menu' : 'Ouvrir le menu'"
+      (click)="toggleMenu()"
+    >
+      <span class="nav__toggle-line"></span>
+      <span class="nav__toggle-line"></span>
+    </button>
+  </nav>
+
+  <!-- Menu mobile plein écran -->
+  <div id="mobile-menu" class="menu" [attr.inert]="menuOpen() ? null : ''" [attr.aria-hidden]="!menuOpen()">
+    <ul class="menu__list">
+      @for (link of links; track link.id; let i = $index) {
+        <li class="menu__item" [style.--i]="i">
+          <a class="menu__link" [href]="'#' + link.id" (click)="closeMenu()">
+            <span class="menu__index">{{ pad(i) }}</span>
+            {{ link.label }}
+          </a>
+        </li>
+      }
+    </ul>
+    <div class="menu__footer">
+      <a class="menu__mail" [href]="'mailto:' + data.identity.email">{{ data.identity.email }}</a>
+      <span class="menu__place">{{ data.identity.locationShort }}</span>
+    </div>
+  </div>
+</header>

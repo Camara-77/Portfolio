@@ -1,0 +1,59 @@
+@use 'tokens' as *;
+
+:host {
+  @include glass;
+  display: block;
+  isolation: isolate;
+  overflow: hidden;
+  --mx: 50%;
+  --my: 0%;
+  transition:
+    border-color 0.4s var(--ease-out),
+    background-color 0.4s var(--ease-out);
+
+  // Reflet lumineux en haut à gauche
+  &::before {
+    @include glass-sheen;
+    z-index: 1;
+  }
+
+  // Halo blanc qui suit la souris
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: radial-gradient(
+      420px circle at var(--mx) var(--my),
+      rgba(255, 255, 255, 0.09),
+      transparent 45%
+    );
+    opacity: 0;
+    transition: opacity 0.5s var(--ease-out);
+    pointer-events: none;
+  }
+}
+
+:host(.glass-card--interactive) {
+  @include hover {
+    border-color: rgba(255, 255, 255, 0.22);
+
+    &::after {
+      opacity: 1;
+    }
+  }
+}
+
+:host([data-pad='none']) {
+  padding: 0;
+}
+:host([data-pad='sm']) {
+  padding: clamp(1rem, 2vw, 1.25rem);
+}
+:host([data-pad='md']) {
+  padding: clamp(1.5rem, 3vw, 2rem);
+}
+:host([data-pad='lg']) {
+  padding: clamp(1.75rem, 4vw, 3rem);
+}
