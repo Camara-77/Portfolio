@@ -1,0 +1,113 @@
+@use 'tokens' as *;
+
+:host {
+  display: block;
+}
+
+// Grande phrase d'ouverture
+.about__statement {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4.2vw, 3.75rem);
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  max-width: 24ch;
+  text-wrap: balance;
+}
+
+.about__grid {
+  display: grid;
+  gap: 2.5rem;
+  margin-top: clamp(2.5rem, 6vw, 5rem);
+
+  @include up($bp-md) {
+    grid-template-columns: 4fr 8fr;
+    gap: 3rem;
+  }
+}
+
+.about__body {
+  display: grid;
+  gap: 1.25rem;
+
+  @include up($bp-lg) {
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+  }
+
+  .lead {
+    color: var(--text-2);
+  }
+}
+
+.about__label {
+  @include mono-label(0.6875rem);
+  color: var(--text-3);
+  margin-bottom: 1rem;
+}
+
+.about__lang-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding-block: 0.75rem;
+  border-top: 1px solid var(--line);
+
+  &:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+}
+
+.about__lang-name {
+  font-weight: 500;
+}
+
+.about__lang-level {
+  @include mono-label(0.625rem);
+  color: var(--text-2);
+}
+
+// Chiffres
+.about__stats {
+  display: grid;
+  gap: 1rem;
+  margin-top: clamp(3rem, 7vw, 5.5rem);
+
+  @include up($bp-md) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+
+  li {
+    display: flex;
+  }
+}
+
+.about__stat {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.5rem;
+  width: 100%;
+
+  @include up($bp-md) {
+    gap: 2.5rem;
+    min-height: 13rem;
+  }
+}
+
+.about__stat-value {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 7vw, 6rem);
+  font-weight: 500;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+}
+
+.about__stat-label {
+  @include mono-label(0.6875rem);
+  color: var(--text-2);
+  max-width: 22ch;
+  line-height: 1.6;
+}

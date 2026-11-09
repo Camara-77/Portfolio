@@ -19,9 +19,13 @@ import { ScrambleTextDirective } from '../../core/directives/scramble-text.direc
       <span appScrambleText [delay]="0.1">{{ label() }}</span>
     </p>
     @if (title()) {
-      <h2 class="section-title__title h2" [id]="headingId()" appTextReveal trigger="scroll" [scramble]="true">
-        {{ title() }}
-      </h2>
+      @if (titleHidden()) {
+        <h2 class="sr-only" [id]="headingId()">{{ title() }}</h2>
+      } @else {
+        <h2 class="section-title__title h2" [id]="headingId()" appTextReveal trigger="scroll" [scramble]="true">
+          {{ title() }}
+        </h2>
+      }
     }
   `,
   styles: `
@@ -62,4 +66,6 @@ export class SectionTitle {
   readonly label = input.required<string>();
   readonly title = input<string>();
   readonly headingId = input<string>();
+  /** Titre présent pour l'accessibilité mais masqué visuellement. */
+  readonly titleHidden = input(false);
 }

@@ -1,0 +1,345 @@
+@use 'tokens' as *;
+
+:host {
+  display: block;
+}
+
+// --- Présentation -----------------------------------------------
+.ayyou__intro {
+  display: grid;
+  gap: 2rem;
+
+  @include up($bp-lg) {
+    grid-template-columns: 7fr 5fr;
+    gap: 4rem;
+    align-items: end;
+  }
+}
+
+.ayyou__summary {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3.6vw, 3.25rem);
+  font-weight: 500;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.ayyou__meta {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.ayyou__status {
+  @include mono-label(0.6875rem);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.ayyou__status-dot {
+  position: relative;
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--text);
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 1px solid var(--text);
+    animation: ping 2.4s var(--ease-out) infinite;
+  }
+}
+
+@keyframes ping {
+  from {
+    transform: scale(0.6);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.ayyou__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+// --- Chiffres ---------------------------------------------------
+.ayyou__stats-card {
+  margin-top: clamp(3rem, 6vw, 4.5rem);
+}
+
+.ayyou__stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
+  @include up($bp-md) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.ayyou__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+
+  &:nth-child(2n) {
+    border-right: 0;
+  }
+  &:last-child {
+    grid-column: 1 / -1;
+    border-bottom: 0;
+  }
+
+  @include up($bp-md) {
+    border-bottom: 0;
+
+    &:nth-child(2n) {
+      border-right: 1px solid var(--line);
+    }
+    &:last-child {
+      grid-column: auto;
+      border-right: 0;
+    }
+  }
+}
+
+.ayyou__stat-value {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 4.25rem);
+  font-weight: 500;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+}
+
+.ayyou__stat-label {
+  @include mono-label(0.625rem);
+  color: var(--text-2);
+}
+
+// --- Blocs ------------------------------------------------------
+.ayyou__block {
+  margin-top: clamp(3rem, 6vw, 4.5rem);
+}
+
+.ayyou__label {
+  @include mono-label(0.6875rem);
+  color: var(--text-3);
+  margin-bottom: 1.25rem;
+}
+
+// --- Architecture : 3 cartes reliées ----------------------------
+.ayyou__arch {
+  display: flex;
+  flex-direction: column;
+
+  @include up($bp-lg) {
+    flex-direction: row;
+    align-items: stretch;
+  }
+}
+
+.ayyou__arch-item {
+  display: flex;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.ayyou__service {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.ayyou__service-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.ayyou__service-index {
+  @include mono-label(0.6875rem);
+  color: var(--text-3);
+}
+
+.ayyou__repo {
+  @include mono-label(0.625rem);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 32px;
+  color: var(--text-2);
+  transition: color 0.3s var(--ease-out);
+
+  @include hover {
+    color: var(--text);
+  }
+}
+
+.ayyou__service-role {
+  color: var(--text-2);
+  font-size: 0.9375rem;
+}
+
+.ayyou__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+// Liaison entre deux services : ligne + impulsion lumineuse
+.ayyou__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3rem;
+
+  @include up($bp-lg) {
+    width: 3.5rem;
+    height: auto;
+    flex: none;
+  }
+}
+
+.ayyou__link-line {
+  position: relative;
+  width: 1px;
+  height: 100%;
+  overflow: hidden;
+  background: var(--glass-border);
+
+  @include up($bp-lg) {
+    width: 100%;
+    height: 1px;
+  }
+}
+
+.ayyou__link-pulse {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 40%;
+  background: linear-gradient(to bottom, transparent, var(--text), transparent);
+  animation: pulse-y 2.4s var(--ease-in-out) infinite;
+
+  @include up($bp-lg) {
+    width: 40%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, var(--text), transparent);
+    animation-name: pulse-x;
+  }
+}
+
+@keyframes pulse-y {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(250%);
+  }
+}
+
+@keyframes pulse-x {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(250%);
+  }
+}
+
+// --- Détails : IA + espaces + déploiement -----------------------
+.ayyou__details {
+  display: grid;
+
+  @include up($bp-lg) {
+    grid-template-columns: 7fr 5fr;
+    gap: 4rem;
+  }
+}
+
+.ayyou__feature {
+  display: flex;
+  align-items: baseline;
+  gap: 1.25rem;
+  padding-block: 1.1rem;
+  border-top: 1px solid var(--line);
+  transition: padding-left 0.5s var(--ease-out);
+
+  &:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  @include hover {
+    padding-left: 0.75rem;
+  }
+}
+
+.ayyou__feature-index {
+  @include mono-label(0.6875rem);
+  color: var(--text-3);
+}
+
+.ayyou__feature-name {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.ayyou__spaces {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+
+  li {
+    display: flex;
+  }
+}
+
+.ayyou__space {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.ayyou__space-index {
+  @include mono-label(0.625rem);
+  color: var(--text-3);
+}
+
+.ayyou__space-name {
+  font-weight: 500;
+}
+
+.ayyou__payments {
+  margin-top: 1rem;
+  color: var(--text-2);
+  font-size: 0.9375rem;
+}
+
+@include reduced-motion {
+  .ayyou__link-pulse,
+  .ayyou__status-dot::after {
+    animation: none;
+  }
+}

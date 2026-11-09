@@ -53,8 +53,9 @@ export interface FloatingCard {
 
 export interface ArchitectureBlock {
   name: string;
-  role: string;
+  role?: string;
   stack: string[];
+  repo: SocialLink;
 }
 
 export interface FeaturedProject {
@@ -195,20 +196,34 @@ export const PORTFOLIO: Portfolio = {
       { value: 4, label: 'espaces utilisateurs' },
     ],
     architecture: [
+      // Dépôts : organisation publique github.com/Ayyou-all
       {
         name: 'Front-end',
-        role: 'Interface des 4 espaces utilisateurs',
         stack: ['Angular', 'TypeScript', 'Tailwind CSS', 'Leaflet', 'Chart.js'],
+        repo: {
+          label: 'GitHub',
+          href: 'https://github.com/Ayyou-all/ayyou-frontend',
+          display: 'ayyou-frontend',
+        },
       },
       {
         name: 'Back-end',
-        role: 'API REST, authentification, données',
         stack: ['Django', 'Django REST Framework', 'JWT', 'PostgreSQL', 'OpenAPI'],
+        repo: {
+          label: 'GitHub',
+          href: 'https://github.com/Ayyou-all/ayyou-backend',
+          display: 'ayyou-backend',
+        },
       },
       {
         name: 'Service IA',
-        role: 'Microservice séparé, accessible seulement par le back-end via une clé interne',
+        role: 'Microservice séparé, accessible seulement par le back-end via une clé interne.',
         stack: ['FastAPI'],
+        repo: {
+          label: 'GitHub',
+          href: 'https://github.com/Ayyou-all/ayyou-ai',
+          display: 'ayyou-ai',
+        },
       },
     ],
     deployment: ['Docker', 'Nginx', 'Gunicorn', 'VPS', 'HTTPS'],

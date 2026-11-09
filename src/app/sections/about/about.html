@@ -1,0 +1,40 @@
+<section id="about" class="section about" aria-labelledby="about-title">
+  <div class="container">
+    <app-section-title index="01" label="À propos" title="À propos" headingId="about-title" [titleHidden]="true" />
+
+    <p class="about__statement" appScrubWords>{{ statement }}</p>
+
+    <div class="about__grid">
+      <div class="about__langs" appReveal>
+        <p class="about__label">Langues</p>
+        <ul class="about__lang-list">
+          @for (lang of languages; track lang.name) {
+            <li>
+              <span class="about__lang-name">{{ lang.name }}</span>
+              <span class="about__lang-level">{{ lang.level }}</span>
+            </li>
+          }
+        </ul>
+      </div>
+
+      <div class="about__body" appReveal [revealStagger]="true">
+        @for (p of body; track $index) {
+          <p class="lead">{{ p }}</p>
+        }
+      </div>
+    </div>
+
+    <ul class="about__stats" appReveal [revealStagger]="true">
+      @for (stat of about.stats; track stat.label) {
+        <li>
+          <app-glass-card padding="lg" class="about__stat">
+            <span class="about__stat-value" [appCountUp]="stat.value" [suffix]="stat.suffix ?? ''">
+              {{ stat.value }}{{ stat.suffix }}
+            </span>
+            <span class="about__stat-label">{{ stat.label }}</span>
+          </app-glass-card>
+        </li>
+      }
+    </ul>
+  </div>
+</section>

@@ -6,8 +6,10 @@
 
 <main id="main" class="page">
   <app-hero />
+  <app-about />
+  <app-ayyou />
 
-  <!-- Sections : titres en place, contenu réel ajouté aux phases 3 à 5 -->
+  <!-- Sections à venir : titres en place, contenu réel aux phases 4 et 5 -->
   @for (s of sections; track s.id) {
     <section class="section" [id]="s.id" [attr.aria-labelledby]="s.id + '-title'">
       <div class="container">
