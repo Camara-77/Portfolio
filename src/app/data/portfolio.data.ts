@@ -49,6 +49,17 @@ export interface About {
 
 export interface FloatingCard {
   label: string;
+  /** Carte mise en avant avec une icône de trophée. */
+  award?: boolean;
+}
+
+export interface Award {
+  /** Texte complet du badge. */
+  label: string;
+  rank: string;
+  title: string;
+  organization: string;
+  event: string;
 }
 
 export interface ArchitectureBlock {
@@ -63,6 +74,7 @@ export interface FeaturedProject {
   kicker: string;
   summary: string;
   context: string;
+  award: Award;
   status: string;
   stats: Stat[];
   architecture: ArchitectureBlock[];
@@ -94,6 +106,9 @@ export interface TimelineItem {
   date: string;
   title: string;
   place?: string;
+  /** Date encore à compléter : affichée comme TODO visible. */
+  todo?: boolean;
+  award?: boolean;
 }
 
 export interface Seo {
@@ -171,6 +186,7 @@ export const PORTFOLIO: Portfolio = {
     { label: 'Angular' },
     { label: 'FastAPI · IA' },
     { label: '156 tests' },
+    { label: '1er prix · Pitch Simplon', award: true },
   ],
 
   about: {
@@ -183,6 +199,7 @@ export const PORTFOLIO: Portfolio = {
       { value: 10, suffix: '+', label: 'projets réalisés' },
       { value: 1, label: 'plateforme complète déployée en solo' },
       { value: 156, label: 'tests automatisés sur AYYOU' },
+      { value: 1, suffix: 'er', label: 'prix · meilleur projet entrepreneurial' },
     ],
   },
 
@@ -191,7 +208,14 @@ export const PORTFOLIO: Portfolio = {
     kicker: 'Projet phare',
     summary: 'Plateforme FoodTech de commande et livraison de repas au Sénégal.',
     context:
-      'Projet de soutenance réalisé seule (front, back, IA), validé le 23 octobre 2026.',
+      'Projet de soutenance réalisé seule, validé le 23 octobre 2026 et récompensé par le 1er prix du meilleur projet entrepreneurial lors du pitch de Simplon Sénégal.',
+    award: {
+      label: '1er prix — Meilleur projet entrepreneurial · Simplon Sénégal',
+      rank: '1er prix',
+      title: 'Meilleur projet entrepreneurial',
+      organization: 'Simplon Sénégal',
+      event: 'Concours de pitch',
+    },
     status: 'Déployée en ligne, lancement en préparation.',
     stats: [
       { value: 172, label: 'commits' },
@@ -390,6 +414,14 @@ export const PORTFOLIO: Portfolio = {
       date: '23 oct. 2026',
       title: 'Soutenance validée',
       place: 'Projet AYYOU',
+    },
+    // TODO : date du concours de pitch à compléter
+    {
+      date: 'DATE À COMPLÉTER',
+      title: '1er prix — Meilleur projet entrepreneurial (AYYOU)',
+      place: 'Simplon Sénégal · concours de pitch',
+      todo: true,
+      award: true,
     },
   ],
 

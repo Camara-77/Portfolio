@@ -2,6 +2,17 @@
   <div class="container">
     <app-section-title index="02" [label]="p.kicker" [title]="p.name" headingId="ayyou-title" />
 
+    <!-- Distinction -->
+    <p class="ayyou__award" appReveal>
+      <span class="ayyou__award-icon"><app-icon name="trophy" /></span>
+      <span class="ayyou__award-text">
+        <strong class="ayyou__award-rank">{{ p.award.rank }}</strong>
+        <span class="ayyou__award-sep" aria-hidden="true">—</span>
+        <span>{{ p.award.title }}</span>
+        <span class="ayyou__award-org">· {{ p.award.organization }}</span>
+      </span>
+    </p>
+
     <!-- Présentation -->
     <div class="ayyou__intro">
       <p class="ayyou__summary" appReveal>{{ p.summary }}</p>

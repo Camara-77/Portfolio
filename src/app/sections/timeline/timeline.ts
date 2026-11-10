@@ -13,6 +13,7 @@ import { gsap } from '../../core/gsap';
 import { MotionService } from '../../core/services/motion.service';
 import { SectionTitle } from '../../shared/section-title/section-title';
 import { GlassCard } from '../../shared/glass-card/glass-card';
+import { Icon } from '../../shared/icon/icon';
 
 /**
  * Frise verticale : la ligne se remplit au rythme du défilement,
@@ -20,7 +21,7 @@ import { GlassCard } from '../../shared/glass-card/glass-card';
  */
 @Component({
   selector: 'app-timeline',
-  imports: [SectionTitle, GlassCard],
+  imports: [SectionTitle, GlassCard, Icon],
   templateUrl: './timeline.html',
   styleUrl: './timeline.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

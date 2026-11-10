@@ -14,7 +14,8 @@ export type IconName =
   | 'download'
   | 'github'
   | 'linkedin'
-  | 'external';
+  | 'external'
+  | 'trophy';
 
 /** Icônes SVG inline (trait 1.5px, couleur = currentColor). */
 @Component({
@@ -87,6 +88,11 @@ export type IconName =
           <path
             d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"
           />
+        }
+        @case ('trophy') {
+          <path d="M8 4h8v5a4 4 0 0 1-8 0V4Z" />
+          <path d="M8 6H5a1 1 0 0 0-1 1v1a3 3 0 0 0 3 3h1.3M16 6h3a1 1 0 0 1 1 1v1a3 3 0 0 1-3 3h-1.3" />
+          <path d="M12 13v3M9 20h6M10 16h4l.5 4h-5l.5-4Z" />
         }
         @case ('linkedin') {
           <rect x="3" y="3" width="18" height="18" rx="3" />

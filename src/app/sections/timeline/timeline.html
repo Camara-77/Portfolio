@@ -10,8 +10,17 @@
       @for (item of items; track item.date) {
         <li class="timeline__item">
           <span class="timeline__dot" aria-hidden="true"></span>
-          <p class="timeline__date">{{ item.date }}</p>
+          <p class="timeline__date">
+            @if (item.todo) {
+              <span class="todo">{{ item.date }}</span>
+            } @else {
+              {{ item.date }}
+            }
+          </p>
           <app-glass-card class="timeline__content">
+            @if (item.award) {
+              <span class="timeline__award" aria-hidden="true"><app-icon name="trophy" /></span>
+            }
             <h3 class="timeline__title h3">{{ item.title }}</h3>
             @if (item.place) {
               <p class="timeline__place">{{ item.place }}</p>

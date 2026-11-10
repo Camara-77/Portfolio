@@ -44,7 +44,12 @@
 
       @for (card of cards; track card.label; let i = $index) {
         <div class="hero__card hero__card--{{ i + 1 }}" data-hero-card>
-          <span class="hero__card-inner">{{ card.label }}</span>
+          <span class="hero__card-inner" [class.hero__card-inner--award]="card.award">
+            @if (card.award) {
+              <app-icon name="trophy" />
+            }
+            {{ card.label }}
+          </span>
         </div>
       }
     </div>

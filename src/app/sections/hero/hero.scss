@@ -161,7 +161,30 @@
   }
 }
 
+// Distinction : légèrement plus lumineuse
+.hero__card-inner--award {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-color: rgba(255, 255, 255, 0.26);
+  --icon-size: 1.1em;
+}
+
+.hero__card--5 {
+  bottom: 1%;
+  right: 0;
+
+  .hero__card-inner {
+    animation-delay: -2.2s;
+    animation-duration: 6.8s;
+  }
+}
+
 @include up($bp-lg) {
+  .hero__card--5 {
+    bottom: 3%;
+    right: -8%;
+  }
   .hero__card--1 {
     left: -16%;
   }
