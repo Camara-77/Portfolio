@@ -276,7 +276,8 @@ export const PORTFOLIO: Portfolio = {
     {
       name: "API d'analyse de sentiments",
       category: 'IA',
-      description: "Détecte le sentiment d'un avis et signale les urgences.",
+      description:
+        "API FastAPI qui détecte le sentiment d'un avis client et signale les cas urgents, avec un modèle Hugging Face multilingue choisi après une comparaison documentée.",
       stack: ['FastAPI', 'Transformers'],
       meta: 'Projet perso · Juillet 2026',
       link: {
