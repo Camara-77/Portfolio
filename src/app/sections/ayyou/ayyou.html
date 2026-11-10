@@ -2,8 +2,15 @@
   <div class="container">
     <app-section-title index="02" [label]="p.kicker" [title]="p.name" headingId="ayyou-title" />
 
-    <!-- Distinction -->
-    <p class="ayyou__award" appReveal>
+    <!-- Distinction : ouvre la galerie du prix -->
+    <button
+      type="button"
+      class="ayyou__award"
+      aria-haspopup="dialog"
+      [attr.aria-label]="p.award.label + ' — voir les ' + p.award.photos.length + ' photos'"
+      (click)="gallery.open()"
+      appReveal
+    >
       <span class="ayyou__award-icon"><app-icon name="trophy" /></span>
       <span class="ayyou__award-text">
         <strong class="ayyou__award-rank">{{ p.award.rank }}</strong>
@@ -11,7 +18,12 @@
         <span>{{ p.award.title }}</span>
         <span class="ayyou__award-org">· {{ p.award.organization }}</span>
       </span>
-    </p>
+      <span class="ayyou__award-hint" aria-hidden="true">
+        Voir les photos · {{ p.award.photos.length }}
+        <app-icon name="arrow-up-right" />
+      </span>
+    </button>
+    <app-award-gallery #gallery [award]="p.award" />
 
     <!-- Présentation -->
     <div class="ayyou__intro">

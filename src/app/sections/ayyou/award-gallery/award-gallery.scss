@@ -1,0 +1,301 @@
+@use 'tokens' as *;
+
+// --- Modale ------------------------------------------------------
+.gallery {
+  width: min(100% - 2rem, 72rem);
+  max-width: none;
+  max-height: calc(100dvh - 2rem);
+  margin: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  overflow: visible;
+
+  &[open] {
+    animation: gallery-in 0.5s var(--ease-out);
+  }
+
+  // Fond assombri et flouté
+  &::backdrop {
+    background: rgba(5, 5, 5, 0.72);
+    -webkit-backdrop-filter: blur(14px) saturate(120%);
+    backdrop-filter: blur(14px) saturate(120%);
+  }
+
+  &[open]::backdrop {
+    animation: backdrop-in 0.4s ease;
+  }
+}
+
+@keyframes gallery-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+}
+
+@keyframes backdrop-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.gallery__panel {
+  @include glass(28px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.25rem, 3vw, 1.75rem);
+  max-height: calc(100dvh - 2rem);
+  padding: clamp(1rem, 3vw, 2rem);
+  overflow: auto;
+  overscroll-behavior: contain;
+  background: rgba(22, 22, 22, 0.72);
+
+  &::before {
+    @include glass-sheen;
+  }
+}
+
+// --- En-tête -----------------------------------------------------
+.gallery__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.gallery__title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.6vw, 2rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+
+.gallery__title-icon {
+  --icon-size: 1.1rem;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.gallery__subtitle {
+  @include mono-label(0.6875rem);
+  margin-top: 0.75rem;
+  color: var(--text-2);
+  line-height: 1.6;
+}
+
+.gallery__close {
+  --icon-size: 1.25rem;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.06);
+  transition:
+    background-color 0.3s var(--ease-out),
+    color 0.3s var(--ease-out),
+    transform 0.4s var(--ease-out);
+
+  @include hover {
+    background: var(--text);
+    color: var(--bg);
+    transform: rotate(90deg);
+  }
+}
+
+// --- Grille bento ------------------------------------------------
+.gallery__grid {
+  display: grid;
+  gap: 0.75rem;
+
+  @include up($bp-md) {
+    grid-template-columns: 1.25fr 1fr 1fr;
+    grid-template-rows: repeat(2, clamp(10rem, 26vh, 17rem));
+  }
+}
+
+@include up($bp-md) {
+  // Grande photo à gauche, sur 2 lignes ; 3 photos à droite
+  .gallery__cell--1 {
+    grid-row: 1 / 3;
+  }
+  .gallery__cell--2 {
+    grid-column: 2 / 4;
+  }
+}
+
+.gallery__cell {
+  display: flex;
+  min-height: 0;
+}
+
+.gallery__thumb {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: var(--bg-2);
+
+  @include up($bp-md) {
+    aspect-ratio: auto;
+    height: 100%;
+  }
+
+  &:focus-visible {
+    outline-offset: 2px;
+  }
+}
+
+.gallery__cell--1 .gallery__thumb {
+  aspect-ratio: 4 / 5;
+
+  @include up($bp-md) {
+    aspect-ratio: auto;
+  }
+}
+
+// Noir et blanc par défaut, couleurs au survol / focus
+.gallery__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.05);
+  transform: scale(1.001);
+  transition:
+    filter 0.7s var(--ease-out),
+    transform 0.9s var(--ease-out);
+}
+
+.gallery__thumb:focus-visible .gallery__img {
+  filter: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .gallery__thumb:hover .gallery__img {
+    filter: none;
+    transform: scale(1.04);
+  }
+}
+
+.gallery__caption {
+  @include mono-label(0.625rem);
+  position: absolute;
+  left: 0.75rem;
+  bottom: 0.75rem;
+  padding: 0.45em 0.8em;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--glass-border);
+  background: rgba(10, 10, 10, 0.55);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: var(--text);
+}
+
+// --- Photo en grand ----------------------------------------------
+.gallery__viewer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-height: 0;
+}
+
+.gallery__viewer-frame {
+  display: grid;
+  place-items: center;
+  min-height: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--bg);
+  animation: gallery-in 0.45s var(--ease-out);
+}
+
+.gallery__viewer-img {
+  width: auto;
+  max-width: 100%;
+  max-height: calc(100dvh - 15rem);
+  object-fit: contain;
+}
+
+.gallery__viewer-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+}
+
+.gallery__back {
+  @include mono-label(0.6875rem);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0 1rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.06);
+  transition: background-color 0.3s var(--ease-out);
+
+  @include hover {
+    background: rgba(255, 255, 255, 0.12);
+  }
+}
+
+.gallery__viewer-caption {
+  @include mono-label(0.6875rem);
+  display: inline-flex;
+  gap: 0.75rem;
+  color: var(--text);
+}
+
+.gallery__viewer-count {
+  color: var(--text-3);
+}
+
+.gallery__nav {
+  display: inline-flex;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.gallery__nav-btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.06);
+  transition:
+    background-color 0.3s var(--ease-out),
+    color 0.3s var(--ease-out);
+
+  @include hover {
+    background: var(--text);
+    color: var(--bg);
+  }
+}
+
+@include reduced-motion {
+  .gallery[open],
+  .gallery[open]::backdrop,
+  .gallery__viewer-frame {
+    animation: none;
+  }
+}

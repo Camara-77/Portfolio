@@ -15,6 +15,8 @@
   margin: calc(-1 * clamp(1rem, 4vw, 3rem)) 0 clamp(1.75rem, 3.5vw, 2.5rem);
   padding: 0.5rem 1.4rem 0.5rem 0.5rem;
   overflow: hidden;
+  text-align: left;
+  cursor: pointer;
   isolation: isolate;
   border-color: rgba(255, 255, 255, 0.22);
   transition: border-color 0.5s var(--ease-out);
@@ -47,6 +49,43 @@
       background: var(--text);
       color: var(--bg);
     }
+  }
+}
+
+// « Voir les photos · 4 » : apparaît au survol (souris), toujours visible sur tactile
+.ayyou__award-hint {
+  @include mono-label(0.625rem);
+  --icon-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex: none;
+  padding: 0.45em 0.8em;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 0;
+  opacity: 0;
+  padding-inline: 0;
+  transition: all 0.6s var(--ease-out);
+}
+
+.ayyou__award:hover .ayyou__award-hint,
+.ayyou__award:focus-visible .ayyou__award-hint {
+  max-width: 14rem;
+  opacity: 1;
+  margin-left: 0.25rem;
+  padding-inline: 0.8em;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .ayyou__award .ayyou__award-hint {
+    max-width: 14rem;
+    opacity: 1;
+    margin-left: 0.25rem;
+    padding-inline: 0.8em;
   }
 }
 

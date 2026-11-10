@@ -233,6 +233,22 @@ html.has-custom-cursor * {
   cursor: none !important;
 }
 
+// Modale ouverte (<dialog> est au-dessus de tout) : curseur natif de retour
+html.has-custom-cursor:has(dialog[open]) {
+  app-cursor {
+    display: none;
+  }
+
+  dialog[open],
+  dialog[open] * {
+    cursor: auto !important;
+  }
+
+  dialog[open] button {
+    cursor: pointer !important;
+  }
+}
+
 // Marqueur visible pour le contenu manquant
 .todo {
   display: inline-block;

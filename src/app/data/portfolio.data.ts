@@ -53,6 +53,14 @@ export interface FloatingCard {
   award?: boolean;
 }
 
+export interface AwardPhoto {
+  src: string;
+  caption: string;
+  alt: string;
+  width?: number;
+  height?: number;
+}
+
 export interface Award {
   /** Texte complet du badge. */
   label: string;
@@ -60,6 +68,10 @@ export interface Award {
   title: string;
   organization: string;
   event: string;
+  venue: string;
+  date: string;
+  /** Galerie : la 1re photo est la grande image de la grille. */
+  photos: AwardPhoto[];
 }
 
 export interface ArchitectureBlock {
@@ -214,7 +226,31 @@ export const PORTFOLIO: Portfolio = {
       rank: '1er prix',
       title: 'Meilleur projet entrepreneurial',
       organization: 'Simplon Sénégal',
-      event: 'Concours de pitch',
+      event: 'Pitch Day 2026',
+      venue: 'Fabrique 360, incubateur de Simplon Sénégal',
+      date: '28 octobre 2026',
+      photos: [
+        {
+          src: 'images/prix-portrait.webp',
+          caption: 'Avec le trophée',
+          alt: 'Aïssatou Combe Camara pose avec le trophée du 1er prix du meilleur projet entrepreneurial.',
+        },
+        {
+          src: 'images/prix-remise.webp',
+          caption: 'Remise du prix',
+          alt: 'Remise du 1er prix du meilleur projet entrepreneurial à Aïssatou Combe Camara lors du Pitch Day 2026.',
+        },
+        {
+          src: 'images/prix-trophee.webp',
+          caption: 'Le trophée',
+          alt: 'Le trophée du 1er prix du meilleur projet entrepreneurial remporté par AYYOU.',
+        },
+        {
+          src: 'images/prix-attestation.webp',
+          caption: 'Trophée et attestation',
+          alt: "Le trophée et l'attestation du 1er prix du meilleur projet entrepreneurial, Simplon Sénégal.",
+        },
+      ],
     },
     status: 'Déployée en ligne, lancement en préparation.',
     stats: [
@@ -415,12 +451,10 @@ export const PORTFOLIO: Portfolio = {
       title: 'Soutenance validée',
       place: 'Projet AYYOU',
     },
-    // TODO : date du concours de pitch à compléter
     {
-      date: 'DATE À COMPLÉTER',
+      date: '28 oct. 2026',
       title: '1er prix — Meilleur projet entrepreneurial (AYYOU)',
-      place: 'Simplon Sénégal · concours de pitch',
-      todo: true,
+      place: 'Pitch Day 2026, Fabrique 360 · Simplon Sénégal',
       award: true,
     },
   ],

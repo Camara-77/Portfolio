@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 export type IconName =
   | 'arrow-up-right'
   | 'arrow-right'
+  | 'arrow-left'
   | 'arrow-down'
   | 'arrow-up'
   | 'menu'
@@ -49,6 +50,9 @@ export type IconName =
         }
         @case ('arrow-right') {
           <path d="M5 12h14M13 6l6 6-6 6" />
+        }
+        @case ('arrow-left') {
+          <path d="M19 12H5M11 6l-6 6 6 6" />
         }
         @case ('arrow-down') {
           <path d="M12 5v14M6 13l6 6 6-6" />
