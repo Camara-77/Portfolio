@@ -53,6 +53,7 @@
               }
             ],
             "styles": [
+              "node_modules/@fontsource/anton/400.css",
               "node_modules/@fontsource/instrument-serif/400.css",
               "node_modules/@fontsource/instrument-serif/400-italic.css",
               "node_modules/@fontsource-variable/inter/index.css",

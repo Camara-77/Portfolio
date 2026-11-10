@@ -11,12 +11,11 @@ import {
 import { gsap } from '../../core/gsap';
 import { ScrollService } from '../../core/services/scroll.service';
 import { Scene } from './scene';
-import { CODE_LINES, DNA_STRANDS, HORIZON, MAP, NET_EDGES, SceneName, VIEWBOX } from './scene-paths';
+import { CODE_LINES, DNA_STRANDS, MAP, NET_EDGES, SceneName, VIEWBOX } from './scene-paths';
 
 const SCENE_OF: Record<string, SceneName> = {
   biologie: 'bio',
   code: 'code',
-  projets: 'ayyou',
   outils: 'horizon',
   contact: 'horizon',
 };
@@ -35,9 +34,9 @@ const FOG_OF: Record<string, 'split' | 'full'> = {
 };
 
 /**
- * Décor d'arrière-plan (desktop) : les 4 scènes superposées dans le même
- * repère, plus 3 tracés qui se transforment au défilement :
- *   ADN → lignes de code · réseau de neurones → carte de Dakar · carte → horizon
+ * Décor d'arrière-plan (desktop) : les scènes superposées dans le même
+ * repère. L'ADN se transforme en lignes de code au défilement ; aucun décor
+ * derrière les cadres du chapitre Projets ; horizon pour la fin.
  * Sans animation (prefers-reduced-motion) : le décor du chapitre en cours
  * s'affiche directement, sans morphing.
  */
@@ -161,17 +160,21 @@ export class Stage {
         swap(morph, 1, 0, b - 0.01);
       };
 
-      // Les éléments qui arrivent par morphing restent cachés jusqu'à la fin de leur transition
+      // Les lignes de code arrivent par morphing (ADN → code)
       const codeLines = part('code', '.s-code');
-      const map = part('ayyou', '.s-map');
-      const horizon = part('horizon', '.s-horizon');
-      gsap.set([codeLines, map, horizon], { autoAlpha: 0 });
+      gsap.set(codeLines, { autoAlpha: 0 });
 
       const [bi0, bi1] = range('biologie', 0.8, 0.3);
       fade(layer('bio'), 0, 1, bi0, bi1 - bi0);
       transition('code', 'bio', 'code', m1, DNA_STRANDS, part('bio', '.s-dna'), CODE_LINES, codeLines);
-      transition('projets', 'code', 'ayyou', m2, NET_EDGES, part('code', '.s-net'), MAP, map);
-      transition('outils', 'ayyou', 'horizon', m3, MAP, map, HORIZON, horizon);
+
+      // Projets : aucun décor derrière les cadres
+      const [pj0, pj1] = range('projets', 0.6, 0.1);
+      fade(layer('code'), 1, 0, pj0, pj1 - pj0);
+
+      // Boîte à outils et contact : décor apaisé, une seule ligne d'horizon
+      const [ou0, ou1] = range('outils', 0.7, 0.2);
+      fade(layer('horizon'), 0, 1, ou0, ou1 - ou0);
       tl.set({}, {}, max); // la timeline couvre toute la page
 
       tl.scrollTrigger?.update();

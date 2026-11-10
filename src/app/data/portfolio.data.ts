@@ -153,7 +153,7 @@ export interface Portfolio {
   seo: { title: string; description: string };
   nav: NavItem[];
   identity: Identity;
-  opening: { scrollHint: string; voice: VoiceNote };
+  opening: { word: string; scrollHint: string; voice: VoiceNote };
   biology: ChapterBase & { motto: string };
   code: CodeChapter;
   ayyou: AyyouChapter;
@@ -227,6 +227,7 @@ export const PORTFOLIO: Portfolio = {
   },
 
   opening: {
+    word: 'AÏSSATOU',
     scrollHint: 'Faites défiler : trois chapitres',
     voice: {
       src: 'audio/note-intro.mp3',

@@ -1,121 +1,202 @@
 @use 'tokens' as *;
 
 :host {
+  --word-size: 24vw;
   display: block;
 }
 
-.opening {
+.op {
   position: relative;
   z-index: 1;
-  min-height: 100svh;
+  overflow: hidden;
+}
+
+.op__measure {
+  position: absolute;
+  visibility: hidden;
+  white-space: nowrap;
+  font-family: 'Anton', Impact, sans-serif;
+  font-size: 100px;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.op__stage {
+  position: relative;
+  padding-inline: var(--gutter);
+}
+
+// --- Le mot (police condensée réservée au hero) ------------------------------
+.op__word {
   display: flex;
-  align-items: center;
-  padding-block: calc(var(--nav-h) + 3.5rem) 3rem;
+  justify-content: center;
+  margin: 0;
+  font-family: 'Anton', Impact, sans-serif;
+  font-size: var(--word-size);
+  line-height: 0.86;
+  letter-spacing: 0;
+  white-space: nowrap;
+  user-select: none;
 }
 
-// Mobile : nom → note vocale et accroche → portrait
-// Desktop : le portrait occupe la colonne droite, centré sur le bloc du nom
-.opening__grid {
-  display: grid;
-  grid-template-areas: 'head' 'rest' 'visual';
-  gap: 2.5rem;
-
-  @include up($bp-lg) {
-    // Au moins 48 px entre le portrait et le bord droit de l'écran
-    padding-right: max(var(--gutter), 48px);
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    grid-template-areas: 'head visual' 'rest visual';
-    grid-template-rows: auto 1fr;
-    column-gap: 4rem;
-    row-gap: 0;
-  }
+.op__letter {
+  display: inline-block;
 }
 
-.opening__head {
-  grid-area: head;
-
-  @include up($bp-lg) {
-    align-self: end;
-  }
-}
-
-.opening__rest {
-  grid-area: rest;
-}
-
-.opening__place {
-  @include mono-label;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: var(--text-2);
-}
-
-.opening__dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
-}
-
-.opening__name {
-  margin-block: 1.25rem 1rem;
-  font-family: var(--font-serif);
-  font-size: var(--fs-hero);
-  font-weight: 400;
-  line-height: 0.9;
-  letter-spacing: -0.025em;
-}
-
-.opening__line {
-  display: block;
-
-  &:nth-child(2) {
-    font-style: italic;
-    color: var(--text-2);
-  }
-}
-
-.opening__title {
-  font-size: var(--fs-lead);
+.op__word--fill {
   color: var(--text);
 }
 
-.opening__voice {
-  @include up($bp-lg) {
-    margin-top: 2rem;
-  }
+.op__word--stroke {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--text);
+  pointer-events: none;
 }
 
-.opening__tagline {
-  max-width: 44ch;
-  margin-top: 2rem;
+// --- Portrait -----------------------------------------------------------------
+.op__portrait {
+  position: relative;
+  z-index: 2;
+  width: min(78vw, 24rem);
+  margin: 1.25rem auto 0;
 }
 
-.opening__hint {
-  @include mono-label(0.6875rem);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  min-height: 44px;
-  margin-top: 2rem;
-  color: var(--text-2);
-  transition: color 0.3s var(--ease-out);
+// --- Coins et note vocale ----------------------------------------------------
+.op__corner {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+.op__next {
+  --icon-size: 1.5rem;
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  transition:
+    transform 0.4s var(--ease-out),
+    color 0.3s var(--ease-out);
 
   @include hover {
-    color: var(--text);
+    color: var(--accent);
+    transform: translateX(4px);
   }
 }
 
-.opening__visual {
-  grid-area: visual;
-  width: min(100%, 22rem);
-  margin-inline: auto;
+// =============================================================================
+// Mobile : mot plein en haut, portrait dessous, textes empilés en dessous
+// =============================================================================
+@include down($bp-lg) {
+  .op {
+    display: flex;
+    flex-direction: column;
+    padding: calc(var(--nav-h) + 1.5rem) 0 2.5rem;
+  }
 
-  @include up($bp-lg) {
-    grid-row: 1;
-    align-self: center;
-    width: min(100%, 24rem);
-    margin-inline: auto 0;
+  .op__word--stroke {
+    display: none;
+  }
+
+  // Place pour le tréma du « Ï » sous la navigation
+  .op__word--fill {
+    padding-top: 0.14em;
+  }
+
+  .op__corner,
+  .op__voice {
+    margin-inline: var(--gutter);
+  }
+
+  .op__corner--tl {
+    margin-top: 1.5rem;
+    font-size: 1rem;
+  }
+  .op__corner--br {
+    color: var(--text-2);
+  }
+  .op__voice {
+    margin-top: 1.25rem;
+  }
+  .op__corner--tr {
+    display: none;
+  }
+}
+
+// =============================================================================
+// Desktop : couverture de magazine
+// =============================================================================
+@include up($bp-lg) {
+  .op {
+    height: 100svh;
+    min-height: 640px;
+  }
+
+  .op__stage {
+    position: absolute;
+    inset: 0;
+  }
+
+  // Les deux calques du mot, exactement superposés, centrés verticalement
+  .op__word {
+    position: absolute;
+    left: var(--gutter);
+    right: var(--gutter);
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .op__word--fill {
+    z-index: 1;
+  }
+
+  .op__word--stroke {
+    z-index: 3;
+  }
+
+  // Portrait centré, en bas, ~85 % de la hauteur de l'écran
+  .op__portrait {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: auto;
+    height: 85svh;
+    aspect-ratio: 701 / 877;
+    margin: 0;
+    transform: translateX(-50%);
+  }
+
+  .op__portrait app-portrait {
+    height: 100%;
+  }
+
+  .op__corner,
+  .op__voice {
+    position: absolute;
+    z-index: 4;
+  }
+
+  .op__corner--tl {
+    top: calc(var(--nav-h) + 1.25rem);
+    left: var(--gutter);
+  }
+  .op__corner--tr {
+    top: calc(var(--nav-h) + 0.5rem);
+    right: var(--gutter);
+  }
+  .op__corner--bl {
+    bottom: 1.75rem;
+    left: var(--gutter);
+  }
+  .op__corner--br {
+    bottom: 1.75rem;
+    right: var(--gutter);
+  }
+  .op__voice {
+    bottom: 1.1rem;
+    left: 50%;
+    transform: translateX(-50%);
   }
 }

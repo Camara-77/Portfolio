@@ -5,7 +5,6 @@ import {
   ElementRef,
   NgZone,
   afterNextRender,
-  computed,
   inject,
   viewChild,
 } from '@angular/core';
@@ -27,9 +26,6 @@ export class ChapterNav {
   protected readonly scroll = inject(ScrollService);
   protected readonly items = PORTFOLIO.nav;
   protected readonly initials = PORTFOLIO.identity.initials;
-  protected readonly current = computed(
-    () => this.items.find((i) => i.id === this.scroll.activeSection()) ?? null,
-  );
 
   private readonly bar = viewChild.required<ElementRef<HTMLElement>>('bar');
 

@@ -1,0 +1,37 @@
+<section id="top" class="op" aria-labelledby="opening-title">
+  <h1 id="opening-title" class="sr-only">{{ id.name }} — {{ id.title }}</h1>
+
+  <!-- Mesure du mot à 100 px (invisible) pour l'ajuster à la largeur -->
+  <span class="op__measure" #measure aria-hidden="true">{{ word }}</span>
+
+  <div class="op__stage">
+    <!-- 1. Mot plein, derrière le portrait -->
+    <p class="op__word op__word--fill" aria-hidden="true">
+      @for (l of letters; track $index) {
+        <span class="op__letter">{{ l }}</span>
+      }
+    </p>
+
+    <!-- 2. Portrait détouré (effet orange au survol) -->
+    <div class="op__portrait">
+      <app-portrait [alt]="'Portrait de ' + id.name" />
+    </div>
+
+    <!-- 3. Mot en contour seul, devant le portrait -->
+    <p class="op__word op__word--stroke" aria-hidden="true">
+      @for (l of letters; track $index) {
+        <span class="op__letter">{{ l }}</span>
+      }
+    </p>
+  </div>
+
+  <!-- Coins -->
+  <p class="op__corner op__corner--tl">{{ id.title }}</p>
+  <a class="op__corner op__corner--tr op__next" href="#biologie" aria-label="Aller au chapitre suivant">
+    <app-icon name="arrow-right" />
+  </a>
+  <p class="op__corner op__corner--bl">{{ id.name }}</p>
+  <p class="op__corner op__corner--br">{{ id.locationShort }}</p>
+
+  <app-voice-mic class="op__voice" [note]="opening.voice" [compact]="true" />
+</section>

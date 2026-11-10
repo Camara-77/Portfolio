@@ -59,7 +59,14 @@ import { AudioService, formatTime } from './audio.service';
       }
     </div>
 
-    @if (note().transcript.length) {
+    @if (note().transcript.length && compact()) {
+      <div class="sr-only">
+        <p>Transcription :</p>
+        @for (p of note().transcript; track $index) {
+          <p>{{ p }}</p>
+        }
+      </div>
+    } @else if (note().transcript.length) {
       <details class="mic__transcript">
         <summary>Lire la transcription</summary>
         @for (p of note().transcript; track $index) {
@@ -72,6 +79,8 @@ import { AudioService, formatTime } from './audio.service';
 })
 export class VoiceMic {
   readonly note = input.required<VoiceNote>();
+  /** Version compacte (hero) : sans transcription dépliable visible. */
+  readonly compact = input(false);
 
   private readonly audioService = inject(AudioService);
   private readonly audio = viewChild<ElementRef<HTMLAudioElement>>('audio');

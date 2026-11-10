@@ -24,9 +24,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  max-width: var(--container);
   height: var(--nav-h);
-  margin-inline: auto;
   padding-inline: var(--gutter);
 }
 
@@ -43,84 +41,65 @@
 }
 
 .nav__link {
+  position: relative;
   display: inline-flex;
-  align-items: baseline;
-  gap: 0.5rem;
-  min-height: 44px;
   align-items: center;
+  min-height: 44px;
   padding: 0 0.7rem;
-  border-radius: var(--radius-pill);
+  font-size: 0.875rem;
   color: var(--text-3);
+  white-space: nowrap;
   transition: color 0.3s var(--ease-out);
 
   @include hover {
     color: var(--text);
   }
 
+  // Chapitre en cours : texte noir + petit trait orange
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0.7rem;
+    right: 0.7rem;
+    bottom: 8px;
+    height: 1px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s var(--ease-out);
+  }
+
   &.is-active {
     color: var(--text);
 
-    .nav__index {
-      color: var(--accent);
+    &::after {
+      transform: scaleX(1);
     }
   }
 }
 
-.nav__index {
-  @include mono-label(0.625rem);
-  letter-spacing: 0.08em;
-}
-
-.nav__label {
-  font-size: 0.875rem;
-}
-
-// Mobile : indices seuls + chapitre en cours
-.nav__current {
-  display: none;
-}
-
+// Mobile : la liste défile horizontalement (sans barre visible)
 @include down($bp-md) {
-  .nav__link:not(.nav__link--word) .nav__label {
-    @include sr-label;
+  .nav__chapters {
+    min-width: 0;
+    flex: 1;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 1rem, #000 calc(100% - 1.5rem), transparent);
+    mask-image: linear-gradient(to right, transparent, #000 1rem, #000 calc(100% - 1.5rem), transparent);
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .nav__list {
+    width: max-content;
+    padding-inline: 0.5rem 1rem;
   }
 
   .nav__link {
     padding: 0 0.55rem;
-  }
-
-  // « Contact » reste écrit en toutes lettres
-  .nav__link--word {
-    .nav__index {
-      display: none;
-    }
-    .nav__label {
-      position: static;
-      width: auto;
-      height: auto;
-      margin: 0;
-      clip: auto;
-      overflow: visible;
-    }
-  }
-
-  .nav__chapters {
-    order: 3;
-  }
-
-  .nav__current {
-    display: block;
-    flex: 1;
-    font-size: 0.875rem;
-    color: var(--text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-
-    .nav__index {
-      color: var(--accent);
-      margin-right: 0.25rem;
-    }
   }
 }
 

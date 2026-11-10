@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 /**
  * En-tête de chapitre :
- *   CHAPITRE 01 · BIOLOGIE                2021 – 2024
+ *   BIOLOGIE                2021 – 2024
  *   Titre en serif
  */
 @Component({
@@ -10,14 +10,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <p class="head__meta">
-      <span class="head__chapter">
-        @if (index() !== '—') {
-          Chapitre <span class="head__index">{{ index() }}</span> ·
-        } @else {
-          Épilogue ·
-        }
-        {{ label() }}
-      </span>
+      <span class="head__chapter">{{ label() }}</span>
       @if (period()) {
         <span class="head__period">{{ period() }}</span>
       }
