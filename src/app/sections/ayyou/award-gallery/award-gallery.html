@@ -34,7 +34,15 @@
               [attr.aria-label]="'Agrandir : ' + photo.caption"
               (click)="show(i, $event)"
             >
-              <img class="gallery__img" [src]="photo.src" [alt]="photo.alt" loading="lazy" decoding="async" />
+              <img
+                class="gallery__img"
+                [src]="photo.src"
+                [alt]="photo.alt"
+                [attr.width]="photo.width"
+                [attr.height]="photo.height"
+                loading="lazy"
+                decoding="async"
+              />
               <span class="gallery__caption">{{ photo.caption }}</span>
             </button>
           </li>

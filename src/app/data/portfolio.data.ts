@@ -229,26 +229,36 @@ export const PORTFOLIO: Portfolio = {
       event: 'Pitch Day 2026',
       venue: 'Fabrique 360, incubateur de Simplon Sénégal',
       date: '28 octobre 2026',
+      // Ordre = grille : grande photo à gauche, attestation (paysage) en haut
+      // à droite, remise et trophée (portrait) en dessous.
       photos: [
         {
-          src: 'images/prix-portrait.webp',
+          src: 'images/prix-portrait.jpg',
           caption: 'Avec le trophée',
-          alt: 'Aïssatou Combe Camara pose avec le trophée du 1er prix du meilleur projet entrepreneurial.',
+          alt: 'Aïssatou Combe Camara, souriante, tient le trophée du 1er prix et son attestation Simplon Sénégal.',
+          width: 810,
+          height: 1080,
         },
         {
-          src: 'images/prix-remise.webp',
-          caption: 'Remise du prix',
-          alt: 'Remise du 1er prix du meilleur projet entrepreneurial à Aïssatou Combe Camara lors du Pitch Day 2026.',
-        },
-        {
-          src: 'images/prix-trophee.webp',
-          caption: 'Le trophée',
-          alt: 'Le trophée du 1er prix du meilleur projet entrepreneurial remporté par AYYOU.',
-        },
-        {
-          src: 'images/prix-attestation.webp',
+          src: 'images/prix-attestation.jpg',
           caption: 'Trophée et attestation',
-          alt: "Le trophée et l'attestation du 1er prix du meilleur projet entrepreneurial, Simplon Sénégal.",
+          alt: "Le trophée en verre du 1er prix posé devant l'attestation de participation au Pitch Day 2026, au nom d'Aïssatou Combe Camara.",
+          width: 1080,
+          height: 810,
+        },
+        {
+          src: 'images/prix-remise.jpg',
+          caption: 'Remise du prix',
+          alt: "Remise du prix sur scène lors du Pitch Day 2026 à la Fabrique 360, devant les kakémonos Simplon Sénégal.",
+          width: 810,
+          height: 1080,
+        },
+        {
+          src: 'images/prix-trophee.jpg',
+          caption: 'Le trophée',
+          alt: 'Trophée en verre « 1er prix — Meilleur projet entrepreneurial », Pitch Day 2026, Simplon Sénégal, 28 octobre 2026.',
+          width: 810,
+          height: 1080,
         },
       ],
     },
