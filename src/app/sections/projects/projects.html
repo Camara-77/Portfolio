@@ -1,0 +1,62 @@
+<section id="projects" class="section projects" aria-labelledby="projects-title">
+  <div class="container">
+    <div class="projects__head">
+      <app-section-title index="03" label="Projets" title="Projets" headingId="projects-title" />
+
+      <div class="projects__filters" role="group" aria-label="Filtrer les projets" appReveal>
+        @for (f of filters; track f) {
+          <button
+            type="button"
+            class="projects__filter"
+            [class.is-active]="active() === f"
+            [attr.aria-pressed]="active() === f"
+            (click)="active.set(f)"
+          >
+            {{ f }}
+            <span class="projects__filter-count">{{ pad(count(f)) }}</span>
+          </button>
+        }
+      </div>
+    </div>
+
+    <p class="sr-only" aria-live="polite">{{ visible().length }} projets affichés</p>
+
+    <ul class="projects__grid" appReveal [revealStagger]="true">
+      @for (project of visible(); track project.name) {
+        <li class="projects__item" animate.enter="is-entering">
+          <div class="projects__tilt" appTilt>
+            <app-glass-card class="project">
+              <div class="project__top">
+                <span class="project__index">{{ number(project.name) }}</span>
+                <app-badge>{{ project.category }}</app-badge>
+              </div>
+
+              <h3 class="project__name h3">
+                <a class="project__link" [href]="project.link.href" target="_blank" rel="noopener">
+                  {{ project.name }}
+                </a>
+              </h3>
+              @if (project.meta) {
+                <p class="project__meta">{{ project.meta }}</p>
+              }
+              <p class="project__desc">{{ project.description }}</p>
+
+              <div class="project__bottom">
+                <ul class="project__stack">
+                  @for (tech of project.stack; track tech) {
+                    <li>{{ tech }}</li>
+                  }
+                </ul>
+                <span class="project__cta" aria-hidden="true">
+                  <app-icon [name]="project.link.label === 'GitHub' ? 'github' : 'external'" />
+                  {{ project.link.label }}
+                  <app-icon name="arrow-up-right" />
+                </span>
+              </div>
+            </app-glass-card>
+          </div>
+        </li>
+      }
+    </ul>
+  </div>
+</section>

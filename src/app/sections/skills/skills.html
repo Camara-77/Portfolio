@@ -1,0 +1,45 @@
+<section id="skills" class="section skills" aria-labelledby="skills-title">
+  <div class="container">
+    <app-section-title index="04" label="Compétences" title="Compétences" headingId="skills-title" />
+
+    <ul class="skills__grid" appReveal [revealStagger]="true">
+      @for (group of groups; track group.title; let i = $index) {
+        <li class="skills__item">
+          <app-glass-card class="skill">
+            <div class="skill__head">
+              <h3 class="skill__title h3">{{ group.title }}</h3>
+              <span class="skill__index">{{ pad(i) }}</span>
+            </div>
+            <ul class="skill__list">
+              @for (item of group.items; track item) {
+                <li><app-badge>{{ item }}</app-badge></li>
+              }
+            </ul>
+          </app-glass-card>
+        </li>
+      }
+    </ul>
+
+    <div class="skills__soft" appReveal>
+      <h3 class="skills__soft-title">{{ soft.title }}</h3>
+      <ul class="skills__soft-list">
+        @for (item of soft.items; track item) {
+          <li>{{ item }}</li>
+        }
+      </ul>
+    </div>
+  </div>
+
+  <!-- Bandeau défilant (décoratif : les technologies sont listées ci-dessus) -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      @for (copy of [0, 1]; track copy) {
+        <ul class="marquee__group">
+          @for (tech of marquee; track tech) {
+            <li class="marquee__item">{{ tech }}</li>
+          }
+        </ul>
+      }
+    </div>
+  </div>
+</section>

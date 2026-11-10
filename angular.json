@@ -97,7 +97,10 @@
               "buildTarget": "portfolio:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "prebundle": false
+          }
         }
       }
     }

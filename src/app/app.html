@@ -8,8 +8,11 @@
   <app-hero />
   <app-about />
   <app-ayyou />
+  <app-projects />
+  <app-skills />
+  <app-timeline />
 
-  <!-- Sections à venir : titres en place, contenu réel aux phases 4 et 5 -->
+  <!-- Section à venir : contenu réel en phase 5 -->
   @for (s of sections; track s.id) {
     <section class="section" [id]="s.id" [attr.aria-labelledby]="s.id + '-title'">
       <div class="container">

@@ -81,6 +81,8 @@ export interface Project {
   description: string;
   stack: string[];
   link: SocialLink;
+  /** Contexte et date, si connus (ex. « Projet perso · Juillet 2026 »). */
+  meta?: string;
 }
 
 export interface SkillGroup {
@@ -109,8 +111,11 @@ export interface Portfolio {
   projectFilters: ('Tous' | ProjectCategory)[];
   projects: Project[];
   skills: SkillGroup[];
+  /** Savoir-être : affiché sous les groupes, hors cartes. */
+  softSkills: SkillGroup;
   marquee: string[];
   timeline: TimelineItem[];
+  contact: { title: string };
   cv: { href: string; fileName: string; todo: boolean };
   footer: string;
 }
@@ -170,9 +175,9 @@ export const PORTFOLIO: Portfolio = {
 
   about: {
     paragraphs: [
-      "Diplômée d'une Licence en Biologie, Chimie et Géosciences (UCAD), Aïssatou s'est reconvertie dans le développement chez Simplon Sénégal.",
-      "Elle construit des applications complètes avec Django, Angular et FastAPI, et y intègre l'IA : transcription vocale, chatbots, RAG, analyse de sentiments.",
-      'Sa formation scientifique lui donne une méthode rigoureuse : analyser, tester, documenter.',
+      "Diplômée d'une Licence en Biologie, Chimie et Géosciences (UCAD), je me suis reconvertie dans le développement chez Simplon Sénégal.",
+      "Je construis des applications complètes avec Django, Angular et FastAPI, et j'y intègre l'IA : transcription vocale, chatbots, RAG, analyse de sentiments.",
+      'Ma formation scientifique me donne une méthode rigoureuse : analyser, tester, documenter.',
     ],
     stats: [
       { value: 10, suffix: '+', label: 'projets réalisés' },
@@ -272,21 +277,11 @@ export const PORTFOLIO: Portfolio = {
       category: 'IA',
       description: "Détecte le sentiment d'un avis et signale les urgences.",
       stack: ['FastAPI', 'Transformers'],
+      meta: 'Projet perso · Juillet 2026',
       link: {
         label: 'GitHub',
         href: 'https://github.com/Camara-77/huggin-face',
         display: 'Camara-77/huggin-face',
-      },
-    },
-    {
-      name: 'JOJ_EVENT',
-      category: 'Full-Stack',
-      description: 'Plateforme spectateurs des JOJ Dakar, équipe de 4.',
-      stack: ['Django', 'Figma', 'Agile'],
-      link: {
-        label: 'Figma',
-        href: 'https://www.figma.com/design/u7zX1iIs5N9tuLfWl2xlXx/JOJ-EVENTS',
-        display: 'JOJ-EVENTS',
       },
     },
     {
@@ -353,18 +348,19 @@ export const PORTFOLIO: Portfolio = {
       items: ['PostgreSQL', 'MySQL', 'SQLite'],
     },
     {
-      title: 'Outils',
+      title: 'Outils & DevOps',
       items: ['Git', 'GitHub', 'Git Flow', 'Docker', 'Nginx', 'Postman', 'pytest'],
     },
     {
       title: 'Conception',
       items: ['UML', 'Figma', 'Cahier des charges', 'Scrum', 'Kanban'],
     },
-    {
-      title: 'Savoir-être',
-      items: ['Autonomie', 'Rigueur', "Esprit d'analyse", 'Travail en équipe'],
-    },
   ],
+
+  softSkills: {
+    title: 'Savoir-être',
+    items: ['Autonomie', 'Rigueur', "Esprit d'analyse", 'Travail en équipe'],
+  },
 
   marquee: [
     'Angular',
@@ -402,6 +398,8 @@ export const PORTFOLIO: Portfolio = {
       place: 'Projet AYYOU',
     },
   ],
+
+  contact: { title: 'Travaillons ensemble' },
 
   // TODO : déposer cv-aissatou-combe-camara.pdf dans public/ puis passer todo à false
   cv: {
