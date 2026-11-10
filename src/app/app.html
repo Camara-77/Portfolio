@@ -1,6 +1,8 @@
 <a class="skip-link" href="#main">Aller au contenu</a>
 
 <app-intro />
+<app-scroll-progress />
+<app-cursor />
 <app-ambient-background />
 <app-navbar />
 
@@ -11,15 +13,7 @@
   <app-projects />
   <app-skills />
   <app-timeline />
-
-  <!-- Section à venir : contenu réel en phase 5 -->
-  @for (s of sections; track s.id) {
-    <section class="section" [id]="s.id" [attr.aria-labelledby]="s.id + '-title'">
-      <div class="container">
-        <app-section-title [index]="s.index" [label]="s.label" [title]="s.label" [headingId]="s.id + '-title'" />
-      </div>
-    </section>
-  }
+  <app-contact />
 </main>
 
 <app-footer />

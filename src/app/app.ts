@@ -11,21 +11,32 @@ import { Ayyou } from './sections/ayyou/ayyou';
 import { Projects } from './sections/projects/projects';
 import { Skills } from './sections/skills/skills';
 import { Timeline } from './sections/timeline/timeline';
-import { SectionTitle } from './shared/section-title/section-title';
+import { Contact } from './sections/contact/contact';
+import { Cursor } from './layout/cursor/cursor';
+import { ScrollProgress } from './layout/scroll-progress/scroll-progress';
 
 @Component({
   selector: 'app-root',
-  imports: [Intro, AmbientBackground, Navbar, Footer, Hero, About, Ayyou, Projects, Skills, Timeline, SectionTitle],
+  imports: [
+    Intro,
+    ScrollProgress,
+    Cursor,
+    AmbientBackground,
+    Navbar,
+    Footer,
+    Hero,
+    About,
+    Ayyou,
+    Projects,
+    Skills,
+    Timeline,
+    Contact,
+  ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App {
-  // Section temporaire (06) : remplacée en phase 5
-  protected readonly sections = PORTFOLIO.nav
-    .map((link, i) => ({ ...link, index: String(i + 1).padStart(2, '0') }))
-    .filter((s) => s.id === 'contact');
-
   constructor() {
     const scroll = inject(ScrollService);
     afterNextRender(() => scroll.observeSections(PORTFOLIO.nav.map((l) => l.id)));

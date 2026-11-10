@@ -1,0 +1,100 @@
+<section id="contact" class="section contact" aria-labelledby="contact-title">
+  <div class="container">
+    <app-section-title index="06" label="Contact" />
+
+    <h2 id="contact-title" class="contact__title display" appTextReveal trigger="scroll" [scramble]="true">
+      {{ title }}
+    </h2>
+
+    <div class="contact__grid">
+      <!-- Email : copie au clic -->
+      <div class="contact__mail" appReveal>
+        <p class="contact__label">Email</p>
+        <button
+          type="button"
+          class="contact__email"
+          (click)="copyEmail()"
+          [attr.aria-label]="'Copier l’adresse ' + id.email"
+        >
+          <span class="contact__email-text">
+            <span class="contact__email-part">{{ emailParts[0] }}</span><wbr /><span class="contact__email-part">{{
+              emailParts[1]
+            }}</span>
+          </span>
+          <span class="contact__email-icon">
+            <app-icon [name]="copyState() === 'copied' ? 'check' : 'copy'" />
+          </span>
+        </button>
+
+        <p class="contact__feedback" role="status" aria-live="polite">
+          @switch (copyState()) {
+            @case ('copied') {
+              <span class="contact__feedback-msg">
+                <app-icon name="check" />
+                Adresse copiée dans le presse-papiers
+              </span>
+            }
+            @case ('error') {
+              <span class="contact__feedback-msg">
+                Copie impossible —
+                <a [href]="'mailto:' + id.email">écrire directement</a>
+              </span>
+            }
+            @default {
+              <span class="contact__hint">Cliquez pour copier l’adresse</span>
+            }
+          }
+        </p>
+
+        <div class="contact__actions">
+          <a appButton [href]="'mailto:' + id.email">
+            <app-icon name="mail" />
+            Écrire un email
+          </a>
+
+          @if (cv.todo) {
+            <button appButton variant="ghost" type="button" disabled aria-disabled="true" class="contact__cv">
+              <app-icon name="download" />
+              Télécharger mon CV
+              <span class="contact__soon">Bientôt disponible</span>
+            </button>
+          } @else {
+            <a appButton variant="ghost" [href]="cv.href" [attr.download]="cv.fileName">
+              <app-icon name="download" />
+              Télécharger mon CV
+            </a>
+          }
+        </div>
+      </div>
+
+      <!-- Coordonnées -->
+      <app-glass-card padding="none" class="contact__card" appReveal [revealDelay]="0.1">
+        <ul class="contact__rows">
+          @for (row of rows; track row.label) {
+            <li>
+              <a
+                class="contact__row"
+                [href]="row.href"
+                [attr.target]="row.external ? '_blank' : null"
+                [attr.rel]="row.external ? 'noopener' : null"
+              >
+                <span class="contact__row-icon"><app-icon [name]="row.icon" /></span>
+                <span class="contact__row-body">
+                  <span class="contact__row-label">{{ row.label }}</span>
+                  <span class="contact__row-value">{{ row.value }}</span>
+                </span>
+                <app-icon class="contact__row-arrow" name="arrow-up-right" />
+              </a>
+            </li>
+          }
+          <li class="contact__row contact__row--static">
+            <span class="contact__row-body">
+              <span class="contact__row-label">Localisation</span>
+              <span class="contact__row-value">{{ id.location }}</span>
+            </span>
+          </li>
+        </ul>
+      </app-glass-card>
+    </div>
+  </div>
+</section>

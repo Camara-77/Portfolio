@@ -227,6 +227,12 @@ button {
   }
 }
 
+// Curseur personnalisé actif (souris uniquement) : on masque le curseur natif
+html.has-custom-cursor,
+html.has-custom-cursor * {
+  cursor: none !important;
+}
+
 // Marqueur visible pour le contenu manquant
 .todo {
   display: inline-block;
