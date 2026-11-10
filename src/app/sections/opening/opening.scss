@@ -21,6 +21,8 @@
   gap: 2.5rem;
 
   @include up($bp-lg) {
+    // Au moins 48 px entre le portrait et le bord droit de l'écran
+    padding-right: max(var(--gutter), 48px);
     grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
     grid-template-areas: 'head visual' 'rest visual';
     grid-template-rows: auto 1fr;
@@ -114,7 +116,6 @@
     grid-row: 1;
     align-self: center;
     width: min(100%, 24rem);
-    // Au moins 48 px entre le portrait et le bord droit de l'écran
-    margin-inline: auto max(0px, calc(3rem - var(--gutter)));
+    margin-inline: auto 0;
   }
 }

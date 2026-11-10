@@ -50,7 +50,7 @@
   // Espacements
   --gutter: clamp(1rem, 4vw, 3rem);
   --container: 1240px;
-  --section-y: clamp(4rem, 9vw, 8rem);
+  --section-y: clamp(2.5rem, 4vw, 3.75rem); // ≤ 60 px : ≤ 120 px entre deux blocs
   --nav-h: 64px;
 
   // Mouvements
@@ -284,17 +284,24 @@ button {
   gap: 1.1rem;
 }
 
-// Mobile : un dessin fixe par chapitre, au-dessus du texte (jamais dessous)
+// Mobile : un seul dessin par chapitre, en fond très pâle derrière le texte
 .chapter__visual {
-  order: -1;
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: -1;
   width: 100%;
-  max-width: 34rem;
-  aspect-ratio: 1 / 0.95;
-  margin-inline: auto;
+  height: min(100%, 100svh);
+  opacity: 0.12 !important;
+  pointer-events: none;
 
   @include up($bp-lg) {
     display: none !important;
   }
+}
+
+.chapter__grid {
+  position: relative;
+  isolation: isolate;
 }
 
 .chapter__motto {

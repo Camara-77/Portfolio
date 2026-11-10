@@ -7,12 +7,13 @@ import { Stage } from './layout/stage/stage';
 import { Opening } from './sections/opening/opening';
 import { ChapterBiology } from './sections/chapters/chapter-biology';
 import { ChapterCode } from './sections/chapters/chapter-code';
-import { ChapterAyyou } from './sections/chapters/chapter-ayyou';
+import { Projects } from './sections/projects/projects';
+import { Toolbox } from './sections/toolbox/toolbox';
 import { Epilogue } from './sections/chapters/epilogue';
 
 @Component({
   selector: 'app-root',
-  imports: [ChapterNav, Stage, Footer, Opening, ChapterBiology, ChapterCode, ChapterAyyou, Epilogue],
+  imports: [ChapterNav, Stage, Footer, Opening, ChapterBiology, ChapterCode, Projects, Toolbox, Epilogue],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

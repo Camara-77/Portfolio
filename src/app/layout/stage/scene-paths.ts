@@ -52,9 +52,9 @@ function contours(cx: number, cy: number, radii: number[], squash: number, seed:
 }
 
 export const BIO_CONTOURS =
-  contours(330, 860, [90, 170, 250, 330, 410], 0.55, 1.2) +
+  contours(360, 790, [70, 140, 210, 280], 0.55, 1.2) +
   ' ' +
-  contours(1470, 150, [70, 140, 210, 280], 0.6, 2.7);
+  contours(1420, 190, [50, 100, 150], 0.6, 2.7);
 
 /** Double hélice d'ADN : deux brins sinusoïdaux (+ barreaux séparés). */
 const DNA = { x: 830, top: 90, bottom: 910, amp: 72, period: 270 };
@@ -107,10 +107,10 @@ export const TUBES = {
 /** Serpent : corps en double trait, tête, langue fourchue. */
 export const SNAKE = {
   body:
-    'M1140 900 C1210 846 1280 958 1352 902 S1492 846 1548 884 ' +
-    'M1146 918 C1216 866 1286 978 1358 920 S1496 866 1550 902',
-  head: 'M1548 884 C1568 872 1592 880 1594 893 C1595 906 1570 912 1550 902',
-  tongue: 'M1594 893 H1610 M1610 893 L1618 887 M1610 893 L1618 899',
+    'M1100 900 C1170 846 1240 958 1312 902 S1452 846 1508 884 ' +
+    'M1106 918 C1176 866 1246 978 1318 920 S1456 866 1510 902',
+  head: 'M1508 884 C1528 872 1552 880 1554 893 C1555 906 1530 912 1510 902',
+  tongue: 'M1554 893 H1570 M1570 893 L1578 887 M1570 893 L1578 899',
 };
 
 // ---------------------------------------------------------------- CODE ET IA

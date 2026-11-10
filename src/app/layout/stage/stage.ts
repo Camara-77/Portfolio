@@ -16,8 +16,22 @@ import { CODE_LINES, DNA_STRANDS, HORIZON, MAP, NET_EDGES, SceneName, VIEWBOX } 
 const SCENE_OF: Record<string, SceneName> = {
   biologie: 'bio',
   code: 'code',
-  ayyou: 'ayyou',
+  projets: 'ayyou',
+  outils: 'horizon',
   contact: 'horizon',
+};
+
+/**
+ * Voile par chapitre : « split » = dessins à ~15 % derrière la colonne de
+ * texte (gauche) et à 100 % à droite ; « full » = ~15 % partout (le contenu
+ * occupe toute la largeur).
+ */
+const FOG_OF: Record<string, 'split' | 'full'> = {
+  biologie: 'split',
+  code: 'split',
+  projets: 'full',
+  outils: 'full',
+  contact: 'split',
 };
 
 /**
@@ -31,9 +45,13 @@ const SCENE_OF: Record<string, SceneName> = {
   selector: 'app-stage',
   imports: [Scene],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { 'aria-hidden': 'true', '[attr.data-static]': 'staticScene()' },
+  host: {
+    'aria-hidden': 'true',
+    '[attr.data-static]': 'staticScene()',
+    '[attr.data-fog]': 'fog()',
+  },
   template: `
-    <div class="stage__veil">
+    <div class="stage__frame">
       @for (s of scenes; track s) {
         <app-scene class="stage__layer" [name]="s" />
       }
@@ -42,6 +60,8 @@ const SCENE_OF: Record<string, SceneName> = {
         <path class="m m2" [attr.d]="net" />
         <path class="m m3" [attr.d]="map" />
       </svg>
+      <div class="stage__fog stage__fog--split"></div>
+      <div class="stage__fog stage__fog--full"></div>
     </div>
   `,
   styleUrl: './stage.scss',
@@ -57,6 +77,7 @@ export class Stage {
 
   /** Décor affiché sans animation (mode « mouvement réduit »). */
   protected readonly staticScene = computed(() => SCENE_OF[this.scroll.activeSection() ?? ''] ?? null);
+  protected readonly fog = computed(() => FOG_OF[this.scroll.activeSection() ?? ''] ?? 'split');
 
   constructor() {
     const host = inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
@@ -149,8 +170,8 @@ export class Stage {
       const [bi0, bi1] = range('biologie', 0.8, 0.3);
       fade(layer('bio'), 0, 1, bi0, bi1 - bi0);
       transition('code', 'bio', 'code', m1, DNA_STRANDS, part('bio', '.s-dna'), CODE_LINES, codeLines);
-      transition('ayyou', 'code', 'ayyou', m2, NET_EDGES, part('code', '.s-net'), MAP, map);
-      transition('contact', 'ayyou', 'horizon', m3, MAP, map, HORIZON, horizon);
+      transition('projets', 'code', 'ayyou', m2, NET_EDGES, part('code', '.s-net'), MAP, map);
+      transition('outils', 'ayyou', 'horizon', m3, MAP, map, HORIZON, horizon);
       tl.set({}, {}, max); // la timeline couvre toute la page
 
       tl.scrollTrigger?.update();

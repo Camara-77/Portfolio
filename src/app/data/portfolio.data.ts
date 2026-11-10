@@ -114,6 +114,35 @@ export interface AyyouChapter extends ChapterBase {
   others: Project[];
 }
 
+export type ProjectArt =
+  | 'ayyou'
+  | 'rag'
+  | 'sentiment'
+  | 'ande'
+  | 'joj-event'
+  | 'joj-news'
+  | 'ecostock'
+  | 'helpdesk';
+
+/** Un cadre du chapitre « Projets ». */
+export interface ProjectFrame {
+  art: ProjectArt;
+  name: string;
+  phrase: string;
+  stack: string[];
+  links: Link[];
+  /** Cadre mis en avant (AYYOU) avec le tampon du prix. */
+  feature?: boolean;
+}
+
+export type ToolIcon = 'wrench' | 'brush' | 'beaker' | 'cylinder' | 'gear';
+
+export interface ToolGroup {
+  icon: ToolIcon;
+  title: string;
+  items: string[];
+}
+
 export interface NavItem {
   id: string;
   index: string;
@@ -128,6 +157,22 @@ export interface Portfolio {
   biology: ChapterBase & { motto: string };
   code: CodeChapter;
   ayyou: AyyouChapter;
+  projects: {
+    id: string;
+    index: string;
+    label: string;
+    title: string;
+    stamp: string;
+    frames: ProjectFrame[];
+  };
+  toolbox: {
+    id: string;
+    index: string;
+    label: string;
+    title: string;
+    groups: ToolGroup[];
+    soft: string[];
+  };
   epilogue: {
     index: string;
     label: string;
@@ -156,7 +201,8 @@ export const PORTFOLIO: Portfolio = {
   nav: [
     { id: 'biologie', index: '01', label: 'Biologie' },
     { id: 'code', index: '02', label: 'Code et IA' },
-    { id: 'ayyou', index: '03', label: 'AYYOU' },
+    { id: 'projets', index: '03', label: 'Projets' },
+    { id: 'outils', index: '04', label: 'Boîte à outils' },
     { id: 'contact', index: '—', label: 'Contact' },
   ],
 
@@ -396,6 +442,105 @@ export const PORTFOLIO: Portfolio = {
         link: GITHUB('Camara-77/gestion_simplon'),
       },
     ],
+  },
+
+  // ------------------------------------------------ Chapitre 3 · Projets
+  projects: {
+    id: 'projets',
+    index: '03',
+    label: 'Projets',
+    title: 'Ce que j’ai construit',
+    stamp: '1er prix · Pitch Day 2026',
+    frames: [
+      {
+        art: 'ayyou',
+        name: 'AYYOU',
+        phrase:
+          'Plateforme de commande et de livraison de repas au Sénégal, née de la gargote de ma mère. Construite seule.',
+        stack: ['Angular', 'Django', 'FastAPI'],
+        links: [
+          { label: 'Site', href: 'https://ayyou.site', display: 'ayyou.site' },
+          GITHUB('Ayyou-all'),
+        ],
+        feature: true,
+      },
+      {
+        art: 'rag',
+        name: 'Assistant RAG',
+        phrase:
+          'Répond en langage naturel aux questions sur un règlement intérieur PDF, avec un index vectoriel FAISS et Llama 3.2 en local.',
+        stack: ['LangChain', 'FAISS', 'Hugging Face', 'Llama 3.2'],
+        links: [GITHUB('Camara-77/mon-rag')],
+      },
+      {
+        art: 'sentiment',
+        name: "API d'analyse de sentiments",
+        phrase:
+          "Détecte le sentiment d'un avis client et signale les cas urgents, avec un modèle Hugging Face multilingue choisi après une comparaison documentée.",
+        stack: ['FastAPI', 'Transformers'],
+        links: [GITHUB('Camara-77/huggin-face')],
+      },
+      {
+        art: 'ande',
+        name: 'Andë Sétal',
+        phrase: 'Responsable IA dans une équipe de 4 ; microservices Django et FastAPI.',
+        stack: ['Django', 'FastAPI', 'JWT', 'Docker'],
+        links: [GITHUB('AndeSetale/ai-ande-settal')],
+      },
+      {
+        art: 'joj-event',
+        name: 'JOJ_EVENT',
+        phrase: 'Plateforme spectateurs des JOJ Dakar, équipe de 4.',
+        stack: ['Django', 'Figma', 'Agile'],
+        links: [
+          {
+            label: 'Figma',
+            href: 'https://www.figma.com/design/u7zX1iIs5N9tuLfWl2xlXx/JOJ-EVENTS',
+            display: 'JOJ-EVENTS',
+          },
+        ],
+      },
+      {
+        art: 'joj-news',
+        name: 'JOJ News',
+        phrase:
+          "Journal des supporters des JOJ Dakar : articles, commentaires sécurisés et e-mail automatique à l'administrateur.",
+        stack: ['Django', 'Bootstrap', 'MySQL'],
+        links: [GITHUB('moussacode/joj_news')],
+      },
+      {
+        art: 'ecostock',
+        name: 'API Eco-Stock',
+        phrase:
+          "API REST de gestion d'entrepôts pour la logistique du don alimentaire, avec transferts bloqués pour les produits périmés et routes sécurisées par JWT.",
+        stack: ['Django REST Framework', 'JWT'],
+        links: [GITHUB('Camara-77/ecostock')],
+      },
+      {
+        art: 'helpdesk',
+        name: 'Helpdesk sécurisé',
+        phrase:
+          "Centralise les demandes de support d'un centre de formation, avec mots de passe hachés (bcrypt) et données isolées par utilisateur.",
+        stack: ['Python', 'MySQL', 'bcrypt'],
+        links: [GITHUB('Camara-77/gestion_simplon')],
+      },
+    ],
+  },
+
+  // ------------------------------------------------ Chapitre 4 · Boîte à outils
+  toolbox: {
+    id: 'outils',
+    index: '04',
+    label: 'Boîte à outils',
+    title: 'Ma boîte à outils',
+    groups: [
+      { icon: 'wrench', title: 'Back-end', items: ['Python', 'Django', 'DRF', 'FastAPI'] },
+      { icon: 'brush', title: 'Front-end', items: ['Angular', 'TypeScript', 'Tailwind'] },
+      { icon: 'beaker', title: 'IA', items: ['LLM', 'RAG', 'LangChain', 'Whisper'] },
+      { icon: 'cylinder', title: 'Données', items: ['PostgreSQL', 'MySQL'] },
+      { icon: 'gear', title: 'Outils', items: ['Git', 'Docker', 'pytest'] },
+    ],
+    soft: ['Autonomie', 'Rigueur', "Esprit d'analyse", 'Travail en équipe'],
   },
 
   // ------------------------------------------------ Épilogue

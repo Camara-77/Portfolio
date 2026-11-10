@@ -22,7 +22,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
         <span class="head__period">{{ period() }}</span>
       }
     </p>
-    <h2 class="head__title" [id]="headingId()">
+    <h2 class="head__title" [class.head__title--compact]="compact()" [id]="headingId()">
       <ng-content />
     </h2>
   `,
@@ -53,6 +53,10 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
       color: var(--text-3);
     }
 
+    .head__title--compact {
+      font-size: clamp(2.5rem, 5vw, 4.5rem) !important;
+    }
+
     .head__title {
       font-family: var(--font-serif);
       font-size: var(--fs-chapter);
@@ -68,4 +72,6 @@ export class ChapterHead {
   readonly label = input.required<string>();
   readonly period = input<string>();
   readonly headingId = input.required<string>();
+  /** Titre plus petit (chapitre épinglé). */
+  readonly compact = input(false);
 }

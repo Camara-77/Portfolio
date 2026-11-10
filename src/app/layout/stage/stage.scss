@@ -11,26 +11,26 @@
   }
 }
 
-// Atténuation derrière la colonne de texte (gauche), pleine intensité à droite
-.stage__veil {
+// Zone de dessin : sous la navigation, avec une marge pour qu'aucun
+// dessin ne soit coupé par le bord de l'écran
+.stage__frame {
   position: absolute;
   inset: var(--nav-h) 0 0 0;
-  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0.22) 0%, rgba(0, 0, 0, 0.3) 40%, #000 62%);
-  mask-image: linear-gradient(to right, rgba(0, 0, 0, 0.22) 0%, rgba(0, 0, 0, 0.3) 40%, #000 62%);
 }
 
 .stage__layer,
 .stage__morph {
   position: absolute;
-  inset: 2vh 2vw 4vh 0;
-  width: auto;
-  height: auto;
+  top: 3vh;
+  right: 3vw;
+  bottom: 4vh;
+  left: 3vw;
 }
 
 .stage__morph {
-  width: calc(100% - 2vw);
-  height: calc(100% - 6vh);
-  overflow: visible;
+  width: calc(100% - 6vw);
+  height: calc(100% - 7vh);
+  overflow: hidden;
 }
 
 .m {
@@ -41,6 +41,32 @@
   stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
   visibility: hidden;
+}
+
+// --- Voile : dessins à ~15 % derrière le texte -----------------------
+.stage__fog {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.stage__fog--split {
+  background: linear-gradient(
+    to right,
+    rgba(233, 232, 229, 0.85) 0%,
+    rgba(233, 232, 229, 0.85) 46%,
+    rgba(233, 232, 229, 0) 58%
+  );
+}
+
+.stage__fog--full {
+  background: rgba(233, 232, 229, 0.85);
+}
+
+:host([data-fog='split']) .stage__fog--split,
+:host([data-fog='full']) .stage__fog--full {
+  opacity: 1;
 }
 
 // Sans animation : le décor du chapitre en cours, sans transition

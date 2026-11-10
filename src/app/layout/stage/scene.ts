@@ -35,7 +35,7 @@ import * as P from './scene-paths';
           <path class="s-line" [attr.d]="p.SNAKE.body" />
           <path class="s-line" [attr.d]="p.SNAKE.head" />
           <path class="s-line s-thin" [attr.d]="p.SNAKE.tongue" />
-          <circle class="s-dot" cx="1574" cy="888" r="2.2" />
+          <circle class="s-dot" cx="1534" cy="888" r="2.2" />
         }
         @case ('code') {
           <path class="s-line" [attr.d]="p.EDITOR.frame" />
@@ -89,7 +89,7 @@ import * as P from './scene-paths';
     .scene {
       width: 100%;
       height: 100%;
-      overflow: visible;
+      overflow: hidden;
     }
 
     path,

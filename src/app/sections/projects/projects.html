@@ -1,0 +1,57 @@
+<section #section [id]="c.id" class="chapter pj" aria-labelledby="projets-title" data-chapter="projets">
+  <div class="container pj__head">
+    <app-chapter-head [index]="c.index" [label]="c.label" headingId="projets-title" [compact]="true">
+      {{ c.title }}
+    </app-chapter-head>
+  </div>
+
+  <div class="pj__viewport">
+    <ol #track class="pj__track">
+      @for (f of c.frames; track f.name; let i = $index) {
+        <li class="pj__slide" [attr.aria-label]="'Projet ' + (i + 1) + ' sur ' + total + ' : ' + f.name">
+          <article class="pj__frame" [class.is-feature]="f.feature">
+            <app-project-art class="pj__art" [name]="f.art" />
+
+            <div class="pj__body">
+              <p class="pj__index">{{ pad(i + 1) }} / {{ pad(total) }}</p>
+              <h3 class="pj__name">{{ f.name }}</h3>
+              <p class="pj__phrase">{{ f.phrase }}</p>
+              <p class="pj__stack">{{ f.stack.join(' · ') }}</p>
+
+              <div class="pj__links">
+                @for (l of f.links; track l.href) {
+                  <a class="pj__link" [href]="l.href" target="_blank" rel="noopener">
+                    <app-icon [name]="l.label === 'GitHub' ? 'github' : 'external'" />
+                    {{ l.display }}
+                    <app-icon name="arrow-up-right" />
+                  </a>
+                }
+              </div>
+
+              @if (f.feature) {
+                <!-- Tampon du prix : ouvre la galerie -->
+                <button
+                  type="button"
+                  class="pj__stamp"
+                  aria-haspopup="dialog"
+                  [attr.aria-label]="award.label + ' — voir les ' + award.photos.length + ' photos'"
+                  (click)="gallery.open()"
+                >
+                  <app-icon name="trophy" />
+                  {{ c.stamp }}
+                </button>
+              }
+            </div>
+          </article>
+        </li>
+      }
+    </ol>
+  </div>
+
+  <div class="container pj__progress" aria-hidden="true">
+    <span class="pj__count" #count>1 / {{ total }}</span>
+    <span class="pj__bar"><span class="pj__bar-fill" #bar></span></span>
+  </div>
+
+  <app-award-gallery #gallery [award]="award" />
+</section>
