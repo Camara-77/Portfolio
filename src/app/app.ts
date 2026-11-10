@@ -1,37 +1,17 @@
 import { ChangeDetectionStrategy, Component, afterNextRender, inject } from '@angular/core';
 import { PORTFOLIO } from './data/portfolio.data';
 import { ScrollService } from './core/services/scroll.service';
-import { AmbientBackground } from './layout/ambient-background/ambient-background';
-import { Intro } from './layout/intro/intro';
-import { Navbar } from './layout/navbar/navbar';
+import { ChapterNav } from './layout/chapter-nav/chapter-nav';
 import { Footer } from './layout/footer/footer';
-import { Hero } from './sections/hero/hero';
-import { About } from './sections/about/about';
-import { Ayyou } from './sections/ayyou/ayyou';
-import { Projects } from './sections/projects/projects';
-import { Skills } from './sections/skills/skills';
-import { Timeline } from './sections/timeline/timeline';
-import { Contact } from './sections/contact/contact';
-import { Cursor } from './layout/cursor/cursor';
-import { ScrollProgress } from './layout/scroll-progress/scroll-progress';
+import { Opening } from './sections/opening/opening';
+import { ChapterBiology } from './sections/chapters/chapter-biology';
+import { ChapterCode } from './sections/chapters/chapter-code';
+import { ChapterAyyou } from './sections/chapters/chapter-ayyou';
+import { Epilogue } from './sections/chapters/epilogue';
 
 @Component({
   selector: 'app-root',
-  imports: [
-    Intro,
-    ScrollProgress,
-    Cursor,
-    AmbientBackground,
-    Navbar,
-    Footer,
-    Hero,
-    About,
-    Ayyou,
-    Projects,
-    Skills,
-    Timeline,
-    Contact,
-  ],
+  imports: [ChapterNav, Footer, Opening, ChapterBiology, ChapterCode, ChapterAyyou, Epilogue],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -39,6 +19,6 @@ import { ScrollProgress } from './layout/scroll-progress/scroll-progress';
 export class App {
   constructor() {
     const scroll = inject(ScrollService);
-    afterNextRender(() => scroll.observeSections(PORTFOLIO.nav.map((l) => l.id)));
+    afterNextRender(() => scroll.observeSections(PORTFOLIO.nav.map((n) => n.id)));
   }
 }

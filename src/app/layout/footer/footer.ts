@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { PORTFOLIO } from '../../data/portfolio.data';
-import { Icon } from '../../shared/icon/icon';
+import { Icon, IconName } from '../../shared/icon/icon';
 
 @Component({
   selector: 'app-footer',
@@ -10,22 +10,17 @@ import { Icon } from '../../shared/icon/icon';
     <footer class="footer">
       <div class="container footer__inner">
         <p class="footer__copy">{{ data.footer }}</p>
-
         <ul class="footer__links">
+          @for (l of links; track l.label) {
+            <li>
+              <a [href]="l.href" target="_blank" rel="noopener">
+                <app-icon [name]="l.icon" />
+                <span>{{ l.label }}</span>
+              </a>
+            </li>
+          }
           <li>
-            <a [href]="data.identity.github.href" target="_blank" rel="noopener">
-              <app-icon name="github" />
-              <span>{{ data.identity.github.label }}</span>
-            </a>
-          </li>
-          <li>
-            <a [href]="data.identity.linkedin.href" target="_blank" rel="noopener">
-              <app-icon name="linkedin" />
-              <span>{{ data.identity.linkedin.label }}</span>
-            </a>
-          </li>
-          <li>
-            <a href="#top" class="footer__top">
+            <a href="#top">
               <span>Haut de page</span>
               <app-icon name="arrow-up" />
             </a>
@@ -39,6 +34,7 @@ import { Icon } from '../../shared/icon/icon';
 
     .footer {
       position: relative;
+      z-index: 1;
       border-top: 1px solid var(--line);
       padding-block: 2rem calc(2rem + env(safe-area-inset-bottom));
     }
@@ -63,7 +59,7 @@ import { Icon } from '../../shared/icon/icon';
     .footer__links {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5rem 1.5rem;
+      gap: 0.25rem 1.5rem;
 
       a {
         @include mono-label(0.6875rem);
@@ -83,4 +79,9 @@ import { Icon } from '../../shared/icon/icon';
 })
 export class Footer {
   protected readonly data = PORTFOLIO;
+  protected readonly links: { label: string; href: string; icon: IconName }[] = [
+    { label: 'LinkedIn', href: PORTFOLIO.identity.linkedin.href, icon: 'linkedin' },
+    { label: 'GitHub', href: PORTFOLIO.identity.github.href, icon: 'github' },
+    { label: 'TikTok', href: PORTFOLIO.identity.tiktok.href, icon: 'tiktok' },
+  ];
 }

@@ -1,16 +1,8 @@
 @use 'tokens' as *;
 
-// Clash Display (Indian Type Foundry, licence gratuite Fontshare) — auto-hébergée
-@font-face {
-  font-family: 'Clash Display';
-  src: url('/fonts/ClashDisplay-Variable.woff2') format('woff2');
-  font-weight: 200 700;
-  font-style: normal;
-  font-display: swap;
-}
-
 // =========================================================
-// Variables globales
+// Variables globales — version « Voyage »
+// Fond noir, trait gris fin, un seul accent orange.
 // =========================================================
 :root {
   color-scheme: dark;
@@ -22,17 +14,16 @@
   --text-2: #9a9a9a;
   --text-3: #5c5c5c;
   --line: rgba(255, 255, 255, 0.08);
-  --accent: #ff6b1a; // UNIQUEMENT pour l'effet photo / point de focus
+  --stroke: #6b6b6b; // trait des dessins
+  --stroke-soft: #3a3a3a;
+  --accent: #ff6a1a; // seul accent
 
-  // Verre
+  // Verre (modale de la galerie)
   --glass-bg: rgba(255, 255, 255, 0.05);
   --glass-border: rgba(255, 255, 255, 0.14);
   --glass-highlight: rgba(255, 255, 255, 0.25);
   --glass-fallback: rgba(28, 28, 28, 0.92);
-  --shadow-glass:
-    0 1px 0 rgba(255, 255, 255, 0.04) inset,
-    0 24px 60px -20px rgba(0, 0, 0, 0.8),
-    0 8px 24px -12px rgba(0, 0, 0, 0.6);
+  --shadow-glass: 0 24px 60px -20px rgba(0, 0, 0, 0.8);
 
   // Rayons
   --radius-sm: 12px;
@@ -41,22 +32,25 @@
   --radius-pill: 999px;
 
   // Polices
-  --font-display: 'Clash Display', system-ui, sans-serif;
+  --font-serif: 'Instrument Serif', 'Times New Roman', serif;
   --font-body: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, monospace;
+  // Compatibilité avec les composants existants
+  --font-display: var(--font-serif);
 
   // Tailles fluides
-  --fs-hero: clamp(3.25rem, 10vw, 11rem);
-  --fs-h2: clamp(2.5rem, 6.5vw, 6rem);
-  --fs-h3: clamp(1.375rem, 2.2vw, 1.875rem);
-  --fs-lead: clamp(1.0625rem, 1.4vw, 1.3125rem);
+  --fs-hero: clamp(3.5rem, 11vw, 10.5rem);
+  --fs-chapter: clamp(3.25rem, 9vw, 8.5rem);
+  --fs-h2: clamp(2.5rem, 6vw, 5rem);
+  --fs-h3: clamp(1.5rem, 2.4vw, 2rem);
+  --fs-lead: clamp(1.0625rem, 1.35vw, 1.25rem);
   --fs-body: clamp(0.9375rem, 1vw, 1.0625rem);
 
   // Espacements
   --gutter: clamp(1rem, 4vw, 3rem);
-  --container: 1320px;
-  --section-y: clamp(4rem, 8vw, 7rem);
-  --nav-h: 72px;
+  --container: 1240px;
+  --section-y: clamp(4rem, 9vw, 8rem);
+  --nav-h: 64px;
 
   // Mouvements
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -86,10 +80,9 @@ body {
   color: var(--text);
   font-family: var(--font-body);
   font-size: var(--fs-body);
-  line-height: 1.6;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
   overflow-x: clip;
 }
 
@@ -133,7 +126,7 @@ button {
 }
 
 ::selection {
-  background: var(--text);
+  background: var(--accent);
   color: var(--bg);
 }
 
@@ -146,32 +139,30 @@ button {
 // =========================================================
 // Typographie
 // =========================================================
-.display {
-  font-family: var(--font-display);
-  font-weight: 600;
-  line-height: 0.92;
-  letter-spacing: -0.035em;
+.serif {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.01em;
 }
 
 .h2 {
-  font-family: var(--font-display);
+  font-family: var(--font-serif);
   font-size: var(--fs-h2);
-  font-weight: 600;
-  line-height: 0.95;
-  letter-spacing: -0.03em;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.015em;
 }
 
 .h3 {
-  font-family: var(--font-display);
+  font-family: var(--font-serif);
   font-size: var(--fs-h3);
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.15;
-  letter-spacing: 0;
 }
 
 .lead {
   font-size: var(--fs-lead);
-  line-height: 1.55;
+  line-height: 1.6;
   color: var(--text-2);
 }
 
@@ -183,6 +174,19 @@ button {
   color: var(--text-2);
 }
 
+// Lien texte sobre, souligné au survol
+.text-link {
+  color: var(--text);
+  text-decoration: underline;
+  text-decoration-color: var(--text-3);
+  text-underline-offset: 0.25em;
+  transition: text-decoration-color 0.3s var(--ease-out);
+
+  @include hover {
+    text-decoration-color: var(--accent);
+  }
+}
+
 // =========================================================
 // Mise en page
 // =========================================================
@@ -191,11 +195,6 @@ button {
   max-width: var(--container);
   margin-inline: auto;
   padding-inline: var(--gutter);
-}
-
-.section {
-  position: relative;
-  padding-block: var(--section-y);
 }
 
 .sr-only {
@@ -227,28 +226,6 @@ button {
   }
 }
 
-// Curseur personnalisé actif (souris uniquement) : on masque le curseur natif
-html.has-custom-cursor,
-html.has-custom-cursor * {
-  cursor: none !important;
-}
-
-// Modale ouverte (<dialog> est au-dessus de tout) : curseur natif de retour
-html.has-custom-cursor:has(dialog[open]) {
-  app-cursor {
-    display: none;
-  }
-
-  dialog[open],
-  dialog[open] * {
-    cursor: auto !important;
-  }
-
-  dialog[open] button {
-    cursor: pointer !important;
-  }
-}
-
 // Marqueur visible pour le contenu manquant
 .todo {
   display: inline-block;
@@ -260,44 +237,54 @@ html.has-custom-cursor:has(dialog[open]) {
 }
 
 @include reduced-motion {
+  html {
+    scroll-behavior: auto;
+  }
+
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
   }
 }
 
 // =========================================================
-// Titres animés (appTextReveal) — éléments créés par SplitText
+// Chapitres — mise en page commune
+// Desktop : le texte occupe la colonne de gauche, la moitié
+// droite est réservée au décor (aucun texte sous les dessins).
 // =========================================================
-.tr .tr-word {
-  white-space: nowrap;
+.chapter {
+  position: relative;
+  z-index: 1;
+  padding-block: var(--section-y);
 }
 
-// Masque de chaque lettre : un peu d'air en haut pour les accents (À, ï…)
-.tr .tr-char-mask {
-  padding-top: 0.12em;
-  margin-top: -0.12em;
-}
+.chapter__grid {
+  display: grid;
+  gap: 2.5rem;
 
-.tr .tr-char {
-  display: inline-block;
-  transform-origin: 50% 100%;
-  transition: transform 0.6s var(--ease-out);
-  will-change: transform;
-}
-
-// Après l'apparition, les masques ne coupent plus l'inclinaison au survol
-.tr.is-revealed .tr-char-mask {
-  overflow: visible !important;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .tr.is-revealed .tr-char:hover {
-    transform: skewX(-12deg) translateY(-4%);
-    transition-duration: 0.25s;
+  @include up($bp-lg) {
+    grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+    gap: 4rem;
   }
+}
+
+.chapter__text {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2rem, 4vw, 3rem);
+  max-width: 36rem;
+}
+
+.chapter__paragraphs {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.chapter__block-title {
+  @include mono-label(0.6875rem);
+  color: var(--text-3);
+  margin-bottom: 1rem;
 }

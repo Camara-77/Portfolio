@@ -1,0 +1,89 @@
+<section [id]="c.id" class="chapter" aria-labelledby="ayyou-title" data-chapter="ayyou">
+  <div class="container chapter__grid">
+    <div class="chapter__text">
+      <app-chapter-head [index]="c.index" [label]="c.label" [period]="c.period" headingId="ayyou-title">
+        {{ c.title }}
+      </app-chapter-head>
+
+      <!-- L'origine -->
+      <div class="ay__origin">
+        @for (p of c.origin; track $index; let first = $first) {
+          <p [class.ay__quote]="first" [class.lead]="!first">{{ p }}</p>
+        }
+      </div>
+
+      <!-- Ce que j'ai construit -->
+      <div>
+        <h3 class="chapter__block-title">{{ c.built }}</h3>
+        <ol class="ay__services">
+          @for (s of c.services; track s.name) {
+            <li class="ay__service">
+              <span class="ay__service-head">
+                <span class="ay__service-name">{{ s.name }}</span>
+                <a class="ay__repo" [href]="s.repo.href" target="_blank" rel="noopener"
+                   [attr.aria-label]="'Dépôt ' + s.repo.display + ' sur GitHub'">
+                  <app-icon name="github" />
+                  {{ s.repo.display.split('/')[1] }}
+                </a>
+              </span>
+              @if (s.role) {
+                <span class="ay__service-role">{{ s.role }}</span>
+              }
+              <span class="ay__service-stack">{{ s.stack.join(' · ') }}</span>
+            </li>
+          }
+        </ol>
+        <ul class="ay__facts">
+          @for (f of c.facts; track f) {
+            <li>{{ f }}</li>
+          }
+        </ul>
+      </div>
+
+      <!-- Validation et prix -->
+      <div>
+        <h3 class="chapter__block-title">Soutenance et prix</h3>
+        <app-milestones [items]="c.milestones" />
+
+        <button
+          type="button"
+          class="ay__award"
+          aria-haspopup="dialog"
+          [attr.aria-label]="c.award.label + ' — voir les ' + c.award.photos.length + ' photos'"
+          (click)="gallery.open()"
+        >
+          <span class="ay__award-icon"><app-icon name="trophy" /></span>
+          <span class="ay__award-text">
+            <strong><app-num-text [text]="c.award.rank" /></strong> — {{ c.award.title }}
+            <span class="ay__award-org">· {{ c.award.organization }}</span>
+          </span>
+          <span class="ay__award-hint" aria-hidden="true">
+            Voir les photos · {{ c.award.photos.length }}
+          </span>
+        </button>
+        <app-award-gallery #gallery [award]="c.award" />
+      </div>
+
+      <div class="ay__links">
+        <p class="ay__status">{{ c.status }}</p>
+        <div class="ay__buttons">
+          <a appButton [href]="site.href" target="_blank" rel="noopener">
+            {{ site.display }}
+            <app-icon name="arrow-up-right" />
+          </a>
+          <a appButton variant="ghost" [href]="org.href" target="_blank" rel="noopener">
+            <app-icon name="github" />
+            {{ org.display }}
+          </a>
+        </div>
+      </div>
+
+      <!-- Autres projets -->
+      <div>
+        <h3 class="chapter__block-title">{{ c.othersTitle }}</h3>
+        <app-project-list [projects]="c.others" [compact]="true" />
+      </div>
+    </div>
+    <div class="chapter__visual" aria-hidden="true"></div>
+  </div>
+</section>

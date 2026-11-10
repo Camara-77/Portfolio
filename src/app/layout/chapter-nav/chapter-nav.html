@@ -1,0 +1,32 @@
+<header class="nav">
+  <div class="nav__inner">
+    <a class="nav__logo" href="#top" aria-label="Retour au début">{{ initials }}</a>
+
+    <nav class="nav__chapters" aria-label="Chapitres">
+      <ol class="nav__list">
+        @for (item of items; track item.id) {
+          <li>
+            <a
+              class="nav__link"
+              [href]="'#' + item.id"
+              [class.is-active]="scroll.activeSection() === item.id"
+              [class.nav__link--word]="item.index === '—'"
+              [attr.aria-current]="scroll.activeSection() === item.id ? 'step' : null"
+            >
+              <span class="nav__index">{{ item.index }}</span>
+              <span class="nav__label">{{ item.label }}</span>
+            </a>
+          </li>
+        }
+      </ol>
+    </nav>
+
+    <!-- Mobile : nom du chapitre en cours -->
+    <p class="nav__current" aria-hidden="true">
+      @if (current(); as c) {
+        <span class="nav__index">{{ c.index }}</span> {{ c.label }}
+      }
+    </p>
+  </div>
+  <span class="nav__progress" aria-hidden="true"><span class="nav__progress-bar" #bar></span></span>
+</header>

@@ -16,7 +16,12 @@ export type IconName =
   | 'github'
   | 'linkedin'
   | 'external'
-  | 'trophy';
+  | 'trophy'
+  | 'tiktok'
+  | 'mic'
+  | 'play'
+  | 'pause'
+  | 'chevron-down';
 
 /** Icônes SVG inline (trait 1.5px, couleur = currentColor). */
 @Component({
@@ -97,6 +102,23 @@ export type IconName =
           <path d="M8 4h8v5a4 4 0 0 1-8 0V4Z" />
           <path d="M8 6H5a1 1 0 0 0-1 1v1a3 3 0 0 0 3 3h1.3M16 6h3a1 1 0 0 1 1 1v1a3 3 0 0 1-3 3h-1.3" />
           <path d="M12 13v3M9 20h6M10 16h4l.5 4h-5l.5-4Z" />
+        }
+        @case ('tiktok') {
+          <path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5" />
+          <path d="M14 3c.4 2.6 2.2 4.4 5 4.6" />
+        }
+        @case ('mic') {
+          <rect x="9" y="3" width="6" height="11" rx="3" />
+          <path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M9 21h6" />
+        }
+        @case ('play') {
+          <path d="M8 5.5v13l10.5-6.5L8 5.5Z" />
+        }
+        @case ('pause') {
+          <path d="M9 5v14M15 5v14" />
+        }
+        @case ('chevron-down') {
+          <path d="m6 9 6 6 6-6" />
         }
         @case ('linkedin') {
           <rect x="3" y="3" width="18" height="18" rx="3" />

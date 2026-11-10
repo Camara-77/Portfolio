@@ -1,0 +1,142 @@
+@use 'tokens' as *;
+
+:host {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  display: block;
+}
+
+.nav {
+  position: relative;
+  background: linear-gradient(to bottom, rgba(10, 10, 10, 0.92), rgba(10, 10, 10, 0));
+  transition: background-color 0.4s var(--ease-out);
+}
+
+:host(.is-scrolled) .nav {
+  background: rgba(10, 10, 10, 0.82);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+.nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: var(--container);
+  height: var(--nav-h);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.nav__logo {
+  font-family: var(--font-serif);
+  font-size: 1.375rem;
+  letter-spacing: 0.02em;
+}
+
+.nav__list {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.nav__link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  min-height: 44px;
+  align-items: center;
+  padding: 0 0.7rem;
+  border-radius: var(--radius-pill);
+  color: var(--text-3);
+  transition: color 0.3s var(--ease-out);
+
+  @include hover {
+    color: var(--text);
+  }
+
+  &.is-active {
+    color: var(--text);
+
+    .nav__index {
+      color: var(--accent);
+    }
+  }
+}
+
+.nav__index {
+  @include mono-label(0.625rem);
+  letter-spacing: 0.08em;
+}
+
+.nav__label {
+  font-size: 0.875rem;
+}
+
+// Mobile : indices seuls + chapitre en cours
+.nav__current {
+  display: none;
+}
+
+@include down($bp-md) {
+  .nav__link:not(.nav__link--word) .nav__label {
+    @include sr-label;
+  }
+
+  .nav__link {
+    padding: 0 0.55rem;
+  }
+
+  // « Contact » reste écrit en toutes lettres
+  .nav__link--word {
+    .nav__index {
+      display: none;
+    }
+    .nav__label {
+      position: static;
+      width: auto;
+      height: auto;
+      margin: 0;
+      clip: auto;
+      overflow: visible;
+    }
+  }
+
+  .nav__chapters {
+    order: 3;
+  }
+
+  .nav__current {
+    display: block;
+    flex: 1;
+    font-size: 0.875rem;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    .nav__index {
+      color: var(--accent);
+      margin-right: 0.25rem;
+    }
+  }
+}
+
+.nav__progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--line);
+}
+
+.nav__progress-bar {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+}

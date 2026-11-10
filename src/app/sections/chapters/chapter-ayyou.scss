@@ -1,0 +1,166 @@
+@use 'tokens' as *;
+
+:host {
+  display: block;
+}
+
+// --- Origine ----------------------------------------------------
+.ay__origin {
+  display: grid;
+  gap: 1rem;
+}
+
+.ay__quote {
+  font-family: var(--font-serif);
+  font-size: clamp(1.75rem, 3.2vw, 2.5rem);
+  font-style: italic;
+  line-height: 1.2;
+  color: var(--text);
+}
+
+// --- Services ---------------------------------------------------
+.ay__service {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding-block: 1.1rem;
+  border-top: 1px solid var(--line);
+
+  &:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+}
+
+.ay__service-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.ay__service-name {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+}
+
+.ay__repo {
+  @include mono-label(0.625rem);
+  --icon-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 32px;
+  color: var(--text-3);
+  transition: color 0.3s var(--ease-out);
+
+  @include hover {
+    color: var(--text);
+  }
+}
+
+.ay__service-role {
+  color: var(--text-2);
+  font-size: 0.9375rem;
+}
+
+.ay__service-stack {
+  @include mono-label(0.5625rem);
+  color: var(--text-3);
+}
+
+.ay__facts {
+  display: grid;
+  gap: 0.4rem;
+  margin-top: 1.25rem;
+
+  li {
+    position: relative;
+    padding-left: 1.1rem;
+    color: var(--text-2);
+    font-size: 0.9375rem;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.7em;
+      width: 6px;
+      height: 1px;
+      background: var(--text-3);
+    }
+  }
+}
+
+// --- Bouton du prix ---------------------------------------------
+.ay__award {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  width: 100%;
+  margin-top: 1.25rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  text-align: left;
+  transition:
+    border-color 0.4s var(--ease-out),
+    background-color 0.4s var(--ease-out);
+
+  @include hover {
+    border-color: rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.03);
+
+    .ay__award-hint {
+      color: var(--text);
+    }
+  }
+}
+
+.ay__award-icon {
+  --icon-size: 1.15rem;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+}
+
+.ay__award-text {
+  flex: 1;
+  min-width: 12rem;
+  font-size: 0.9375rem;
+  line-height: 1.4;
+
+  strong {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    font-weight: 400;
+  }
+}
+
+.ay__award-org {
+  color: var(--text-2);
+}
+
+.ay__award-hint {
+  @include mono-label(0.625rem);
+  color: var(--text-3);
+  transition: color 0.3s var(--ease-out);
+}
+
+// --- Liens ------------------------------------------------------
+.ay__status {
+  @include mono-label(0.6875rem);
+  color: var(--text-2);
+  margin-bottom: 1rem;
+}
+
+.ay__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}

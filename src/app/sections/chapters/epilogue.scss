@@ -1,0 +1,155 @@
+@use 'tokens' as *;
+
+:host {
+  display: block;
+}
+
+.epi {
+  padding-bottom: clamp(5rem, 10vw, 8rem);
+}
+
+.epi__grid {
+  display: grid;
+  gap: 3rem;
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+
+  > * {
+    min-width: 0;
+  }
+
+  @include up($bp-lg) {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 5rem;
+  }
+}
+
+.epi__col {
+  display: flex;
+  flex-direction: column;
+  gap: 2.25rem;
+}
+
+// --- Email ------------------------------------------------------
+.epi__email {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: 100%;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--stroke-soft);
+  text-align: left;
+  transition: border-color 0.4s var(--ease-out);
+
+  @include hover {
+    border-color: var(--accent);
+  }
+}
+
+.epi__email-text {
+  min-width: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  line-height: 1.15;
+}
+
+.epi__nowrap {
+  display: inline-block;
+}
+
+.epi__email-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+}
+
+.epi__feedback {
+  @include mono-label(0.625rem);
+  min-height: 1.5rem;
+  margin-top: 0.75rem;
+  color: var(--text);
+}
+
+.epi__hint {
+  color: var(--text-3);
+}
+
+.epi__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+// --- Coordonnées ------------------------------------------------
+.epi__rows > li {
+  border-top: 1px solid var(--line);
+
+  &:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+}
+
+.epi__row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 72px;
+  padding-block: 1rem;
+  transition: padding-left 0.45s var(--ease-out);
+
+  @include hover {
+    padding-left: 0.5rem;
+
+    .epi__row-arrow {
+      color: var(--accent);
+      transform: translate(3px, -3px);
+    }
+  }
+}
+
+.epi__row--static {
+  padding-block: 1rem;
+}
+
+.epi__row-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+}
+
+.epi__row-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.epi__row-label {
+  @include mono-label(0.5625rem);
+  color: var(--text-3);
+}
+
+.epi__row-value {
+  overflow-wrap: anywhere;
+}
+
+.epi__row-note {
+  font-size: 0.875rem;
+  color: var(--text-2);
+}
+
+.epi__row-arrow {
+  margin-left: auto;
+  flex: none;
+  color: var(--text-3);
+  transition:
+    transform 0.4s var(--ease-out),
+    color 0.4s var(--ease-out);
+}
