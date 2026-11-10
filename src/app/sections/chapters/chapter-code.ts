@@ -1,13 +1,15 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { PORTFOLIO } from '../../data/portfolio.data';
 import { ChapterHead } from './chapter-head';
+import { Scene } from '../../layout/stage/scene';
+import { RevealDirective } from '../../core/directives/reveal.directive';
 import { Milestones } from './milestones';
 import { ProjectList } from './project-list';
 
 /** Chapitre 2 · Code et IA (2024 – 2026). */
 @Component({
   selector: 'app-chapter-code',
-  imports: [ChapterHead, Milestones, ProjectList],
+  imports: [ChapterHead, Milestones, ProjectList, Scene, RevealDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section [id]="c.id" class="chapter" aria-labelledby="code-title" data-chapter="code">
@@ -33,7 +35,7 @@ import { ProjectList } from './project-list';
             <app-project-list [projects]="c.projects" />
           </div>
         </div>
-        <div class="chapter__visual" aria-hidden="true"></div>
+        <app-scene class="chapter__visual" name="code" [crop]="true" appReveal />
       </div>
     </section>
   `,

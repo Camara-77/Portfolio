@@ -1,0 +1,58 @@
+// Décor fixe derrière tout le contenu (desktop uniquement).
+:host {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  display: none;
+  pointer-events: none;
+
+  @media (min-width: 1024px) {
+    display: block;
+  }
+}
+
+// Atténuation derrière la colonne de texte (gauche), pleine intensité à droite
+.stage__veil {
+  position: absolute;
+  inset: var(--nav-h) 0 0 0;
+  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0.22) 0%, rgba(0, 0, 0, 0.3) 40%, #000 62%);
+  mask-image: linear-gradient(to right, rgba(0, 0, 0, 0.22) 0%, rgba(0, 0, 0, 0.3) 40%, #000 62%);
+}
+
+.stage__layer,
+.stage__morph {
+  position: absolute;
+  inset: 2vh 2vw 4vh 0;
+  width: auto;
+  height: auto;
+}
+
+.stage__morph {
+  width: calc(100% - 2vw);
+  height: calc(100% - 6vh);
+  overflow: visible;
+}
+
+.m {
+  fill: none;
+  stroke: var(--stroke);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  visibility: hidden;
+}
+
+// Sans animation : le décor du chapitre en cours, sans transition
+:host(:not(.is-animated)) {
+  .stage__layer {
+    visibility: hidden;
+  }
+}
+
+:host([data-static='bio']:not(.is-animated)) .stage__layer[data-scene='bio'],
+:host([data-static='code']:not(.is-animated)) .stage__layer[data-scene='code'],
+:host([data-static='ayyou']:not(.is-animated)) .stage__layer[data-scene='ayyou'],
+:host([data-static='horizon']:not(.is-animated)) .stage__layer[data-scene='horizon'] {
+  visibility: visible;
+}

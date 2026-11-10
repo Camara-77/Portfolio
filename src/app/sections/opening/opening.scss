@@ -13,15 +13,32 @@
   padding-block: calc(var(--nav-h) + 3.5rem) 3rem;
 }
 
+// Mobile : nom → note vocale et accroche → portrait
+// Desktop : le portrait occupe la colonne droite, centré sur le bloc du nom
 .opening__grid {
   display: grid;
-  gap: 3rem;
-  align-items: center;
+  grid-template-areas: 'head' 'rest' 'visual';
+  gap: 2.5rem;
 
   @include up($bp-lg) {
     grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    gap: 4rem;
+    grid-template-areas: 'head visual' 'rest visual';
+    grid-template-rows: auto 1fr;
+    column-gap: 4rem;
+    row-gap: 0;
   }
+}
+
+.opening__head {
+  grid-area: head;
+
+  @include up($bp-lg) {
+    align-self: end;
+  }
+}
+
+.opening__rest {
+  grid-area: rest;
 }
 
 .opening__place {
@@ -63,7 +80,9 @@
 }
 
 .opening__voice {
-  margin-top: 2rem;
+  @include up($bp-lg) {
+    margin-top: 2rem;
+  }
 }
 
 .opening__tagline {
@@ -87,11 +106,15 @@
 }
 
 .opening__visual {
-  width: min(100%, 24rem);
+  grid-area: visual;
+  width: min(100%, 22rem);
   margin-inline: auto;
 
   @include up($bp-lg) {
-    width: min(100%, 26rem);
-    margin-inline: auto 0;
+    grid-row: 1;
+    align-self: center;
+    width: min(100%, 24rem);
+    // Au moins 48 px entre le portrait et le bord droit de l'écran
+    margin-inline: auto max(0px, calc(3rem - var(--gutter)));
   }
 }

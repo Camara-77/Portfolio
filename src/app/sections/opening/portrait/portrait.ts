@@ -33,8 +33,8 @@ export class Portrait {
 
   protected readonly srcNb = 'images/portrait-nb.webp';
   protected readonly srcOrange = 'images/portrait-orange.webp';
-  protected readonly width = 641;
-  protected readonly height = 801;
+  protected readonly width = 701;
+  protected readonly height = 877;
 
   private readonly stage = viewChild.required<ElementRef<HTMLElement>>('stage');
   private readonly reveal = viewChild.required<ElementRef<HTMLElement>>('reveal');

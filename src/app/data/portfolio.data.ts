@@ -174,7 +174,7 @@ export const PORTFOLIO: Portfolio = {
       src: 'audio/note-intro.mp3',
       label: 'Écouter ma présentation',
       transcript: [
-        "Bonjour, moi c'est Aïssatou Combe Camara. J'ai commencé par la biologie, puis j'ai découvert le code et l'intelligence artificielle. Aujourd'hui, je suis développeuse et créatrice d'AYYOU. Faites défiler, je vous emmène dans mon voyage.",
+        "Il y a quelques années, j’étudiais les cellules, les molécules et les roches de la Terre. Aujourd’hui, j’apprends aux machines à écouter, à transcrire, et je crée des solutions innovantes. Entre les deux, il y a une gargote, une maman, et un projet qui a tout changé. Moi, c’est Aïssatou Combe Camara. Faites défiler, je vous emmène dans mon histoire.",
       ],
     },
   },
@@ -300,28 +300,28 @@ export const PORTFOLIO: Portfolio = {
       // à droite, remise et trophée (portrait) en dessous.
       photos: [
         {
-          src: 'images/prix-portrait.jpg',
+          src: 'images/prix-portrait.webp',
           caption: 'Avec le trophée',
           alt: 'Aïssatou Combe Camara, souriante, tient le trophée du 1er prix et son attestation Simplon Sénégal.',
           width: 810,
           height: 1080,
         },
         {
-          src: 'images/prix-attestation.jpg',
+          src: 'images/prix-attestation.webp',
           caption: 'Trophée et attestation',
           alt: "Le trophée en verre du 1er prix posé devant l'attestation de participation au Pitch Day 2026, au nom d'Aïssatou Combe Camara.",
           width: 1080,
           height: 810,
         },
         {
-          src: 'images/prix-remise.jpg',
+          src: 'images/prix-remise.webp',
           caption: 'Remise du prix',
           alt: 'Remise du prix sur scène lors du Pitch Day 2026 à la Fabrique 360, devant les kakémonos Simplon Sénégal.',
           width: 810,
           height: 1080,
         },
         {
-          src: 'images/prix-trophee.jpg',
+          src: 'images/prix-trophee.webp',
           caption: 'Le trophée',
           alt: 'Trophée en verre « 1er prix — Meilleur projet entrepreneurial », Pitch Day 2026, Simplon Sénégal, 28 octobre 2026.',
           width: 810,
@@ -378,8 +378,12 @@ export const PORTFOLIO: Portfolio = {
     voice: {
       src: 'audio/note-parcours.mp3',
       label: 'Mon parcours, en quelques minutes',
-      // TODO : transcription de note-parcours.mp3 à fournir
-      transcript: [],
+      transcript: [
+        "Bonjour, je suis Aïssatou Combe Camara, développeuse Full-Stack et IA, à Dakar. Pendant longtemps, l’informatique m’a fait peur : elle me semblait inaccessible. Après mon bac S2 en 2021, j’ai fait une licence en Biologie, Chimie et Géosciences à l’UCAD. Mais petit à petit, j’ai compris que l’informatique était partout, que c’était là que le monde changeait.",
+        "En deuxième année, je m’y suis vraiment intéressée, et après ma licence, plutôt que de continuer en master d’environnement, j’ai recommencé une première année en génie logiciel. Puis j’ai réussi le concours de Simplon Sénégal, où je me suis formée au développement web et à l’intelligence artificielle.",
+        "Mon projet de fin de formation, AYYOU, vient de ma mère : elle tient une gargote, et les grandes plateformes de livraison ne sont pas faites pour les petits restaurants. AYYOU leur donne une place, et permet à chacun de commander la cuisine de quartier qu’il aime. Ce projet a été validé en soutenance et a remporté le premier prix du meilleur projet entrepreneurial au Pitch Day de Simplon.",
+        "Ce que j’aime dans ce métier, c’est la découverte, et l’absence de limites. Merci de m’avoir écoutée.",
+      ],
     },
     tiktokLine: "Je partage aussi la tech et l'informatique sur TikTok.",
   },

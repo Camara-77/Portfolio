@@ -45,24 +45,25 @@
   gap: 0.6em;
 }
 
-// Plein : blanc sur noir, devient noir au survol
+// Principal : orange, texte noir (contraste AA) ; devient noir au survol
 :host([data-variant='primary']) {
-  background: var(--text);
-  color: var(--bg);
-  border: 1px solid var(--text);
+  background: var(--accent);
+  color: var(--on-accent);
+  border: 1px solid var(--accent);
 
   &::after {
-    background: var(--bg);
+    background: var(--text);
   }
 
   @include hover {
-    color: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
   }
 }
 
-// Verre
+// Secondaire : trait noir
 :host([data-variant='ghost']) {
-  @include glass(var(--radius-pill));
+  border: 1px solid rgba(26, 26, 26, 0.35);
   color: var(--text);
 
   &::after {

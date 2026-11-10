@@ -9,12 +9,12 @@
 
 .nav {
   position: relative;
-  background: linear-gradient(to bottom, rgba(10, 10, 10, 0.92), rgba(10, 10, 10, 0));
+  background: linear-gradient(to bottom, rgba(233, 232, 229, 0.92), rgba(233, 232, 229, 0));
   transition: background-color 0.4s var(--ease-out);
 }
 
 :host(.is-scrolled) .nav {
-  background: rgba(10, 10, 10, 0.82);
+  background: rgba(233, 232, 229, 0.82);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
 }

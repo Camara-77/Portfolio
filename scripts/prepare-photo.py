@@ -68,7 +68,7 @@ def decontaminate(rgb: np.ndarray, alpha: np.ndarray) -> np.ndarray:
 
 
 # ---------------------------------------------------------------- recadrage
-def crop_box(alpha: Image.Image, ratio: float = 4 / 5) -> tuple[int, int, int, int]:
+def crop_box(alpha: Image.Image, ratio: float = 4 / 5, spread: float = 1.12) -> tuple[int, int, int, int]:
     """Cadre portrait 4:5 : tête en haut avec un peu d'air, centré sur le sujet."""
     a = np.asarray(alpha) > 40
     ys, xs = np.where(a)
@@ -78,7 +78,7 @@ def crop_box(alpha: Image.Image, ratio: float = 4 / 5) -> tuple[int, int, int, i
 
     pad_top = int((bottom - top) * 0.05)
     y0 = max(0, top - pad_top)
-    width = min(w_img, int((right - left) * 1.12))
+    width = min(w_img, int((right - left) * spread))
     height = int(width / ratio)
     if y0 + height > h_img:
         height = h_img - y0
@@ -129,6 +129,7 @@ def save_webp(rgb: np.ndarray, alpha: np.ndarray, path: Path) -> int:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--rotate", type=float, default=0.0, help="angle de redressement (degrés)")
+    ap.add_argument("--spread", type=float, default=1.3, help="largeur du cadre / largeur du sujet")
     ap.add_argument("--fade", type=float, default=0.62, help="début du fondu bas (0-1)")
     ap.add_argument("--width", type=int, default=720, help="largeur de sortie (px)")
     args = ap.parse_args()
@@ -142,7 +143,7 @@ def main() -> None:
 
     print("Détourage…")
     alpha_img = segment(img)
-    box = crop_box(alpha_img)
+    box = crop_box(alpha_img, spread=args.spread)
     img, alpha_img = img.crop(box), alpha_img.crop(box)
 
     if img.width > args.width:

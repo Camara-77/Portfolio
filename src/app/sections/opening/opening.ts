@@ -12,7 +12,7 @@ import { Icon } from '../../shared/icon/icon';
   template: `
     <section id="top" class="opening" aria-labelledby="opening-title">
       <div class="container opening__grid">
-        <div class="opening__text">
+        <div class="opening__head">
           <p class="opening__place">
             <span class="opening__dot" aria-hidden="true"></span>
             {{ id.locationShort }}
@@ -23,7 +23,13 @@ import { Icon } from '../../shared/icon/icon';
             }
           </h1>
           <p class="opening__title">{{ id.title }}</p>
+        </div>
 
+        <div class="opening__visual">
+          <app-portrait [alt]="'Portrait de ' + id.name" />
+        </div>
+
+        <div class="opening__rest">
           <app-voice-mic class="opening__voice" [note]="opening.voice" />
 
           <p class="opening__tagline lead">{{ id.tagline }}</p>
@@ -32,10 +38,6 @@ import { Icon } from '../../shared/icon/icon';
             <span>{{ opening.scrollHint }}</span>
             <app-icon name="arrow-down" />
           </a>
-        </div>
-
-        <div class="opening__visual">
-          <app-portrait [alt]="'Portrait de ' + id.name" />
         </div>
       </div>
     </section>

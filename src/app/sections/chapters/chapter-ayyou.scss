@@ -109,8 +109,8 @@
     background-color 0.4s var(--ease-out);
 
   @include hover {
-    border-color: rgba(255, 255, 255, 0.22);
-    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(26, 26, 26, 0.22);
+    background: rgba(26, 26, 26, 0.03);
 
     .ay__award-hint {
       color: var(--text);
