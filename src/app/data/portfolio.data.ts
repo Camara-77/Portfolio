@@ -81,8 +81,16 @@ export interface ChapterBase {
   label: string;
   period: string;
   title: string;
+  /** Phrase affichée (version courte). */
+  summary: string;
+  /** Textes longs conservés (non affichés). */
   paragraphs: string[];
   milestones: Milestone[];
+}
+
+export interface KeyFigure {
+  value: string;
+  label: string;
 }
 
 export interface CodeChapter extends ChapterBase {
@@ -92,6 +100,9 @@ export interface CodeChapter extends ChapterBase {
 
 export interface AyyouChapter extends ChapterBase {
   origin: string[];
+  /** Ligne d'architecture affichée : Angular → Django → FastAPI (IA). */
+  pipeline: { label: string; repo: Link }[];
+  figures: KeyFigure[];
   built: string;
   services: Service[];
   facts: string[];
@@ -99,6 +110,7 @@ export interface AyyouChapter extends ChapterBase {
   award: Award;
   links: Link[];
   othersTitle: string;
+  othersToggle: string;
   others: Project[];
 }
 
@@ -113,7 +125,7 @@ export interface Portfolio {
   nav: NavItem[];
   identity: Identity;
   opening: { scrollHint: string; voice: VoiceNote };
-  biology: ChapterBase;
+  biology: ChapterBase & { motto: string };
   code: CodeChapter;
   ayyou: AyyouChapter;
   epilogue: {
@@ -186,6 +198,9 @@ export const PORTFOLIO: Portfolio = {
     label: 'Biologie',
     period: '2021 – 2024',
     title: 'Le vivant',
+    summary:
+      'Tout a commencé par le vivant : un bac S2, puis une licence en Biologie, Chimie et Géosciences à l’UCAD.',
+    motto: 'Analyser. Tester. Documenter.',
     paragraphs: [
       "Tout a commencé par la biologie. Après un baccalauréat S2, j'ai suivi une Licence en Biologie, Chimie et Géosciences à l'UCAD.",
       "J'y ai nourri ma curiosité pour le vivant, et une méthode que je garde aujourd'hui : analyser, tester, documenter.",
@@ -203,6 +218,8 @@ export const PORTFOLIO: Portfolio = {
     label: 'Code et IA',
     period: '2024 – 2026',
     title: 'Du vivant au code',
+    summary:
+      'J’ai appris à coder en génie logiciel, puis chez Simplon Sénégal. Aujourd’hui, j’apprends aux machines à écouter.',
     paragraphs: [
       "J'ai découvert la programmation avec une L1 en génie logiciel, puis j'ai rejoint Simplon Sénégal, Promo 9, en développement web, web mobile et IA.",
       "Je construis des applications complètes avec Django, Angular et FastAPI, et j'y intègre l'IA : transcription vocale, chatbots, RAG, analyse de sentiments.",
@@ -253,8 +270,19 @@ export const PORTFOLIO: Portfolio = {
       'Ma mère tient une gargote, exclue des grandes plateformes de livraison.',
       'AYYOU est né de là : une plateforme FoodTech de commande et de livraison de repas au Sénégal.',
     ],
+    summary: 'Alors j’ai construit AYYOU, seule.',
     paragraphs: [],
     built: "Je l'ai construite seule, du front-end au service d'IA.",
+    pipeline: [
+      { label: 'Angular', repo: GITHUB('Ayyou-all/ayyou-frontend') },
+      { label: 'Django', repo: GITHUB('Ayyou-all/ayyou-backend') },
+      { label: 'FastAPI (IA)', repo: GITHUB('Ayyou-all/ayyou-ai') },
+    ],
+    figures: [
+      { value: '156', label: 'tests' },
+      { value: '3', label: 'services' },
+      { value: '1er prix', label: 'Pitch Day 2026' },
+    ],
     services: [
       {
         name: 'Front-end',
@@ -334,6 +362,7 @@ export const PORTFOLIO: Portfolio = {
       { label: 'GitHub', href: 'https://github.com/Ayyou-all', display: 'Ayyou-all' },
     ],
     othersTitle: 'Autres projets',
+    othersToggle: 'Voir mes autres projets',
     others: [
       {
         name: 'JOJ_EVENT',

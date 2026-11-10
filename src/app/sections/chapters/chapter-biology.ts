@@ -18,11 +18,8 @@ import { Milestones } from './milestones';
             {{ c.title }}
           </app-chapter-head>
 
-          <div class="chapter__paragraphs">
-            @for (p of c.paragraphs; track $index) {
-              <p class="lead">{{ p }}</p>
-            }
-          </div>
+          <p class="lead">{{ c.summary }}</p>
+          <p class="chapter__motto">{{ c.motto }}</p>
 
           <div>
             <h3 class="chapter__block-title">Étapes</h3>

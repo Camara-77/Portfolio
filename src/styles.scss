@@ -297,6 +297,14 @@ button {
   }
 }
 
+.chapter__motto {
+  font-family: var(--font-serif);
+  font-size: clamp(2.25rem, 4.6vw, 4rem);
+  font-style: italic;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+
 .chapter__block-title {
   @include mono-label(0.6875rem);
   color: var(--text-3);

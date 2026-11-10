@@ -6,7 +6,6 @@
 
     <div class="epi__grid">
       <div class="epi__col">
-        <p class="lead">{{ e.intro }}</p>
         <app-audio-player [note]="e.voice" />
 
         <!-- Email : copie au clic -->
@@ -26,9 +25,7 @@
               @case ('error') {
                 Copie impossible — <a class="text-link" [href]="'mailto:' + id.email">écrire directement</a>
               }
-              @default {
-                <span class="epi__hint">Cliquez pour copier l’adresse</span>
-              }
+              @default {}
             }
           </p>
         </div>
@@ -62,12 +59,6 @@
             </a>
           </li>
         }
-        <li class="epi__row epi__row--static">
-          <span class="epi__row-body">
-            <span class="epi__row-label">Localisation</span>
-            <span class="epi__row-value">{{ id.location }}</span>
-          </span>
-        </li>
       </ul>
     </div>
   </div>

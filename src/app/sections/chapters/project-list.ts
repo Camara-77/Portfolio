@@ -4,31 +4,37 @@ import { Icon } from '../../shared/icon/icon';
 
 /**
  * Liste sobre de projets : nom, rôle / contexte, description, stack, lien.
- * `compact` : variante plus serrée (autres projets en fin de chapitre 3).
+ * Variantes : full (détaillée), line (une ligne), link (titre + lien).
  */
 @Component({
   selector: 'app-project-list',
   imports: [Icon],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: { '[class.is-compact]': 'compact()' },
+  host: { '[attr.data-variant]': 'variant()' },
   template: `
     <ul class="pl">
       @for (p of projects(); track p.name) {
         <li class="pl__item">
-          <a class="pl__link" [href]="p.link.href" target="_blank" rel="noopener">
+          <a class="pl__link" [href]="p.link.href" target="_blank" rel="noopener"
+             [attr.aria-label]="p.name + ' — ' + p.link.label">
             <span class="pl__head">
               <span class="pl__name">{{ p.name }}</span>
+              @if (variant() === 'line') {
+                <span class="pl__stack pl__stack--inline">{{ p.stack.join(' · ') }}</span>
+              }
               <span class="pl__cta">
                 <app-icon [name]="p.link.label === 'GitHub' ? 'github' : 'external'" />
                 <span class="pl__cta-label">{{ p.link.label }}</span>
                 <app-icon name="arrow-up-right" />
               </span>
             </span>
-            @if (p.role || p.meta) {
-              <span class="pl__meta">{{ p.role ?? p.meta }}</span>
+            @if (variant() === 'full') {
+              @if (p.role || p.meta) {
+                <span class="pl__meta">{{ p.role ?? p.meta }}</span>
+              }
+              <span class="pl__desc">{{ p.description }}</span>
+              <span class="pl__stack">{{ p.stack.join(' · ') }}</span>
             }
-            <span class="pl__desc">{{ p.description }}</span>
-            <span class="pl__stack">{{ p.stack.join(' · ') }}</span>
           </a>
         </li>
       }
@@ -113,12 +119,31 @@ import { Icon } from '../../shared/icon/icon';
       margin-top: 0.2rem;
     }
 
-    :host(.is-compact) {
+    .pl__stack--inline {
+      flex: 1;
+      margin-top: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    :host([data-variant='line']),
+    :host([data-variant='link']) {
       .pl__link {
         padding-block: 1rem;
       }
+      .pl__head {
+        align-items: center;
+      }
       .pl__name {
-        font-size: 1.3125rem;
+        font-size: 1.375rem;
+        white-space: nowrap;
+      }
+    }
+
+    @include down($bp-sm) {
+      .pl__stack--inline {
+        display: none;
       }
     }
 
@@ -131,5 +156,6 @@ import { Icon } from '../../shared/icon/icon';
 })
 export class ProjectList {
   readonly projects = input.required<Project[]>();
-  readonly compact = input(false);
+  /** full : description complète · line : titre + technos + lien · link : titre + lien. */
+  readonly variant = input<'full' | 'line' | 'link'>('full');
 }

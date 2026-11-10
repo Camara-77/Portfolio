@@ -18,149 +18,96 @@
   color: var(--text);
 }
 
-// --- Services ---------------------------------------------------
-.ay__service {
+// --- Architecture en une ligne -----------------------------------
+.ay__pipeline {
+  @include mono-label(0.75rem);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.9rem;
+  color: var(--text);
+}
+
+.ay__step {
+  padding-bottom: 0.15rem;
+  border-bottom: 1px solid var(--stroke-soft);
+  transition: border-color 0.3s var(--ease-out);
+
+  @include hover {
+    border-color: var(--accent);
+  }
+}
+
+.ay__arrow {
+  color: var(--accent);
+}
+
+// --- Trois grands chiffres -----------------------------------------
+.ay__figures {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  justify-content: start;
+  gap: 1.5rem clamp(1.5rem, 4vw, 3rem);
+
+  @include down($bp-sm) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.ay__figure {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
-  padding-block: 1.1rem;
-  border-top: 1px solid var(--line);
-
-  &:last-child {
-    border-bottom: 1px solid var(--line);
-  }
 }
 
-.ay__service-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.ay__service-name {
+.ay__figure-value {
   font-family: var(--font-serif);
-  font-size: 1.5rem;
+  font-size: clamp(2.5rem, 4.4vw, 3.75rem);
+  line-height: 1;
+  white-space: nowrap;
 }
 
-.ay__repo {
+.ay__figure-label {
   @include mono-label(0.625rem);
-  --icon-size: 0.95rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  min-height: 32px;
-  color: var(--text-3);
-  transition: color 0.3s var(--ease-out);
-
-  @include hover {
-    color: var(--text);
-  }
-}
-
-.ay__service-role {
-  color: var(--text-2);
-  font-size: 0.9375rem;
-}
-
-.ay__service-stack {
-  @include mono-label(0.5625rem);
-  color: var(--text-3);
-}
-
-.ay__facts {
-  display: grid;
-  gap: 0.4rem;
-  margin-top: 1.25rem;
-
-  li {
-    position: relative;
-    padding-left: 1.1rem;
-    color: var(--text-2);
-    font-size: 0.9375rem;
-
-    &::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0.7em;
-      width: 6px;
-      height: 1px;
-      background: var(--text-3);
-    }
-  }
-}
-
-// --- Bouton du prix ---------------------------------------------
-.ay__award {
-  position: relative;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.75rem 1rem;
-  width: 100%;
-  margin-top: 1.25rem;
-  padding: 0.9rem 1rem;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-  text-align: left;
-  transition:
-    border-color 0.4s var(--ease-out),
-    background-color 0.4s var(--ease-out);
-
-  @include hover {
-    border-color: rgba(26, 26, 26, 0.22);
-    background: rgba(26, 26, 26, 0.03);
-
-    .ay__award-hint {
-      color: var(--text);
-    }
-  }
-}
-
-.ay__award-icon {
-  --icon-size: 1.15rem;
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 1px solid var(--line);
-}
-
-.ay__award-text {
-  flex: 1;
-  min-width: 12rem;
-  font-size: 0.9375rem;
-  line-height: 1.4;
-
-  strong {
-    font-family: var(--font-serif);
-    font-size: 1.25rem;
-    font-weight: 400;
-  }
-}
-
-.ay__award-org {
   color: var(--text-2);
 }
 
-.ay__award-hint {
-  @include mono-label(0.625rem);
-  color: var(--text-3);
-  transition: color 0.3s var(--ease-out);
-}
-
-// --- Liens ------------------------------------------------------
-.ay__status {
-  @include mono-label(0.6875rem);
-  color: var(--text-2);
-  margin-bottom: 1rem;
-}
-
+// --- Boutons -------------------------------------------------------
 .ay__buttons {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
+}
+
+// --- Autres projets (repliable) -----------------------------------
+.ay__others {
+  summary {
+    @include mono-label(0.6875rem);
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    color: var(--text-2);
+    cursor: pointer;
+    list-style: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+    &::after {
+      content: ' +';
+      white-space: pre;
+    }
+
+    @include hover {
+      color: var(--text);
+    }
+  }
+
+  &[open] summary::after {
+    content: ' −';
+  }
+
+  app-project-list {
+    margin-top: 0.5rem;
+  }
 }

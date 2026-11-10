@@ -2,12 +2,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { PORTFOLIO } from '../../data/portfolio.data';
 import { Portrait } from './portrait/portrait';
 import { VoiceMic } from '../../shared/audio/voice-mic';
-import { Icon } from '../../shared/icon/icon';
 
 /** Ouverture : nom, titre, note vocale de présentation, portrait. */
 @Component({
   selector: 'app-opening',
-  imports: [Portrait, VoiceMic, Icon],
+  imports: [Portrait, VoiceMic],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section id="top" class="opening" aria-labelledby="opening-title">
@@ -31,13 +30,6 @@ import { Icon } from '../../shared/icon/icon';
 
         <div class="opening__rest">
           <app-voice-mic class="opening__voice" [note]="opening.voice" />
-
-          <p class="opening__tagline lead">{{ id.tagline }}</p>
-
-          <a class="opening__hint" href="#biologie">
-            <span>{{ opening.scrollHint }}</span>
-            <app-icon name="arrow-down" />
-          </a>
         </div>
       </div>
     </section>
