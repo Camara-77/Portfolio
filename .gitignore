@@ -48,3 +48,13 @@ scripts/.venv/
 __pycache__/
 scripts/.models/
 scripts/out/
+
+# Cache Angular complet
+/.angular/
+
+# Variables d’environnement et secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
