@@ -128,13 +128,14 @@
   }
 }
 
+// Mobile : 0 = alignées sur la marge du conteneur (≥ 16 px du bord de l'écran)
 .hero__card--1 {
   top: 12%;
-  left: -3%;
+  left: 0;
 }
 .hero__card--2 {
   top: 4%;
-  right: -3%;
+  right: 0;
 
   .hero__card-inner {
     animation-delay: -1.5s;
@@ -143,7 +144,7 @@
 }
 .hero__card--3 {
   bottom: 30%;
-  right: -3%;
+  right: 0;
 
   .hero__card-inner {
     animation-delay: -3s;
@@ -152,7 +153,7 @@
 }
 .hero__card--4 {
   bottom: 12%;
-  left: -3%;
+  left: 0;
 
   .hero__card-inner {
     animation-delay: -4.5s;

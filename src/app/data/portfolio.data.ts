@@ -264,7 +264,8 @@ export const PORTFOLIO: Portfolio = {
     {
       name: 'Assistant RAG',
       category: 'IA',
-      description: 'Questions-réponses sur un PDF.',
+      description:
+        'Répond en langage naturel aux questions sur un règlement intérieur PDF, avec un index vectoriel FAISS et Llama 3.2 en local.',
       stack: ['LangChain', 'FAISS', 'Hugging Face', 'Llama 3.2'],
       link: {
         label: 'GitHub',
@@ -287,7 +288,8 @@ export const PORTFOLIO: Portfolio = {
     {
       name: 'JOJ News',
       category: 'Full-Stack',
-      description: 'Journal des supporters, commentaires sécurisés, notifications email.',
+      description:
+        "Journal des supporters des JOJ Dakar : articles, commentaires sécurisés et e-mail automatique à l'administrateur.",
       stack: ['Django', 'Bootstrap', 'MySQL'],
       link: {
         label: 'GitHub',
@@ -298,7 +300,8 @@ export const PORTFOLIO: Portfolio = {
     {
       name: 'API Eco-Stock',
       category: 'Back-end',
-      description: 'Logistique du don alimentaire.',
+      description:
+        "API REST de gestion d'entrepôts pour la logistique du don alimentaire, avec transferts bloqués pour les produits périmés et routes sécurisées par JWT.",
       stack: ['Django REST Framework', 'JWT'],
       link: {
         label: 'GitHub',
@@ -309,23 +312,13 @@ export const PORTFOLIO: Portfolio = {
     {
       name: 'Helpdesk sécurisé',
       category: 'Back-end',
-      description: 'Support avec mots de passe hachés.',
+      description:
+        "Centralise les demandes de support d'un centre de formation, avec mots de passe hachés (bcrypt) et données isolées par utilisateur.",
       stack: ['Python', 'MySQL', 'bcrypt'],
       link: {
         label: 'GitHub',
         href: 'https://github.com/Camara-77/gestion_simplon',
         display: 'Camara-77/gestion_simplon',
-      },
-    },
-    {
-      name: 'Star Buffet',
-      category: 'Full-Stack',
-      description: 'Gestion de traiteurs.',
-      stack: ['Django'],
-      link: {
-        label: 'GitHub',
-        href: 'https://github.com/Camara-77/djqngob_brief1',
-        display: 'Camara-77/djqngob_brief1',
       },
     },
   ],
@@ -401,11 +394,11 @@ export const PORTFOLIO: Portfolio = {
 
   contact: { title: 'Travaillons ensemble' },
 
-  // TODO : déposer cv-aissatou-combe-camara.pdf dans public/ puis passer todo à false
+  // CV : public/CV-Aissatou-Combe-Camara.pdf
   cv: {
-    href: 'cv-aissatou-combe-camara.pdf',
-    fileName: 'cv-aissatou-combe-camara.pdf',
-    todo: true,
+    href: 'CV-Aissatou-Combe-Camara.pdf',
+    fileName: 'CV-Aissatou-Combe-Camara.pdf',
+    todo: false,
   },
 
   footer: '© 2026 Aïssatou Combe Camara · Conçu et développé avec Angular',
