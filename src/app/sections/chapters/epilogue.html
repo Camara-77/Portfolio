@@ -4,9 +4,20 @@
       {{ e.title }}
     </app-chapter-head>
 
+  </div>
+
+  <app-voice-wave
+    class="epi__voice"
+    variant="outro"
+    [src]="e.voice.src"
+    [label]="e.voice.label"
+    [transcript]="e.voice.transcript"
+    [markers]="e.voice.markers ?? []"
+  />
+
+  <div class="container">
     <div class="epi__grid">
       <div class="epi__col">
-        <app-audio-player [note]="e.voice" />
 
         <!-- Email : copie au clic -->
         <div>

@@ -1,37 +1,36 @@
 <section id="top" class="op" aria-labelledby="opening-title">
   <h1 id="opening-title" class="sr-only">{{ id.name }} — {{ id.title }}</h1>
 
-  <!-- Mesure du mot à 100 px (invisible) pour l'ajuster à la largeur -->
-  <span class="op__measure" #measure aria-hidden="true">{{ word }}</span>
+  <p class="op__kicker" aria-hidden="true">{{ o.kicker }}</p>
 
   <div class="op__stage">
-    <!-- 1. Mot plein, derrière le portrait -->
-    <p class="op__word op__word--fill" aria-hidden="true">
-      @for (l of letters; track $index) {
-        <span class="op__letter">{{ l }}</span>
-      }
-    </p>
+    <!-- z-index 1 : COMBE, derrière le portrait (la tête passe devant) -->
+    <p class="op__line op__line--back" aria-hidden="true">{{ o.lines[0] }}</p>
 
-    <!-- 2. Portrait détouré (effet orange au survol) -->
+    <!-- z-index 2 : portrait détouré, effet orange au survol -->
     <div class="op__portrait">
       <app-portrait [alt]="'Portrait de ' + id.name" />
     </div>
 
-    <!-- 3. Mot en contour seul, devant le portrait -->
-    <p class="op__word op__word--stroke" aria-hidden="true">
-      @for (l of letters; track $index) {
-        <span class="op__letter">{{ l }}</span>
-      }
-    </p>
+    <!-- z-index 3 : CAMARA, devant le portrait (sur le buste), sans bloquer le survol -->
+    <p class="op__line op__line--front" aria-hidden="true">{{ o.lines[1] }}</p>
   </div>
 
-  <!-- Coins -->
-  <p class="op__corner op__corner--tl">{{ id.title }}</p>
-  <a class="op__corner op__corner--tr op__next" href="#biologie" aria-label="Aller au chapitre suivant">
-    <app-icon name="arrow-right" />
-  </a>
-  <p class="op__corner op__corner--bl">{{ id.name }}</p>
-  <p class="op__corner op__corner--br">{{ id.locationShort }}</p>
+  <div class="op__foot">
+    <div class="op__about">
+      <p class="op__title">{{ id.title }}</p>
+      <p class="op__phrase">{{ o.phrase }}</p>
+    </div>
+    <p class="op__dateline">{{ o.dateline }}</p>
+  </div>
+</section>
 
-  <app-voice-mic class="op__voice" [note]="opening.voice" [compact]="true" />
+<!-- Note vocale d'introduction (remplace l'ancien bouton du hero) -->
+<section class="op-voice" [attr.aria-label]="'Note vocale : ' + o.voice.label">
+  <app-voice-wave
+    variant="intro"
+    [src]="o.voice.src"
+    [label]="o.voice.label"
+    [transcript]="o.voice.transcript"
+  />
 </section>

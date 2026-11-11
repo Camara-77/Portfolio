@@ -38,17 +38,30 @@ import * as P from './scene-paths';
           <circle class="s-dot" cx="1534" cy="888" r="2.2" />
         }
         @case ('code') {
+          <!-- Éditeur : vraies lignes de Python -->
           <path class="s-line" [attr.d]="p.EDITOR.frame" />
           @for (x of p.EDITOR.dots; track x) {
-            <circle class="s-line s-thin" [attr.cx]="x" cy="131" r="5" />
+            <circle class="s-line s-thin" [attr.cx]="x" cy="169" r="5" />
           }
-          <g class="s-code"><path class="s-line s-code-lines" [attr.d]="p.CODE_LINES" /></g>
-          <g class="s-net"><path class="s-line s-thin" [attr.d]="p.NET_EDGES" /></g>
-          @for (n of p.NET_NODES; track $index) {
-            <circle [class]="n.out ? 's-accent-fill s-node' : 's-line s-node s-paper'" [attr.cx]="n.cx" [attr.cy]="n.cy" [attr.r]="n.r" />
+          <g class="s-code"><path class="s-soft s-code-lines" [attr.d]="p.CODE_LINES" /></g>
+          @for (line of p.CODE_TEXT; track $index; let i = $index) {
+            <text class="s-type" [attr.x]="p.CODE_X" [attr.y]="p.CODE_Y(i)" [attr.data-text]="line">{{ line }}</text>
           }
-          <path class="s-line s-thin s-wave" [attr.d]="p.VOICE_WAVE" />
-          <path class="s-line s-thin" [attr.d]="p.KEYBOARD" />
+          <!-- Robot (l'IA) qui écoute : onde orange depuis l'antenne -->
+          <path class="s-accent-line s-waves" [attr.d]="p.ROBOT_WAVES" />
+          <path class="s-line" [attr.d]="p.ROBOT.antenna" />
+          <circle class="s-line s-paper" [attr.cx]="p.ROBOT.ball.cx" [attr.cy]="p.ROBOT.ball.cy" [attr.r]="p.ROBOT.ball.r" />
+          <path class="s-line s-paper" [attr.d]="p.ROBOT.head" />
+          <path class="s-line" [attr.d]="p.ROBOT.ears" />
+          @for (e of p.ROBOT.eyes; track $index) {
+            <circle class="s-line" [attr.cx]="e.cx" [attr.cy]="e.cy" [attr.r]="e.r" />
+          }
+          <path class="s-line" [attr.d]="p.ROBOT.smile" />
+          <path class="s-line" [attr.d]="p.ROBOT.neck" />
+          <path class="s-line s-paper" [attr.d]="p.ROBOT.body" />
+          <path class="s-line s-thin" [attr.d]="p.ROBOT.panel" />
+          <path class="s-line" [attr.d]="p.ROBOT.arms" />
+          <path class="s-line" [attr.d]="p.ROBOT.legs" />
         }
         @case ('ayyou') {
           <g class="s-map"><path class="s-line" [attr.d]="p.MAP" /></g>
@@ -136,6 +149,13 @@ import * as P from './scene-paths';
     .s-accent-line {
       stroke: var(--accent);
       stroke-width: 1.5;
+    }
+
+    .s-type {
+      font-family: var(--font-mono);
+      font-size: 17px;
+      fill: var(--text);
+      white-space: pre;
     }
 
     .s-route {

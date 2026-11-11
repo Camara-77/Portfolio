@@ -25,12 +25,20 @@ export interface Identity {
   tagline: string;
 }
 
+/** Repère cliquable sur la barre de progression d'une note vocale. */
+export interface VoiceMarker {
+  /** Position en secondes ; null = pas encore connue (le repère ne s'affiche pas). */
+  time: number | null;
+  label: string;
+}
+
 /** Note vocale : le lecteur est désactivé (« bientôt ») si le fichier est absent. */
 export interface VoiceNote {
   src: string;
   label: string;
   /** Paragraphes de la transcription ; vide = transcription à venir. */
   transcript: string[];
+  markers?: VoiceMarker[];
 }
 
 export interface Milestone {
@@ -153,7 +161,16 @@ export interface Portfolio {
   seo: { title: string; description: string };
   nav: NavItem[];
   identity: Identity;
-  opening: { word: string; scrollHint: string; voice: VoiceNote };
+  opening: {
+    word: string;
+    /** Couverture : prénom en petit, nom sur deux lignes. */
+    kicker: string;
+    lines: [string, string];
+    phrase: string;
+    dateline: string;
+    scrollHint: string;
+    voice: VoiceNote;
+  };
   biology: ChapterBase & { motto: string };
   code: CodeChapter;
   ayyou: AyyouChapter;
@@ -228,10 +245,14 @@ export const PORTFOLIO: Portfolio = {
 
   opening: {
     word: 'AÏSSATOU',
+    kicker: 'AÏSSATOU',
+    lines: ['COMBE', 'CAMARA'],
+    phrase: 'J’apprends aux machines à écouter, et je crée des solutions utiles.',
+    dateline: 'Dakar, 2026',
     scrollHint: 'Faites défiler : trois chapitres',
     voice: {
       src: 'audio/note-intro.mp3',
-      label: 'Écouter ma présentation',
+      label: 'Écouter mon histoire',
       transcript: [
         "Il y a quelques années, j’étudiais les cellules, les molécules et les roches de la Terre. Aujourd’hui, j’apprends aux machines à écouter, à transcrire, et je crée des solutions innovantes. Entre les deux, il y a une gargote, une maman, et un projet qui a tout changé. Moi, c’est Aïssatou Combe Camara. Faites défiler, je vous emmène dans mon histoire.",
       ],
@@ -552,7 +573,15 @@ export const PORTFOLIO: Portfolio = {
     intro: "Le voyage continue. Écoutez la suite de mon parcours, ou écrivez-moi.",
     voice: {
       src: 'audio/note-parcours.mp3',
-      label: 'Mon parcours, en quelques minutes',
+      label: 'Mon parcours, en 1 min 30',
+      markers: [
+        // À REMPLIR après l'enregistrement (temps en secondes)
+        { time: null, label: 'Biologie' },
+        { time: null, label: 'Code' },
+        { time: null, label: 'Simplon' },
+        { time: null, label: 'AYYOU' },
+        { time: null, label: '1er prix' },
+      ],
       transcript: [
         "Bonjour, je suis Aïssatou Combe Camara, développeuse Full-Stack et IA, à Dakar. Pendant longtemps, l’informatique m’a fait peur : elle me semblait inaccessible. Après mon bac S2 en 2021, j’ai fait une licence en Biologie, Chimie et Géosciences à l’UCAD. Mais petit à petit, j’ai compris que l’informatique était partout, que c’était là que le monde changeait.",
         "En deuxième année, je m’y suis vraiment intéressée, et après ma licence, plutôt que de continuer en master d’environnement, j’ai recommencé une première année en génie logiciel. Puis j’ai réussi le concours de Simplon Sénégal, où je me suis formée au développement web et à l’intelligence artificielle.",

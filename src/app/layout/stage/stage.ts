@@ -11,7 +11,7 @@ import {
 import { gsap } from '../../core/gsap';
 import { ScrollService } from '../../core/services/scroll.service';
 import { Scene } from './scene';
-import { CODE_LINES, DNA_STRANDS, MAP, NET_EDGES, SceneName, VIEWBOX } from './scene-paths';
+import { CODE_LINES, CODE_TEXT, DNA_STRANDS, MAP, NET_EDGES, SceneName, VIEWBOX } from './scene-paths';
 
 const SCENE_OF: Record<string, SceneName> = {
   biologie: 'bio',
@@ -164,9 +164,35 @@ export class Stage {
       const codeLines = part('code', '.s-code');
       gsap.set(codeLines, { autoAlpha: 0 });
 
-      const [bi0, bi1] = range('biologie', 0.8, 0.3);
+      const [bi0, bi1] = range('biologie', 0.55, 0.15);
       fade(layer('bio'), 0, 1, bi0, bi1 - bi0);
       transition('code', 'bio', 'code', m1, DNA_STRANDS, part('bio', '.s-dna'), CODE_LINES, codeLines);
+
+      // Les lignes de Python s'écrivent au défilement (machine à écrire)
+      const typed = Array.from(layer('code').querySelectorAll<SVGTextElement>('.s-type'));
+      const totalChars = CODE_TEXT.reduce((n, l) => n + l.length, 0);
+      const type = (count: number) => {
+        let left = Math.round(count);
+        typed.forEach((el, i) => {
+          const line = CODE_TEXT[i];
+          const shown = Math.max(0, Math.min(line.length, left));
+          const typing = shown > 0 && shown < line.length;
+          el.textContent = line.slice(0, shown) + (typing ? '▌' : '');
+          left -= line.length;
+        });
+      };
+      type(0);
+      const [ty0] = range('code', 0.22, 0.22);
+      const [, pjIn] = range('projets', 0.35, 0.35);
+      const ty1 = Math.max(ty0 + vh * 0.7, pjIn);
+      const typer = { n: 0 };
+      fade(codeLines, 1, 0, ty0, (ty1 - ty0) * 0.15);
+      tl.fromTo(
+        typer,
+        { n: 0 },
+        { n: totalChars, duration: Math.max(1, ty1 - ty0), ease: 'none', onUpdate: () => type(typer.n) },
+        ty0,
+      );
 
       // Projets : aucun décor derrière les cadres
       const [pj0, pj1] = range('projets', 0.6, 0.1);

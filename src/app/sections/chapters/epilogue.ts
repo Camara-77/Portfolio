@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { PORTFOLIO } from '../../data/portfolio.data';
 import { ChapterHead } from './chapter-head';
-import { AudioPlayer } from '../../shared/audio/audio-player';
+import { VoiceWave } from '../../shared/voice-wave/voice-wave';
 import { Button } from '../../shared/button/button';
 import { Icon, IconName } from '../../shared/icon/icon';
 import { NumText } from '../../shared/num-text/num-text';
@@ -18,7 +18,7 @@ interface ContactRow {
 /** Épilogue · Contact : note vocale du parcours, CV, coordonnées. */
 @Component({
   selector: 'app-epilogue',
-  imports: [ChapterHead, AudioPlayer, Button, Icon, NumText],
+  imports: [ChapterHead, VoiceWave, Button, Icon, NumText],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './epilogue.html',
   styleUrl: './epilogue.scss',

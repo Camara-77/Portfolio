@@ -11,7 +11,7 @@ export type SceneName = 'bio' | 'code' | 'ayyou' | 'horizon';
 /** Cadrage serré de chaque dessin (mobile : un dessin par chapitre). */
 export const CROP: Record<SceneName, string> = {
   bio: '690 70 945 860',
-  code: '700 90 880 840',
+  code: '680 140 900 500',
   ayyou: '690 90 925 820',
   horizon: '0 860 1600 140',
 };
@@ -117,20 +117,57 @@ export const SNAKE = {
 
 /** Fenêtre d'éditeur. */
 export const EDITOR = {
-  frame: 'M736 112 H1182 Q1196 112 1196 126 V548 Q1196 562 1182 562 H736 Q722 562 722 548 V126 Q722 112 736 112 Z M722 150 H1196',
-  dots: [748, 770, 792],
+  frame:
+    'M716 150 H1256 Q1272 150 1272 166 V456 Q1272 472 1256 472 H716 Q700 472 700 456 V166 Q700 150 716 150 Z M700 188 H1272',
+  dots: [722, 744, 766],
 };
 
-/** Lignes de code (cible du morphing de l'ADN). */
-export const CODE_LINES = (() => {
-  const lens = [230, 170, 270, 190, 120, 250, 210, 96, 240, 150, 196, 116, 180];
-  const ind = [0, 1, 1, 2, 2, 1, 0, 1, 2, 2, 1, 0, 0];
-  return lens
-    .map((len, i) => {
-      const x = 768 + ind[i] * 34;
-      const y = 186 + i * 28;
-      return `M${x} ${y} H${x + len}`;
-    })
+/** Vraies lignes de Python, écrites au défilement (effet machine à écrire). */
+export const CODE_TEXT = [
+  'import whisper',
+  'model = whisper.load_model("small")',
+  'text = model.transcribe("note.mp3")["text"]',
+  'reply = chatbot.ask(text)',
+  'print(reply)',
+];
+export const CODE_FONT = 17; // unités du repère
+export const CODE_X = 726;
+export const CODE_Y = (i: number) => 236 + i * 46;
+const CHAR_W = CODE_FONT * 0.6; // JetBrains Mono : chasse fixe
+
+/** Traits à l'emplacement des lignes de code (cible du morphing de l'ADN). */
+export const CODE_LINES = CODE_TEXT.map(
+  (t, i) => `M${CODE_X} ${CODE_Y(i) - 6} H${Math.round(CODE_X + t.length * CHAR_W)}`,
+).join(' ');
+
+/** Petit robot sympathique (l'IA) qui « écoute ». */
+export const ROBOT = {
+  antenna: 'M1435 300 V264',
+  ball: { cx: 1435, cy: 255, r: 9 },
+  head: 'M1393 300 H1477 Q1495 300 1495 318 V372 Q1495 390 1477 390 H1393 Q1375 390 1375 372 V318 Q1375 300 1393 300 Z',
+  ears: 'M1375 332 H1365 V358 H1375 M1495 332 H1505 V358 H1495',
+  eyes: [
+    { cx: 1412, cy: 340, r: 8 },
+    { cx: 1458, cy: 340, r: 8 },
+  ],
+  smile: 'M1418 364 Q1435 377 1452 364',
+  neck: 'M1424 390 V404 M1446 390 V404',
+  body: 'M1381 404 H1489 Q1505 404 1505 420 V524 Q1505 540 1489 540 H1381 Q1365 540 1365 524 V420 Q1365 404 1381 404 Z',
+  panel: 'M1435 449 A16 16 0 1 1 1434.9 449 M1395 506 H1475 M1395 520 H1450',
+  arms: 'M1365 432 Q1336 470 1346 522 M1505 432 Q1536 438 1548 402 M1542 396 L1548 402 L1556 398',
+  legs: 'M1405 540 V598 M1465 540 V598 M1390 598 H1420 M1450 598 H1480',
+};
+
+/** Onde sonore orange qui part de l'antenne (le robot écoute). */
+export const ROBOT_WAVES = (() => {
+  const { cx, cy } = ROBOT.ball;
+  const arc = (r: number, a0: number, a1: number) => {
+    const p = (a: number) => `${(cx + r * Math.cos(a)).toFixed(1)} ${(cy + r * Math.sin(a)).toFixed(1)}`;
+    return `M${p(a0)} A${r} ${r} 0 0 1 ${p(a1)}`;
+  };
+  const d = (deg: number) => (deg * Math.PI) / 180;
+  return [20, 32, 44]
+    .map((r) => `${arc(r, d(-45), d(45))} ${arc(r, d(135), d(225))}`)
     .join(' ');
 })();
 

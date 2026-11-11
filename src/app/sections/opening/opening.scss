@@ -1,132 +1,89 @@
 @use 'tokens' as *;
 
 :host {
-  --word-size: 24vw;
   display: block;
 }
 
+// Taille des deux grands mots : ≤ 80 % de la largeur
 .op {
+  --S: clamp(80px, 14vw, 200px);
   position: relative;
   z-index: 1;
   overflow: hidden;
 }
 
-.op__measure {
-  position: absolute;
-  visibility: hidden;
-  white-space: nowrap;
-  font-family: 'Anton', Impact, sans-serif;
-  font-size: 100px;
-  line-height: 1;
-  letter-spacing: 0;
-}
-
-.op__stage {
-  position: relative;
-  padding-inline: var(--gutter);
-}
-
-// --- Le mot (police condensée réservée au hero) ------------------------------
-.op__word {
-  display: flex;
-  justify-content: center;
+// AÏSSATOU, en petit, centré en haut
+.op__kicker {
   margin: 0;
   font-family: 'Anton', Impact, sans-serif;
-  font-size: var(--word-size);
+  font-size: 19px;
+  letter-spacing: 0.32em;
+  text-align: center;
+  color: var(--text);
+}
+
+// COMBE / CAMARA
+.op__line {
+  position: absolute;
+  left: 50%;
+  margin: 0;
+  font-family: 'Anton', Impact, sans-serif;
+  font-size: var(--S);
   line-height: 0.86;
-  letter-spacing: 0;
+  letter-spacing: 0.005em;
   white-space: nowrap;
+  color: var(--text);
+  transform: translateX(-50%);
   user-select: none;
 }
 
-.op__letter {
-  display: inline-block;
+.op__line--back {
+  z-index: 1;
 }
 
-.op__word--fill {
-  color: var(--text);
-}
-
-.op__word--stroke {
-  color: transparent;
-  -webkit-text-stroke: 1.5px var(--text);
-  pointer-events: none;
-}
-
-// --- Portrait -----------------------------------------------------------------
 .op__portrait {
   position: relative;
   z-index: 2;
-  width: min(78vw, 24rem);
-  margin: 1.25rem auto 0;
 }
 
-// --- Coins et note vocale ----------------------------------------------------
-.op__corner {
-  margin: 0;
-  font-family: var(--font-body);
+.op__line--front {
+  z-index: 3;
+  pointer-events: none; // le survol orange reste actif sur toute la photo
+}
+
+// Section voix, pleine largeur, juste sous le hero
+.op-voice {
+  position: relative;
+  z-index: 1;
+  padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+// Bas de page
+.op__title {
+  margin: 0 0 0.4rem;
   font-size: 14px;
-  line-height: 1.4;
   color: var(--text);
 }
 
-.op__next {
-  --icon-size: 1.5rem;
-  display: inline-grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  transition:
-    transform 0.4s var(--ease-out),
-    color 0.3s var(--ease-out);
+.op__phrase {
+  max-width: 34ch;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.5;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
 
-  @include hover {
-    color: var(--accent);
-    transform: translateX(4px);
-  }
+.op__dateline {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text);
 }
 
 // =============================================================================
-// Mobile : mot plein en haut, portrait dessous, textes empilés en dessous
-// =============================================================================
-@include down($bp-lg) {
-  .op {
-    display: flex;
-    flex-direction: column;
-    padding: calc(var(--nav-h) + 1.5rem) 0 2.5rem;
-  }
-
-  .op__word--stroke {
-    display: none;
-  }
-
-  // Place pour le tréma du « Ï » sous la navigation
-  .op__word--fill {
-    padding-top: 0.14em;
-  }
-
-  .op__corner,
-  .op__voice {
-    margin-inline: var(--gutter);
-  }
-
-  .op__corner--tl {
-    margin-top: 1.5rem;
-    font-size: 1rem;
-  }
-  .op__corner--br {
-    color: var(--text-2);
-  }
-  .op__voice {
-    margin-top: 1.25rem;
-  }
-  .op__corner--tr {
-    display: none;
-  }
-}
-
-// =============================================================================
-// Desktop : couverture de magazine
+// Desktop
 // =============================================================================
 @include up($bp-lg) {
   .op {
@@ -134,37 +91,34 @@
     min-height: 640px;
   }
 
+  .op__kicker {
+    position: absolute;
+    top: calc(var(--nav-h) + 1.25rem);
+    left: 0;
+    right: 0;
+    z-index: 4;
+  }
+
   .op__stage {
     position: absolute;
     inset: 0;
   }
 
-  // Les deux calques du mot, exactement superposés, centrés verticalement
-  .op__word {
-    position: absolute;
-    left: var(--gutter);
-    right: var(--gutter);
-    top: 50%;
-    transform: translateY(-50%);
+  // Le portrait occupe ~86 % de la hauteur ; le menton est vers 37 % de l'écran.
+  // COMBE se termine au menton (la tête passe devant), CAMARA commence dessous.
+  .op__line--back {
+    top: calc(37svh - var(--S) * 0.86);
+  }
+  .op__line--front {
+    top: 37svh;
   }
 
-  .op__word--fill {
-    z-index: 1;
-  }
-
-  .op__word--stroke {
-    z-index: 3;
-  }
-
-  // Portrait centré, en bas, ~85 % de la hauteur de l'écran
   .op__portrait {
     position: absolute;
     left: 50%;
     bottom: 0;
-    width: auto;
-    height: 85svh;
+    height: 86svh;
     aspect-ratio: 701 / 877;
-    margin: 0;
     transform: translateX(-50%);
   }
 
@@ -172,31 +126,46 @@
     height: 100%;
   }
 
-  .op__corner,
-  .op__voice {
+  .op__foot {
     position: absolute;
+    left: var(--gutter);
+    right: var(--gutter);
+    bottom: 1.75rem;
     z-index: 4;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+    pointer-events: none;
+  }
+}
+
+// =============================================================================
+// Mobile : même superposition, mots en vw ; textes empilés sous le portrait
+// =============================================================================
+@include down($bp-lg) {
+  .op {
+    --S: 24vw;
+    padding: calc(var(--nav-h) + 1.25rem) 0 2rem;
   }
 
-  .op__corner--tl {
-    top: calc(var(--nav-h) + 1.25rem);
-    left: var(--gutter);
+  .op__stage {
+    position: relative;
+    width: 84vw;
+    margin: 0.75rem auto 0;
   }
-  .op__corner--tr {
-    top: calc(var(--nav-h) + 0.5rem);
-    right: var(--gutter);
+
+  // Menton à ~28 % de la hauteur du portrait (84vw × 877/701 ≈ 105vw)
+  .op__line--back {
+    top: calc(29vw - var(--S) * 0.86);
   }
-  .op__corner--bl {
-    bottom: 1.75rem;
-    left: var(--gutter);
+  .op__line--front {
+    top: 29vw;
   }
-  .op__corner--br {
-    bottom: 1.75rem;
-    right: var(--gutter);
-  }
-  .op__voice {
-    bottom: 1.1rem;
-    left: 50%;
-    transform: translateX(-50%);
+
+  .op__foot {
+    display: grid;
+    gap: 0.75rem;
+    margin: 1.25rem var(--gutter) 0;
   }
 }

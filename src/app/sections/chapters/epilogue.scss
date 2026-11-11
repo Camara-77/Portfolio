@@ -8,10 +8,14 @@
   padding-bottom: clamp(5rem, 10vw, 8rem);
 }
 
+.epi__voice {
+  margin-top: clamp(1rem, 2vw, 1.5rem);
+}
+
 .epi__grid {
   display: grid;
   gap: 3rem;
-  margin-top: clamp(2.5rem, 5vw, 4rem);
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
 
   > * {
     min-width: 0;
