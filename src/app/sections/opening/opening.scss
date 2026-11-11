@@ -4,99 +4,129 @@
   display: block;
 }
 
-// Taille des deux grands mots : ≤ 80 % de la largeur
+// COMBE est la référence ; AÏSSATOU = 88 %, CAMARA = 108 %
 .op {
-  --S: clamp(80px, 14vw, 200px);
+  --S: clamp(72px, 11vw, 170px);
+  // Décalage vers le bas du nom et du portrait (espace net sous la navigation)
+  --drop: 40px;
+  // Centre vertical du visage (le portrait occupe 86 % de la hauteur, visage à ~21 %)
+  --face: calc(14svh + 86svh * 0.21 + var(--drop));
   position: relative;
   z-index: 1;
   overflow: hidden;
 }
 
-// AÏSSATOU, en petit, centré en haut
-.op__kicker {
-  margin: 0;
-  font-family: 'Anton', Impact, sans-serif;
-  font-size: 19px;
-  letter-spacing: 0.32em;
-  text-align: center;
-  color: var(--text);
-}
-
-// COMBE / CAMARA
-.op__line {
+// --- Les mots (Big Shoulders Display 800, réservée au hero) -------------------
+.op__words {
   position: absolute;
-  left: 50%;
+  inset: 0;
+  z-index: 1; // derrière le portrait
   margin: 0;
-  font-family: 'Anton', Impact, sans-serif;
-  font-size: var(--S);
-  line-height: 0.86;
-  letter-spacing: 0.005em;
-  white-space: nowrap;
+  font-family: var(--font-hero);
+  font-weight: 800;
+  line-height: 0.82;
+  letter-spacing: 0;
   color: var(--text);
-  transform: translateX(-50%);
+  pointer-events: none;
   user-select: none;
 }
 
-.op__line--back {
-  z-index: 1;
+// Centrage sans transform (l'animation d'arrivée anime le transform)
+.op__line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  white-space: nowrap;
+  text-align: center;
 }
 
+// COMBE centré sur le visage ; AÏSSATOU juste au-dessus, CAMARA juste en dessous
+.op__line--mid {
+  top: calc(var(--face) - var(--S) * 0.41);
+  font-size: var(--S);
+}
+
+.op__line--first {
+  top: calc(var(--face) - var(--S) * 0.41 - var(--S) * 0.88 * 0.82);
+  font-size: calc(var(--S) * 0.88);
+}
+
+.op__line--last {
+  top: calc(var(--face) - var(--S) * 0.41 + var(--S) * 0.82);
+  font-size: calc(var(--S) * 1.08);
+}
+
+// CAMARA élargi d'environ 10 % : le M et le R dépassent des épaules
+.op__wide {
+  display: inline-block;
+  max-width: 90vw;
+  transform: scaleX(1.1);
+  transform-origin: center;
+}
+
+// Tréma orange sur le I : deux ronds calqués sur le vrai « Ï » de la police
+// (mesuré : points de 0,0875 em, à −0,005 em et 0,1325 em du début du I,
+// 0,055 em au-dessus des capitales, hauteur de capitale 0,8 em)
+.op__trema {
+  position: relative;
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: -0.2155em; // revient au début du I (chasse du I)
+  margin-right: 0.2155em;
+  vertical-align: baseline;
+}
+
+.op__dot {
+  position: absolute;
+  bottom: calc(0.8em + 0.055em);
+  left: -0.005em;
+  width: 0.0875em;
+  height: 0.0875em;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.op__dot--2 {
+  left: 0.1325em;
+}
+
+// --- Portrait (devant les mots) ---------------------------------------------
 .op__portrait {
   position: relative;
   z-index: 2;
 }
 
-.op__line--front {
-  z-index: 3;
-  pointer-events: none; // le survol orange reste actif sur toute la photo
-}
-
-// Section voix, pleine largeur, juste sous le hero
-.op-voice {
-  position: relative;
-  z-index: 1;
-  padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
-}
-
-// Bas de page
+// --- Bas de page --------------------------------------------------------------
 .op__title {
-  margin: 0 0 0.4rem;
-  font-size: 14px;
+  margin: 0 0 0.35rem;
+  font-size: 18px;
+  font-weight: 500;
   color: var(--text);
 }
 
 .op__phrase {
-  max-width: 34ch;
+  max-width: 36ch;
   margin: 0;
-  font-size: 13px;
-  font-weight: 300;
-  line-height: 1.5;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 16px;
+  line-height: 1.45;
   color: var(--text-2);
 }
 
-.op__dateline {
-  margin: 0;
-  font-size: 14px;
-  color: var(--text);
+// Section voix, juste sous le hero ; au moins 120 px avant Biologie
+.op-voice {
+  position: relative;
+  z-index: 1;
+  padding-bottom: 64px;
 }
 
-// =============================================================================
+// ================================================================================
 // Desktop
-// =============================================================================
+// ================================================================================
 @include up($bp-lg) {
   .op {
     height: 100svh;
     min-height: 640px;
-  }
-
-  .op__kicker {
-    position: absolute;
-    top: calc(var(--nav-h) + 1.25rem);
-    left: 0;
-    right: 0;
-    z-index: 4;
   }
 
   .op__stage {
@@ -104,19 +134,10 @@
     inset: 0;
   }
 
-  // Le portrait occupe ~86 % de la hauteur ; le menton est vers 37 % de l'écran.
-  // COMBE se termine au menton (la tête passe devant), CAMARA commence dessous.
-  .op__line--back {
-    top: calc(37svh - var(--S) * 0.86);
-  }
-  .op__line--front {
-    top: 37svh;
-  }
-
   .op__portrait {
     position: absolute;
     left: 50%;
-    bottom: 0;
+    bottom: calc(var(--drop) * -1);
     height: 86svh;
     aspect-ratio: 701 / 877;
     transform: translateX(-50%);
@@ -129,43 +150,36 @@
   .op__foot {
     position: absolute;
     left: var(--gutter);
-    right: var(--gutter);
     bottom: 1.75rem;
     z-index: 4;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 2rem;
-    pointer-events: none;
   }
 }
 
-// =============================================================================
-// Mobile : même superposition, mots en vw ; textes empilés sous le portrait
-// =============================================================================
+// ================================================================================
+// Mobile : même superposition, tailles en vw (CAMARA tient dans la largeur)
+// ================================================================================
 @include down($bp-lg) {
   .op {
-    --S: 24vw;
-    padding: calc(var(--nav-h) + 1.25rem) 0 2rem;
+    --S: 19vw;
+    --drop: 0px;
+    // Portrait : 86vw de large → ~107,6vw de haut ; visage à ~21 %
+    --face: calc(107.6vw * 0.21);
+    padding: calc(var(--nav-h) + 1.25rem) 0 1.5rem;
   }
 
   .op__stage {
     position: relative;
-    width: 84vw;
-    margin: 0.75rem auto 0;
+    width: 86vw;
+    margin: calc(var(--S) * 0.6) auto 0; // place pour AÏSSATOU au-dessus de la tête
   }
 
-  // Menton à ~28 % de la hauteur du portrait (84vw × 877/701 ≈ 105vw)
-  .op__line--back {
-    top: calc(29vw - var(--S) * 0.86);
-  }
-  .op__line--front {
-    top: 29vw;
+  // Les mots sont centrés sur l'écran (et non sur le portrait)
+  .op__words {
+    left: calc((86vw - 100vw) / 2);
+    right: calc((86vw - 100vw) / 2);
   }
 
   .op__foot {
-    display: grid;
-    gap: 0.75rem;
     margin: 1.25rem var(--gutter) 0;
   }
 }

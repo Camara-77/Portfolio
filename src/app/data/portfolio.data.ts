@@ -34,7 +34,10 @@ export interface VoiceMarker {
 
 /** Note vocale : le lecteur est désactivé (« bientôt ») si le fichier est absent. */
 export interface VoiceNote {
+  /** Fichier joué (voix + musique). */
   src: string;
+  /** Voix seule, calée sur la même timeline : sert à animer les rubans. */
+  analysisSrc?: string;
   label: string;
   /** Paragraphes de la transcription ; vide = transcription à venir. */
   transcript: string[];
@@ -89,6 +92,8 @@ export interface ChapterBase {
   label: string;
   period: string;
   title: string;
+  /** Mot du titre affiché en contour. */
+  outline?: string;
   /** Phrase affichée (version courte). */
   summary: string;
   /** Textes longs conservés (non affichés). */
@@ -165,7 +170,7 @@ export interface Portfolio {
     word: string;
     /** Couverture : prénom en petit, nom sur deux lignes. */
     kicker: string;
-    lines: [string, string];
+    lines: string[];
     phrase: string;
     dateline: string;
     scrollHint: string;
@@ -179,6 +184,7 @@ export interface Portfolio {
     index: string;
     label: string;
     title: string;
+    outline: string;
     stamp: string;
     frames: ProjectFrame[];
   };
@@ -187,6 +193,7 @@ export interface Portfolio {
     index: string;
     label: string;
     title: string;
+    outline: string;
     groups: ToolGroup[];
     soft: string[];
   };
@@ -194,6 +201,7 @@ export interface Portfolio {
     index: string;
     label: string;
     title: string;
+    outline: string;
     intro: string;
     voice: VoiceNote;
     tiktokLine: string;
@@ -246,12 +254,13 @@ export const PORTFOLIO: Portfolio = {
   opening: {
     word: 'AÏSSATOU',
     kicker: 'AÏSSATOU',
-    lines: ['COMBE', 'CAMARA'],
+    lines: ['AÏSSATOU', 'COMBE', 'CAMARA'],
     phrase: 'J’apprends aux machines à écouter, et je crée des solutions utiles.',
     dateline: 'Dakar, 2026',
     scrollHint: 'Faites défiler : trois chapitres',
     voice: {
       src: 'audio/note-intro.mp3',
+      analysisSrc: 'audio/note-intro-voix.mp3',
       label: 'Écouter mon histoire',
       transcript: [
         "Il y a quelques années, j’étudiais les cellules, les molécules et les roches de la Terre. Aujourd’hui, j’apprends aux machines à écouter, à transcrire, et je crée des solutions innovantes. Entre les deux, il y a une gargote, une maman, et un projet qui a tout changé. Moi, c’est Aïssatou Combe Camara. Faites défiler, je vous emmène dans mon histoire.",
@@ -266,6 +275,7 @@ export const PORTFOLIO: Portfolio = {
     label: 'Biologie',
     period: '2021 – 2024',
     title: 'Le vivant',
+    outline: 'vivant',
     summary:
       'Tout a commencé par le vivant : un bac S2, puis une licence en Biologie, Chimie et Géosciences à l’UCAD.',
     motto: 'Analyser. Tester. Documenter.',
@@ -286,6 +296,7 @@ export const PORTFOLIO: Portfolio = {
     label: 'Code et IA',
     period: '2024 – 2026',
     title: 'Du vivant au code',
+    outline: 'code',
     summary:
       'J’ai appris à coder en génie logiciel, puis chez Simplon Sénégal. Aujourd’hui, j’apprends aux machines à écouter.',
     paragraphs: [
@@ -472,6 +483,7 @@ export const PORTFOLIO: Portfolio = {
     index: '03',
     label: 'Projets',
     title: 'Ce que j’ai construit',
+    outline: 'construit',
     stamp: '1er prix · Pitch Day 2026',
     frames: [
       {
@@ -555,6 +567,7 @@ export const PORTFOLIO: Portfolio = {
     index: '04',
     label: 'Boîte à outils',
     title: 'Ma boîte à outils',
+    outline: 'outils',
     groups: [
       { icon: 'wrench', title: 'Back-end', items: ['Python', 'Django', 'DRF', 'FastAPI'] },
       { icon: 'brush', title: 'Front-end', items: ['Angular', 'TypeScript', 'Tailwind'] },
@@ -570,10 +583,12 @@ export const PORTFOLIO: Portfolio = {
     index: '—',
     label: 'Contact',
     title: 'Travaillons ensemble',
+    outline: 'ensemble',
     intro: "Le voyage continue. Écoutez la suite de mon parcours, ou écrivez-moi.",
     voice: {
       src: 'audio/note-parcours.mp3',
-      label: 'Mon parcours, en 1 min 30',
+      analysisSrc: 'audio/note-parcours-voix.mp3',
+      label: 'Mon parcours, en 1 minute',
       markers: [
         // À REMPLIR après l'enregistrement (temps en secondes)
         { time: null, label: 'Biologie' },

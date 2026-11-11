@@ -87,7 +87,20 @@
   gap: 0.75rem;
 }
 
-// --- Coordonnées ------------------------------------------------
+// --- Coordonnées (carte en verre) -----------------------------------
+.epi__card {
+  align-self: start;
+  padding: 0.25rem 1.25rem;
+}
+
+.epi__card .epi__rows > li:first-child {
+  border-top: 0;
+}
+
+.epi__card .epi__rows > li:last-child {
+  border-bottom: 0;
+}
+
 .epi__rows > li {
   border-top: 1px solid var(--line);
 

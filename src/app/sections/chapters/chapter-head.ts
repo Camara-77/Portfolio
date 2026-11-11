@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
 /**
  * En-tête de chapitre :
@@ -16,7 +16,13 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
       }
     </p>
     <h2 class="head__title" [class.head__title--compact]="compact()" [id]="headingId()">
-      <ng-content />
+      @for (part of parts(); track $index) {
+        @if (part.outline) {
+          <span class="head__outline">{{ part.text }}</span>
+        } @else {
+          {{ part.text }}
+        }
+      }
     </h2>
   `,
   styles: `
@@ -50,6 +56,12 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
       font-size: clamp(2.5rem, 5vw, 4.5rem) !important;
     }
 
+    // Un seul mot du titre, en contour
+    .head__outline {
+      color: transparent;
+      -webkit-text-stroke: 1.2px var(--text);
+    }
+
     .head__title {
       font-family: var(--font-serif);
       font-size: var(--fs-chapter);
@@ -67,4 +79,19 @@ export class ChapterHead {
   readonly headingId = input.required<string>();
   /** Titre plus petit (chapitre épinglé). */
   readonly compact = input(false);
+  readonly title = input.required<string>();
+  /** Mot du titre affiché en contour. */
+  readonly outline = input<string>();
+
+  protected readonly parts = computed(() => {
+    const t = this.title();
+    const w = this.outline();
+    const i = w ? t.lastIndexOf(w) : -1;
+    if (!w || i < 0) return [{ text: t, outline: false }];
+    return [
+      { text: t.slice(0, i), outline: false },
+      { text: w, outline: true },
+      { text: t.slice(i + w.length), outline: false },
+    ].filter((p) => p.text);
+  });
 }

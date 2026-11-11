@@ -1,15 +1,13 @@
 <section #section [id]="c.id" class="chapter pj" aria-labelledby="projets-title" data-chapter="projets">
   <div class="container pj__head">
-    <app-chapter-head [index]="c.index" [label]="c.label" headingId="projets-title" [compact]="true">
-      {{ c.title }}
-    </app-chapter-head>
+    <app-chapter-head [index]="c.index" [label]="c.label" headingId="projets-title" [compact]="true" [title]="c.title" [outline]="c.outline" />
   </div>
 
   <div class="pj__viewport">
     <ol #track class="pj__track">
       @for (f of c.frames; track f.name; let i = $index) {
         <li class="pj__slide" [attr.aria-label]="'Projet ' + (i + 1) + ' sur ' + total + ' : ' + f.name">
-          <article class="pj__frame" [class.is-feature]="f.feature">
+          <article class="pj__frame glass" [class.is-feature]="f.feature">
             <app-project-art class="pj__art" [name]="f.art" />
 
             <div class="pj__body">

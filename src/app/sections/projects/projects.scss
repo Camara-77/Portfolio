@@ -55,10 +55,7 @@
   gap: 1.5rem;
   width: 100%;
   max-width: 920px;
-  padding: clamp(1.25rem, 3vw, 2.25rem);
-  border: 1px solid rgba(26, 26, 26, 0.22);
-  border-radius: 12px;
-  background: rgba(233, 232, 229, 0.82);
+  padding: clamp(1.25rem, 3vw, 2.25rem); // fond, bordure et ombre : classe .glass
 
   @include up($bp-md) {
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
@@ -68,7 +65,6 @@
 
   &.is-feature {
     max-width: 1100px;
-    border-color: rgba(26, 26, 26, 0.4);
 
     @include up($bp-md) {
       grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);

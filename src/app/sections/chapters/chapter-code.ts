@@ -13,9 +13,7 @@ import { RevealDirective } from '../../core/directives/reveal.directive';
     <section [id]="c.id" class="chapter" aria-labelledby="code-title" data-chapter="code">
       <div class="container chapter__grid">
         <div class="chapter__text">
-          <app-chapter-head [index]="c.index" [label]="c.label" [period]="c.period" headingId="code-title">
-            {{ c.title }}
-          </app-chapter-head>
+          <app-chapter-head [index]="c.index" [label]="c.label" [period]="c.period" headingId="code-title" [title]="c.title" [outline]="c.outline" />
 
           <p class="lead">{{ c.summary }}</p>
 

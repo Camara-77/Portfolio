@@ -14,9 +14,7 @@ import { Milestones } from './milestones';
     <section [id]="c.id" class="chapter" aria-labelledby="biologie-title" data-chapter="biologie">
       <div class="container chapter__grid">
         <div class="chapter__text">
-          <app-chapter-head [index]="c.index" [label]="c.label" [period]="c.period" headingId="biologie-title">
-            {{ c.title }}
-          </app-chapter-head>
+          <app-chapter-head [index]="c.index" [label]="c.label" [period]="c.period" headingId="biologie-title" [title]="c.title" [outline]="c.outline" />
 
           <p class="lead">{{ c.summary }}</p>
           <p class="chapter__motto">{{ c.motto }}</p>

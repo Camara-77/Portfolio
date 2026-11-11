@@ -4,7 +4,7 @@
   display: block;
 }
 
-// --- Bande : rubans + bouton ---------------------------------------------
+// --- Bande : rubans + bouton -------------------------------------------------
 .vw__band {
   position: relative;
   height: 300px;
@@ -21,59 +21,58 @@
   height: 100%;
 }
 
-.vw__controls {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.75rem;
-  pointer-events: none;
-
-  > * {
-    pointer-events: auto;
-  }
-}
-
-// Bouton premium : cercle orange clair, anneau orange à 6 px
+// Bouton : centré au repos, glisse à l'extrémité gauche en lecture (0,7 s)
 .vw__play {
+  --level: 0;
   --icon-size: 1.4rem;
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: calc(50% - 36px);
+  z-index: 2;
   display: grid;
   place-items: center;
-  flex: none;
   width: 72px;
   height: 72px;
+  margin-top: -36px;
   border-radius: 50%;
   background: #ffb385;
   color: var(--text);
-  transition: background-color 0.3s var(--ease-out);
-
-  app-icon {
-    position: relative;
-    z-index: 1;
-  }
+  transition:
+    left 0.7s cubic-bezier(0.65, 0, 0.35, 1),
+    background-color 0.5s ease,
+    color 0.5s ease;
 
   &:disabled {
-    background: var(--bg-2);
-    color: var(--text-3);
+    opacity: 0.6;
     cursor: not-allowed;
   }
 }
 
+.is-live .vw__play {
+  left: max(var(--gutter), 24px);
+  background: var(--accent);
+  color: #ffffff;
+}
+
+// Lecture sans glissement (mouvement réduit) : couleur pleine, sur place
+.is-reduced.is-playing .vw__play {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+// Anneau fin à 6 px ; s'agrandit au survol, pulse avec la voix
 .vw__ring {
-  --level: 0;
   position: absolute;
   inset: -6px;
   border-radius: 50%;
   border: 1px solid var(--accent);
-  transform: scale(calc(1 + var(--level) * 0.12));
-  transition: transform 0.5s var(--ease-out);
+  transform: scale(calc(1 + var(--level) * 0.14));
+  transition: transform 0.45s var(--ease-out);
   pointer-events: none;
 }
 
 .is-playing .vw__ring {
-  transition-duration: 0.12s; // pulsation avec la voix
+  transition-duration: 0.1s;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -82,23 +81,65 @@
   }
 }
 
-.vw__play:disabled .vw__ring {
-  border-color: var(--stroke-soft);
+// Icône lecture ↔ micro (fondu + rotation)
+.vw__icon {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  transition:
+    opacity 0.45s ease,
+    transform 0.6s var(--ease-out);
 }
 
+.vw__icon--play {
+  padding-left: 3px; // centrage optique du triangle
+}
+
+.vw__icon--mic {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.6);
+}
+
+.is-playing {
+  .vw__icon--play {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.6);
+  }
+  .vw__icon--mic {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+// Libellé à droite du bouton ; disparaît en lecture
 .vw__text {
+  position: absolute;
+  top: 50%;
+  left: calc(50% + 58px);
+  z-index: 2;
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
-  padding: 0.35rem 0.6rem;
-  border-radius: 8px;
-  background: rgba(233, 232, 229, 0.7);
+  padding: 0.3rem 0.6rem;
+  text-shadow:
+    0 0 10px var(--bg),
+    0 0 4px var(--bg),
+    0 0 2px var(--bg);
+  transform: translateY(-50%);
+  transition: opacity 0.4s ease;
+}
+
+.is-playing .vw__text {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .vw__label {
   font-family: var(--font-serif);
-  font-size: 1.5rem;
-  line-height: 1.1;
+  font-size: 1.375rem;
+  line-height: 1.15;
+  white-space: nowrap;
 }
 
 .vw__meta {
@@ -107,7 +148,20 @@
   color: var(--text-2);
 }
 
-// --- Sous la bande : progression, temps, transcription ------------------
+// Mouvement réduit : rien ne glisse ni ne tourne
+.is-reduced {
+  .vw__play,
+  .vw__icon,
+  .vw__ring {
+    transition: none;
+  }
+  .vw__icon--mic,
+  .vw__icon--play {
+    transform: none;
+  }
+}
+
+// --- Sous la bande : progression 1 px, temps, transcription -------------------
 .vw__below {
   max-width: var(--container);
   margin-inline: auto;
@@ -259,9 +313,71 @@
     content: ' −';
   }
 
+}
+
+// Panneau de transcription : s'ouvre en verre par-dessus les rubans
+.vw__below {
+  position: relative;
+}
+
+.vw__panel {
+  position: absolute;
+  right: var(--gutter);
+  bottom: calc(100% - 0.5rem);
+  z-index: 3;
+  // À droite du bouton (centré) : ne le recouvre jamais
+  width: min(30rem, calc(50% - var(--gutter) - 48px));
+  min-width: min(20rem, calc(100% - 2 * var(--gutter)));
+  max-height: 260px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 1.1rem 1.25rem;
+  text-align: left;
+  animation: panel-in 0.35s var(--ease-out);
+
   p {
-    margin-top: 0.75rem;
-    text-align: left;
-    color: var(--text-2);
+    color: var(--text);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+
+    & + p {
+      margin-top: 0.75rem;
+    }
+  }
+}
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@include reduced-motion {
+  .vw__panel {
+    animation: none;
+  }
+}
+
+// Mobile : libellé centré sous le bouton (ne déborde jamais de l'écran)
+@include down($bp-md) {
+  .vw__band {
+    height: 210px;
+  }
+
+  .vw__play {
+    top: 40%;
+  }
+
+  .vw__text {
+    top: calc(40% + 46px);
+    left: 50%;
+    align-items: center;
+    padding: 0.2rem 0.5rem;
+    transform: translateX(-50%);
+  }
+
+  .vw__label {
+    font-size: 1.125rem;
   }
 }

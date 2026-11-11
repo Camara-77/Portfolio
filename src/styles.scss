@@ -33,9 +33,14 @@
   --radius-pill: 999px;
 
   // Polices
-  --font-serif: 'Instrument Serif', 'Times New Roman', serif;
-  --font-body: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, monospace;
+  // Big Shoulders Display (800) : uniquement le nom du hero
+  --font-hero: 'Big Shoulders Display', Impact, 'Arial Narrow', sans-serif;
+  // Gloock : tous les titres
+  --font-serif: 'Gloock', Georgia, 'Times New Roman', serif;
+  // Hanken Grotesk : texte courant, navigation, boutons
+  --font-body: 'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  // Fragment Mono : dates, technologies, libellés, temps
+  --font-mono: 'Fragment Mono', ui-monospace, monospace;
   // Compatibilité avec les composants existants
   --font-display: var(--font-serif);
 
@@ -224,6 +229,26 @@ button {
 
   &:focus-visible {
     transform: none;
+  }
+}
+
+// =========================================================
+// Verre (glassmorphism) — classe réutilisable, dans l'esprit
+// de la barre de navigation. Pas sur le hero ni les grands titres.
+// =========================================================
+.glass {
+  background: rgba(242, 241, 238, 0.55);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  backdrop-filter: blur(14px) saturate(120%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(26, 26, 26, 0.06);
+}
+
+// Secours sans backdrop-filter : fond opaque
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass {
+    background: #f2f1ee;
   }
 }
 

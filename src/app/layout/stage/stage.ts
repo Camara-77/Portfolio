@@ -25,10 +25,10 @@ const SCENE_OF: Record<string, SceneName> = {
  * texte (gauche) et à 100 % à droite ; « full » = ~15 % partout (le contenu
  * occupe toute la largeur).
  */
-const FOG_OF: Record<string, 'split' | 'full'> = {
+const FOG_OF: Record<string, 'split' | 'full' | 'none'> = {
   biologie: 'split',
   code: 'split',
-  projets: 'full',
+  projets: 'none', // aucun décor derrière les cadres
   outils: 'full',
   contact: 'split',
 };
@@ -76,7 +76,8 @@ export class Stage {
 
   /** Décor affiché sans animation (mode « mouvement réduit »). */
   protected readonly staticScene = computed(() => SCENE_OF[this.scroll.activeSection() ?? ''] ?? null);
-  protected readonly fog = computed(() => FOG_OF[this.scroll.activeSection() ?? ''] ?? 'split');
+  /** Pas de voile sur l'ouverture ni la section voix (aucun décor visible). */
+  protected readonly fog = computed(() => FOG_OF[this.scroll.activeSection() ?? ''] ?? 'none');
 
   constructor() {
     const host = inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
@@ -164,7 +165,12 @@ export class Stage {
       const codeLines = part('code', '.s-code');
       gsap.set(codeLines, { autoAlpha: 0 });
 
-      const [bi0, bi1] = range('biologie', 0.55, 0.15);
+      // Le décor Biologie n'apparaît qu'une fois la section voix sortie de l'écran
+      const voice = document.querySelector('.op-voice');
+      const voiceGone = voice ? voice.getBoundingClientRect().bottom + window.scrollY - 64 : 0;
+      const [b0, b1] = range('biologie', 0.55, 0.15);
+      const bi0 = Math.max(b0, voiceGone);
+      const bi1 = Math.max(b1, bi0 + vh * 0.25);
       fade(layer('bio'), 0, 1, bi0, bi1 - bi0);
       transition('code', 'bio', 'code', m1, DNA_STRANDS, part('bio', '.s-dna'), CODE_LINES, codeLines);
 

@@ -6,9 +6,10 @@ import { Portrait } from './portrait/portrait';
 import { VoiceWave } from '../../shared/voice-wave/voice-wave';
 
 /**
- * Ouverture « couverture de magazine » :
- * AÏSSATOU en petit, puis COMBE / CAMARA en grand (Anton).
- * Superposition : COMBE (1) < portrait (2) < CAMARA (3).
+ * Ouverture « couverture de magazine » : AÏSSATOU / COMBE / CAMARA en
+ * Big Shoulders Display, lettres pleines DERRIÈRE le portrait détouré.
+ * Le visage cache le milieu de COMBE, le buste celui de CAMARA.
+ * Tréma du Ï en orange (deux ronds calqués sur le vrai tréma de la police).
  */
 @Component({
   selector: 'app-opening',
@@ -29,16 +30,13 @@ export class Opening {
 
     afterNextRender(() => {
       if (motion.reducedMotion()) return;
-      zone.runOutsideAngular(async () => {
-        await document.fonts.load('100px Anton');
-        // Arrivée : COMBE et CAMARA montent en fondu, puis le portrait
+      zone.runOutsideAngular(() => {
         const ctx = gsap.context(() => {
-          gsap
-            .timeline({ delay: 0.1 })
-            .from('.op__kicker', { autoAlpha: 0, y: 10, duration: 0.6 })
-            .from('.op__line', { yPercent: 40, autoAlpha: 0, duration: 1.1, ease: 'expo.out', stagger: 0.14 }, 0.1)
-            .from('.op__portrait', { y: 70, autoAlpha: 0, duration: 1.3, ease: 'expo.out' }, 0.55)
-            .from('.op__foot > *', { autoAlpha: 0, duration: 0.8, stagger: 0.08 }, 0.9);
+          // Portrait visible immédiatement : léger mouvement (0,6 s) depuis un état visible
+          gsap.from('.op__portrait', { y: 18, scale: 0.985, duration: 0.6, ease: 'power3.out' });
+          // Noir #1A1A1A en moins de 0,8 s : opacité de départ 0,4 + léger mouvement vertical
+          gsap.from('.op__line', { opacity: 0.4, y: 14, duration: 0.6, ease: 'power2.out', stagger: 0.06 });
+          gsap.from('.op__foot > *', { autoAlpha: 0, duration: 0.6, delay: 0.3, stagger: 0.08 });
         }, host);
         destroyRef.onDestroy(() => ctx.revert());
       });

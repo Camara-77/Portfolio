@@ -11,13 +11,11 @@ import { RevealDirective } from '../../core/directives/reveal.directive';
   template: `
     <section [id]="t.id" class="chapter tb" aria-labelledby="outils-title" data-chapter="outils">
       <div class="container">
-        <app-chapter-head [index]="t.index" [label]="t.label" headingId="outils-title">
-          {{ t.title }}
-        </app-chapter-head>
+        <app-chapter-head [index]="t.index" [label]="t.label" headingId="outils-title" [title]="t.title" [outline]="t.outline" />
 
         <ul class="tb__grid" appReveal [revealStagger]="true">
           @for (g of t.groups; track g.title) {
-            <li class="tb__tile">
+            <li class="tb__tile glass">
               <svg class="tb__icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
                 @switch (g.icon) {
                   @case ('wrench') {
@@ -89,10 +87,7 @@ import { RevealDirective } from '../../core/directives/reveal.directive';
       display: flex;
       flex-direction: column;
       gap: 0.9rem;
-      padding: 1.25rem;
-      border: 1px solid rgba(26, 26, 26, 0.22);
-      border-radius: 12px;
-      background: rgba(233, 232, 229, 0.82);
+      padding: 1.25rem; // fond, bordure et ombre : classe .glass
     }
 
     .tb__icon {

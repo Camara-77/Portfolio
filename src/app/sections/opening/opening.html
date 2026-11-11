@@ -1,35 +1,32 @@
-<section id="top" class="op" aria-labelledby="opening-title">
-  <h1 id="opening-title" class="sr-only">{{ id.name }} — {{ id.title }}</h1>
-
-  <p class="op__kicker" aria-hidden="true">{{ o.kicker }}</p>
-
+<section id="top" class="op">
   <div class="op__stage">
-    <!-- z-index 1 : COMBE, derrière le portrait (la tête passe devant) -->
-    <p class="op__line op__line--back" aria-hidden="true">{{ o.lines[0] }}</p>
+    <!-- Les trois mots, en plein, DERRIÈRE le portrait (z-index 1) -->
+    <h1 class="op__words" aria-label="Aïssatou Combe Camara">
+      <span class="op__line op__line--first" aria-hidden="true"
+        >A<span class="op__i">I</span><span class="op__trema"><span class="op__dot"></span><span class="op__dot op__dot--2"></span></span>SSATOU</span
+      >
+      <span class="op__line op__line--mid" aria-hidden="true">COMBE</span>
+      <span class="op__line op__line--last" aria-hidden="true"><span class="op__wide">CAMARA</span></span>
+    </h1>
 
-    <!-- z-index 2 : portrait détouré, effet orange au survol -->
+    <!-- Portrait détouré, devant les mots (z-index 2), effet orange au survol -->
     <div class="op__portrait">
       <app-portrait [alt]="'Portrait de ' + id.name" />
     </div>
-
-    <!-- z-index 3 : CAMARA, devant le portrait (sur le buste), sans bloquer le survol -->
-    <p class="op__line op__line--front" aria-hidden="true">{{ o.lines[1] }}</p>
   </div>
 
   <div class="op__foot">
-    <div class="op__about">
-      <p class="op__title">{{ id.title }}</p>
-      <p class="op__phrase">{{ o.phrase }}</p>
-    </div>
-    <p class="op__dateline">{{ o.dateline }}</p>
+    <p class="op__title">{{ id.title }}</p>
+    <p class="op__phrase">{{ o.phrase }}</p>
   </div>
 </section>
 
-<!-- Note vocale d'introduction (remplace l'ancien bouton du hero) -->
+<!-- Note vocale d'introduction -->
 <section class="op-voice" [attr.aria-label]="'Note vocale : ' + o.voice.label">
   <app-voice-wave
     variant="intro"
     [src]="o.voice.src"
+    [analysisSrc]="o.voice.analysisSrc"
     [label]="o.voice.label"
     [transcript]="o.voice.transcript"
   />

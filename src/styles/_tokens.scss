@@ -38,7 +38,7 @@ $bp-xl: 1280px;
 @mixin mono-label($size: 0.75rem) {
   font-family: var(--font-mono);
   font-size: $size;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }

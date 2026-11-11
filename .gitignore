@@ -58,3 +58,10 @@ scripts/out/
 !.env.example
 *.pem
 *.key
+
+# Fichiers audio en cours de validation (non publiés)
+/audio-review/
+
+# Enregistrements bruts et documents de travail (gardés en local, jamais publiés)
+/public/audio/raw/
+/docs/

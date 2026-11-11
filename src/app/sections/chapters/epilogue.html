@@ -1,8 +1,6 @@
 <section id="contact" class="chapter epi" aria-labelledby="contact-title" data-chapter="contact">
   <div class="container">
-    <app-chapter-head [index]="e.index" [label]="e.label" headingId="contact-title">
-      {{ e.title }}
-    </app-chapter-head>
+    <app-chapter-head [index]="e.index" [label]="e.label" headingId="contact-title" [title]="e.title" [outline]="e.outline" />
 
   </div>
 
@@ -10,6 +8,7 @@
     class="epi__voice"
     variant="outro"
     [src]="e.voice.src"
+    [analysisSrc]="e.voice.analysisSrc"
     [label]="e.voice.label"
     [transcript]="e.voice.transcript"
     [markers]="e.voice.markers ?? []"
@@ -53,6 +52,7 @@
         </div>
       </div>
 
+      <div class="epi__card glass">
       <ul class="epi__rows">
         @for (row of rows; track row.label) {
           <li>
@@ -71,6 +71,7 @@
           </li>
         }
       </ul>
+      </div>
     </div>
   </div>
 </section>

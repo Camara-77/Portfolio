@@ -1,32 +1,37 @@
-<div class="vw" [class.is-playing]="playing()" [class.is-disabled]="!available()">
+<div
+  class="vw"
+  [class.is-live]="playing() && !reduced()"
+  [class.is-playing]="playing()"
+  [class.is-disabled]="!available()"
+  [class.is-reduced]="reduced()"
+>
   <div class="vw__band">
     <canvas #canvas class="vw__canvas" aria-hidden="true"></canvas>
 
-    <div class="vw__controls">
-      <button
-        type="button"
-        class="vw__play"
-        [disabled]="!available()"
-        [attr.aria-label]="
-          !available() ? label() + ' — bientôt disponible' : playing() ? 'Mettre en pause : ' + label() : 'Lire : ' + label()
-        "
-        [attr.aria-pressed]="available() ? playing() : null"
-        (click)="toggle()"
-      >
-        <span class="vw__ring" #ring aria-hidden="true"></span>
-        <app-icon [name]="playing() ? 'pause' : 'play'" />
-      </button>
-      <span class="vw__text">
-        <span class="vw__label"><app-num-text [text]="label()" /></span>
-        <span class="vw__meta">
-          @if (!available()) {
-            bientôt
-          } @else {
-            {{ duration() ? total() : '—' }}
-          }
-        </span>
+    <button
+      #button
+      type="button"
+      class="vw__play"
+      [disabled]="!available()"
+      [attr.aria-label]="ariaLabel()"
+      [attr.aria-pressed]="available() ? playing() : null"
+      (click)="toggle()"
+    >
+      <span class="vw__ring" aria-hidden="true"></span>
+      <span class="vw__icon vw__icon--play"><app-icon name="play" /></span>
+      <span class="vw__icon vw__icon--mic"><app-icon name="mic" /></span>
+    </button>
+
+    <span class="vw__text" aria-hidden="true">
+      <span class="vw__label"><app-num-text [text]="shownLabel()" /></span>
+      <span class="vw__meta">
+        @if (!available()) {
+          bientôt
+        } @else {
+          {{ duration() ? total() : '—' }}
+        }
       </span>
-    </div>
+    </span>
   </div>
 
   <div class="vw__below">
@@ -64,9 +69,11 @@
       @if (transcript().length) {
         <details class="vw__transcript">
           <summary>Lire la transcription</summary>
-          @for (p of transcript(); track $index) {
-            <p>{{ p }}</p>
-          }
+          <div class="vw__panel glass">
+            @for (p of transcript(); track $index) {
+              <p>{{ p }}</p>
+            }
+          </div>
         </details>
       }
     </div>
@@ -78,10 +85,14 @@
       [src]="src()"
       preload="metadata"
       (play)="playing.set(true)"
-      (pause)="playing.set(false)"
+      (pause)="onPause()"
       (ended)="onEnded()"
-      (timeupdate)="time.set(audio.currentTime)"
+      (timeupdate)="onTimeUpdate(audio.currentTime)"
       (loadedmetadata)="duration.set(audio.duration)"
     ></audio>
+    @if (hasVoiceTrack()) {
+      <!-- Voix seule, synchronisée : anime les rubans, n'est pas entendue -->
+      <audio #voice [src]="analysisSrc()" preload="auto" aria-hidden="true"></audio>
+    }
   }
 </div>
