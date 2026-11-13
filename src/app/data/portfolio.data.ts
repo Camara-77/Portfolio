@@ -4,6 +4,8 @@
 // signalé par `todo` et affiché comme TODO visible.
 // =========================================================
 
+import type { TechLogoName } from './tech-logos';
+
 export interface Link {
   label: string;
   href: string;
@@ -148,10 +150,9 @@ export interface ProjectFrame {
   feature?: boolean;
 }
 
-export type ToolIcon = 'wrench' | 'brush' | 'beaker' | 'cylinder' | 'gear';
-
 export interface ToolGroup {
-  icon: ToolIcon;
+  /** Logos officiels affichés sur la tuile (voir tech-logos.ts). */
+  logos: TechLogoName[];
   title: string;
   items: string[];
 }
@@ -224,7 +225,7 @@ export const PORTFOLIO: Portfolio = {
   },
 
   nav: [
-    { id: 'biologie', index: '01', label: 'Biologie' },
+    { id: 'biologie', index: '01', label: 'Parcours' },
     { id: 'code', index: '02', label: 'Code et IA' },
     { id: 'projets', index: '03', label: 'Projets' },
     { id: 'outils', index: '04', label: 'Boîte à outils' },
@@ -569,11 +570,11 @@ export const PORTFOLIO: Portfolio = {
     title: 'Ma boîte à outils',
     outline: 'outils',
     groups: [
-      { icon: 'wrench', title: 'Back-end', items: ['Python', 'Django', 'DRF', 'FastAPI'] },
-      { icon: 'brush', title: 'Front-end', items: ['Angular', 'TypeScript', 'Tailwind'] },
-      { icon: 'beaker', title: 'IA', items: ['LLM', 'RAG', 'LangChain', 'Whisper'] },
-      { icon: 'cylinder', title: 'Données', items: ['PostgreSQL', 'MySQL'] },
-      { icon: 'gear', title: 'Outils', items: ['Git', 'Docker', 'pytest'] },
+      { logos: ['python', 'django', 'fastapi'], title: 'Back-end', items: ['Python', 'Django', 'DRF', 'FastAPI'] },
+      { logos: ['angular', 'typescript', 'tailwindcss'], title: 'Front-end', items: ['Angular', 'TypeScript', 'Tailwind'] },
+      { logos: ['langchain', 'huggingface'], title: 'IA', items: ['LLM', 'RAG', 'LangChain', 'Whisper'] },
+      { logos: ['postgresql', 'mysql'], title: 'Données', items: ['PostgreSQL', 'MySQL'] },
+      { logos: ['git', 'docker'], title: 'Outils', items: ['Git', 'Docker', 'pytest'] },
     ],
     soft: ['Autonomie', 'Rigueur', "Esprit d'analyse", 'Travail en équipe'],
   },

@@ -11,7 +11,17 @@ import {
 import { gsap } from '../../core/gsap';
 import { ScrollService } from '../../core/services/scroll.service';
 import { Scene } from './scene';
-import { CODE_LINES, CODE_TEXT, DNA_STRANDS, MAP, NET_EDGES, SceneName, VIEWBOX } from './scene-paths';
+import {
+  CODE_ACCENT_LINE,
+  CODE_LINE_PATHS,
+  CODE_TEXT,
+  DNA_RUNGS,
+  DNA_RUNGS_ACCENT,
+  DNA_STRANDS,
+  EDITOR,
+  SceneName,
+  VIEWBOX,
+} from './scene-paths';
 
 const SCENE_OF: Record<string, SceneName> = {
   biologie: 'bio',
@@ -35,8 +45,10 @@ const FOG_OF: Record<string, 'split' | 'full' | 'none'> = {
 
 /**
  * Décor d'arrière-plan (desktop) : les scènes superposées dans le même
- * repère. L'ADN se transforme en lignes de code au défilement ; aucun décor
- * derrière les cadres du chapitre Projets ; horizon pour la fin.
+ * repère. La petite hélice d'ADN se transforme en lignes de code au
+ * défilement ; Code et IA : éditeur, terminal, architecture, robot et réseau
+ * de neurones ; Projets : fond de code propre à la section ; Boîte à outils
+ * et Contact : une ligne de terminal en guise d'horizon.
  * Sans animation (prefers-reduced-motion) : le décor du chapitre en cours
  * s'affiche directement, sans morphing.
  */
@@ -55,9 +67,9 @@ const FOG_OF: Record<string, 'split' | 'full' | 'none'> = {
         <app-scene class="stage__layer" [name]="s" />
       }
       <svg class="stage__morph" [attr.viewBox]="viewBox" preserveAspectRatio="xMaxYMid meet">
-        <path class="m m1" [attr.d]="dna" />
-        <path class="m m2" [attr.d]="net" />
-        <path class="m m3" [attr.d]="map" />
+        <path class="m m1" [attr.d]="strands" />
+        <path class="m m2" [attr.d]="rungs" />
+        <path class="m m3" [attr.d]="accent" />
       </svg>
       <div class="stage__fog stage__fog--split"></div>
       <div class="stage__fog stage__fog--full"></div>
@@ -70,9 +82,9 @@ export class Stage {
 
   protected readonly scenes: SceneName[] = ['bio', 'code', 'ayyou', 'horizon'];
   protected readonly viewBox = VIEWBOX;
-  protected readonly dna = DNA_STRANDS;
-  protected readonly net = NET_EDGES;
-  protected readonly map = MAP;
+  protected readonly strands = DNA_STRANDS;
+  protected readonly rungs = DNA_RUNGS;
+  protected readonly accent = DNA_RUNGS_ACCENT;
 
   /** Décor affiché sans animation (mode « mouvement réduit »). */
   protected readonly staticScene = computed(() => SCENE_OF[this.scroll.activeSection() ?? ''] ?? null);
@@ -139,40 +151,49 @@ export class Stage {
       const swap = (el: Element, from: number, to: number, at: number) =>
         tl!.fromTo(el, { autoAlpha: from }, { autoAlpha: to, duration: 0.01 }, at);
 
-      /** Transition entre deux chapitres, avec un tracé qui se transforme. */
-      const transition = (
-        id: string,
-        from: SceneName,
-        to: SceneName,
-        morph: SVGPathElement,
-        fromShape: string,
-        fromPart: Element,
-        toShape: string,
-        toPart: Element,
-      ) => {
-        const [a, b] = range(id, 0.92, 0.22);
-        const d = b - a;
-        swap(fromPart, 1, 0, a);
-        swap(morph, 0, 1, a);
-        fade(layer(from), 1, 0, a, d * 0.45);
-        tl!.fromTo(morph, { morphSVG: fromShape }, { morphSVG: toShape, duration: d, ease: 'power1.inOut' }, a);
-        fade(layer(to), 0, 1, a + d * 0.55, d * 0.45);
-        swap(toPart, 0, 1, b - 0.01);
-        swap(morph, 1, 0, b - 0.01);
-      };
-
-      // Les lignes de code arrivent par morphing (ADN → code)
+      // Cibles du morphing : cadre de l'éditeur et traits des lignes de code
       const codeLines = part('code', '.s-code');
-      gsap.set(codeLines, { autoAlpha: 0 });
+      const editor = part('code', '.s-editor');
+      gsap.set([codeLines, editor], { autoAlpha: 0 });
 
-      // Le décor Biologie n'apparaît qu'une fois la section voix sortie de l'écran
+      // Parcours (chapitre court) : l'hélice apparaît une fois la section
+      // voix sortie de l'écran, puis se transforme progressivement en code
+      // pendant que le chapitre Code et IA arrive : les brins deviennent la
+      // fenêtre de l'éditeur, les barreaux deviennent les lignes de code.
+      const [a, b] = range('code', 0.8, 0.25);
+      const d = b - a;
       const voice = document.querySelector('.op-voice');
       const voiceGone = voice ? voice.getBoundingClientRect().bottom + window.scrollY - 64 : 0;
-      const [b0, b1] = range('biologie', 0.55, 0.15);
-      const bi0 = Math.max(b0, voiceGone);
-      const bi1 = Math.max(b1, bi0 + vh * 0.25);
+      const [b0] = range('biologie', 0.85, 0.85);
+      const bi1 = Math.max(1, a - vh * 0.1);
+      const bi0 = Math.max(0, Math.min(Math.max(b0, voiceGone), bi1 - vh * 0.12));
       fade(layer('bio'), 0, 1, bi0, bi1 - bi0);
-      transition('code', 'bio', 'code', m1, DNA_STRANDS, part('bio', '.s-dna'), CODE_LINES, codeLines);
+
+      const ink = 'rgba(26, 26, 26, 0.6)';
+      const soft = getComputedStyle(document.documentElement).getPropertyValue('--stroke-soft').trim() || '#a8a6a1';
+      const stroke = getComputedStyle(document.documentElement).getPropertyValue('--stroke').trim() || '#3a3a3a';
+      const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#ff6a1a';
+      const plain = CODE_LINE_PATHS.filter((_, i) => i !== CODE_ACCENT_LINE).join(' ');
+      const morphs: [SVGPathElement, string, string, string, string][] = [
+        [m1, DNA_STRANDS, EDITOR.frame, ink, stroke],
+        [m2, DNA_RUNGS, plain, ink, soft],
+        [m3, DNA_RUNGS_ACCENT, CODE_LINE_PATHS[CODE_ACCENT_LINE], accent, soft],
+      ];
+      swap(part('bio', '.s-dna'), 1, 0, a);
+      fade(layer('bio'), 1, 0, a, d * 0.2);
+      for (const [el, from, to, c0, c1] of morphs) {
+        swap(el, 0, 1, a);
+        tl.fromTo(
+          el,
+          { morphSVG: from, stroke: c0 },
+          { morphSVG: to, stroke: c1, duration: d, ease: 'power1.inOut' },
+          a,
+        );
+        swap(el, 1, 0, b - 0.01);
+      }
+      fade(layer('code'), 0, 1, a + d * 0.55, d * 0.45);
+      swap(editor, 0, 1, b - 0.01);
+      swap(codeLines, 0, 1, b - 0.01);
 
       // Les lignes de Python s'écrivent au défilement (machine à écrire)
       const typed = Array.from(layer('code').querySelectorAll<SVGTextElement>('.s-type'));
@@ -204,7 +225,7 @@ export class Stage {
       const [pj0, pj1] = range('projets', 0.6, 0.1);
       fade(layer('code'), 1, 0, pj0, pj1 - pj0);
 
-      // Boîte à outils et contact : décor apaisé, une seule ligne d'horizon
+      // Boîte à outils et contact : décor apaisé, une ligne de terminal
       const [ou0, ou1] = range('outils', 0.7, 0.2);
       fade(layer('horizon'), 0, 1, ou0, ou1 - ou0);
       tl.set({}, {}, max); // la timeline couvre toute la page

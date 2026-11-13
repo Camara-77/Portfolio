@@ -10,10 +10,10 @@ export type SceneName = 'bio' | 'code' | 'ayyou' | 'horizon';
 
 /** Cadrage serré de chaque dessin (mobile : un dessin par chapitre). */
 export const CROP: Record<SceneName, string> = {
-  bio: '690 70 945 860',
-  code: '680 140 900 500',
+  bio: '640 120 1100 780',
+  code: '680 120 910 820',
   ayyou: '690 90 925 820',
-  horizon: '0 860 1600 140',
+  horizon: '0 780 1600 140',
 };
 
 const r = (n: number) => Math.round(n * 10) / 10;
@@ -33,85 +33,49 @@ function smooth(pts: [number, number][], closed = false): string {
   return closed ? d + ' Z' : d;
 }
 
-// ---------------------------------------------------------------- BIOLOGIE
+// ---------------------------------------------------------------- PARCOURS (BIOLOGIE)
 
-/** Courbes de niveau (géosciences) : boucles concentriques irrégulières. */
-function contours(cx: number, cy: number, radii: number[], squash: number, seed: number): string {
-  return radii
-    .map((rad, k) => {
-      const pts: [number, number][] = [];
-      const steps = 14;
-      for (let i = 0; i < steps; i++) {
-        const a = (i / steps) * Math.PI * 2;
-        const wob = 1 + 0.09 * Math.sin(a * 3 + seed + k * 0.7) + 0.05 * Math.cos(a * 5 + seed * 2);
-        pts.push([cx + Math.cos(a) * rad * wob, cy + Math.sin(a) * rad * wob * squash]);
-      }
-      return smooth(pts, true);
-    })
-    .join(' ');
+/**
+ * Double hélice d'ADN, centrée dans la moitié droite (desktop) et
+ * inclinée de 12°. Hauteur ≈ 80 % de la section Parcours quand elle
+ * est à l'écran. Deux brins sinusoïdaux + barreaux (3 en orange).
+ */
+const DNA = { cx: 1190, cy: 520, height: 520, amp: 62, period: 205, tilt: 12 };
+
+const TILT = (DNA.tilt * Math.PI) / 180;
+/** Rotation autour du centre de l'hélice (inclinaison intégrée au tracé). */
+function tilt([x, y]: [number, number]): [number, number] {
+  const dx = x - DNA.cx, dy = y - DNA.cy;
+  return [DNA.cx + dx * Math.cos(TILT) - dy * Math.sin(TILT), DNA.cy + dx * Math.sin(TILT) + dy * Math.cos(TILT)];
 }
 
-export const BIO_CONTOURS =
-  contours(360, 790, [70, 140, 210, 280], 0.55, 1.2) +
-  ' ' +
-  contours(1420, 190, [50, 100, 150], 0.6, 2.7);
-
-/** Double hélice d'ADN : deux brins sinusoïdaux (+ barreaux séparés). */
-const DNA = { x: 830, top: 90, bottom: 910, amp: 72, period: 270 };
+const DNA_TOP = DNA.cy - DNA.height / 2;
+const DNA_BOTTOM = DNA.cy + DNA.height / 2;
+const dnaX = (y: number, phase: number) =>
+  DNA.cx + DNA.amp * Math.sin(((y - DNA_TOP) / DNA.period) * Math.PI * 2 + phase);
 
 function strand(phase: number): [number, number][] {
   const pts: [number, number][] = [];
-  for (let y = DNA.top; y <= DNA.bottom; y += 15) {
-    const t = ((y - DNA.top) / DNA.period) * Math.PI * 2 + phase;
-    pts.push([DNA.x + DNA.amp * Math.sin(t), y]);
-  }
+  for (let y = DNA_TOP; y <= DNA_BOTTOM; y += 6) pts.push(tilt([dnaX(y, phase), y]));
   return pts;
 }
 
 export const DNA_STRANDS = `${smooth(strand(0))} ${smooth(strand(Math.PI))}`;
 
-export const DNA_RUNGS = (() => {
-  let d = '';
-  for (let y = DNA.top + 12; y < DNA.bottom; y += 27) {
-    const t = ((y - DNA.top) / DNA.period) * Math.PI * 2;
-    const xa = DNA.x + DNA.amp * Math.sin(t);
-    const xb = DNA.x - DNA.amp * Math.sin(t);
-    if (Math.abs(xa - xb) > 18) d += `M${r(Math.min(xa, xb) + 6)} ${y} H${r(Math.max(xa, xb) - 6)} `;
+/** Barreaux de l'échelle ; les indices de DNA_ACCENT_AT sont en orange. */
+const DNA_ACCENT_AT = [7, 17, 27];
+const RUNGS = (() => {
+  const out: string[] = [];
+  for (let y = DNA_TOP + 8; y < DNA_BOTTOM; y += 16) {
+    const xa = dnaX(y, 0), xb = dnaX(y, Math.PI);
+    if (Math.abs(xa - xb) < 16) continue;
+    const [p, q] = [tilt([Math.min(xa, xb) + 5, y]), tilt([Math.max(xa, xb) - 5, y])];
+    out.push(`M${r(p[0])} ${r(p[1])} L${r(q[0])} ${r(q[1])}`);
   }
-  return d.trim();
+  return out;
 })();
-
-/** Erlenmeyer : contour, graduations, liquide (orange), bulles. */
-export const FLASK = {
-  outline:
-    'M1096 330 H1184 M1110 330 V438 L1006 708 Q999 732 1024 732 H1256 Q1281 732 1274 708 L1170 438 V330',
-  marks: 'M1052 560 H1072 M1040 600 H1056 M1066 520 H1080',
-  liquid: 'M1044 612 Q1140 596 1236 612 L1274 708 Q1281 732 1256 732 H1024 Q999 732 1006 708 Z',
-  bubbles: [
-    { cx: 1108, cy: 556, r: 7 },
-    { cx: 1150, cy: 520, r: 4.5 },
-    { cx: 1186, cy: 574, r: 5.5 },
-    { cx: 1132, cy: 470, r: 3.5 },
-  ],
-};
-
-/** Portoir et éprouvettes. */
-export const TUBES = {
-  rack: 'M1322 560 H1546 M1322 576 H1546 M1334 576 V760 M1534 576 V760 M1310 760 H1558',
-  tubes: [1362, 1420, 1478]
-    .map((x) => `M${x} 478 V706 A15 15 0 0 0 ${x + 30} 706 V478 M${x - 5} 478 H${x + 35}`)
-    .join(' '),
-  levels: 'M1362 640 H1392 M1420 676 H1450 M1478 610 H1508',
-};
-
-/** Serpent : corps en double trait, tête, langue fourchue. */
-export const SNAKE = {
-  body:
-    'M1100 900 C1170 846 1240 958 1312 902 S1452 846 1508 884 ' +
-    'M1106 918 C1176 866 1246 978 1318 920 S1456 866 1510 902',
-  head: 'M1508 884 C1528 872 1552 880 1554 893 C1555 906 1530 912 1510 902',
-  tongue: 'M1554 893 H1570 M1570 893 L1578 887 M1570 893 L1578 899',
-};
+export const DNA_RUNGS = RUNGS.filter((_, i) => !DNA_ACCENT_AT.includes(i)).join(' ');
+export const DNA_RUNGS_ACCENT = RUNGS.filter((_, i) => DNA_ACCENT_AT.includes(i)).join(' ');
 
 // ---------------------------------------------------------------- CODE ET IA
 
@@ -135,10 +99,45 @@ export const CODE_X = 726;
 export const CODE_Y = (i: number) => 236 + i * 46;
 const CHAR_W = CODE_FONT * 0.6; // JetBrains Mono : chasse fixe
 
-/** Traits à l'emplacement des lignes de code (cible du morphing de l'ADN). */
-export const CODE_LINES = CODE_TEXT.map(
+/** Traits à l'emplacement des lignes de code (cible du morphing des barreaux). */
+export const CODE_LINE_PATHS = CODE_TEXT.map(
   (t, i) => `M${CODE_X} ${CODE_Y(i) - 6} H${Math.round(CODE_X + t.length * CHAR_W)}`,
-).join(' ');
+);
+export const CODE_LINES = CODE_LINE_PATHS.join(' ');
+/** Ligne de code qui reçoit les barreaux orange. */
+export const CODE_ACCENT_LINE = 2;
+
+/** Terminal : vraies commandes de lancement des trois services. */
+export const TERMINAL = {
+  frame:
+    'M716 540 H1164 Q1180 540 1180 556 V724 Q1180 740 1164 740 H716 Q700 740 700 724 V556 Q700 540 716 540 Z M700 574 H1180',
+  dots: [722, 744, 766],
+  dotsY: 557,
+  lines: ['python manage.py runserver', 'ng serve', 'uvicorn main:app'],
+  x: 726,
+  y: (i: number) => 612 + i * 40,
+};
+
+/** Schéma d'architecture : Angular → Django REST → FastAPI → PostgreSQL. */
+const ARCH_W = 150, ARCH_GAP = 92, ARCH_X = 700, ARCH_Y = 840, ARCH_H = 56;
+export const ARCH = (() => {
+  const labels = ['Angular', 'Django REST', 'FastAPI', 'PostgreSQL'];
+  const boxes = labels.map((label, i) => {
+    const x = ARCH_X + i * (ARCH_W + ARCH_GAP);
+    return {
+      label,
+      cx: x + ARCH_W / 2,
+      d: `M${x + 10} ${ARCH_Y} H${x + ARCH_W - 10} Q${x + ARCH_W} ${ARCH_Y} ${x + ARCH_W} ${ARCH_Y + 10} V${ARCH_Y + ARCH_H - 10} Q${x + ARCH_W} ${ARCH_Y + ARCH_H} ${x + ARCH_W - 10} ${ARCH_Y + ARCH_H} H${x + 10} Q${x} ${ARCH_Y + ARCH_H} ${x} ${ARCH_Y + ARCH_H - 10} V${ARCH_Y + 10} Q${x} ${ARCH_Y} ${x + 10} ${ARCH_Y} Z`,
+    };
+  });
+  const y = ARCH_Y + ARCH_H / 2;
+  const links = labels.slice(1).map((_, i) => {
+    const x0 = ARCH_X + (i + 1) * ARCH_W + i * ARCH_GAP + 10;
+    const x1 = x0 + ARCH_GAP - 20;
+    return { x0, x1, d: `M${x0} ${y} H${x1} M${x1 - 8} ${y - 6} L${x1} ${y} L${x1 - 8} ${y + 6}` };
+  });
+  return { boxes, links, y, textY: y + 5, travel: ARCH_GAP - 32 };
+})();
 
 /** Petit robot sympathique (l'IA) qui « écoute ». */
 export const ROBOT = {
@@ -172,17 +171,18 @@ export const ROBOT_WAVES = (() => {
 })();
 
 /** Réseau de neurones : nœuds et liaisons (source du morphing vers la carte). */
+const NET_R = 8;
 const LAYERS = [
-  { x: 1262, n: 4 },
-  { x: 1350, n: 5 },
-  { x: 1438, n: 4 },
-  { x: 1530, n: 1 },
+  { x: 1270, n: 4 },
+  { x: 1360, n: 5 },
+  { x: 1450, n: 4 },
+  { x: 1540, n: 1 },
 ];
 export const NET_NODES = LAYERS.flatMap((l, li) =>
   Array.from({ length: l.n }, (_, i) => ({
     cx: l.x,
-    cy: 340 + (i - (l.n - 1) / 2) * 78,
-    r: 13,
+    cy: 720 + (i - (l.n - 1) / 2) * 30,
+    r: NET_R,
     out: li === LAYERS.length - 1,
   })),
 );
@@ -191,7 +191,7 @@ export const NET_EDGES = (() => {
   for (let li = 0; li < LAYERS.length - 1; li++) {
     const a = NET_NODES.filter((n) => n.cx === LAYERS[li].x);
     const b = NET_NODES.filter((n) => n.cx === LAYERS[li + 1].x);
-    for (const p of a) for (const q of b) d += `M${p.cx + 13} ${r(p.cy)} L${q.cx - 13} ${r(q.cy)} `;
+    for (const p of a) for (const q of b) d += `M${p.cx + NET_R} ${r(p.cy)} L${q.cx - NET_R} ${r(q.cy)} `;
   }
   return d.trim();
 })();
@@ -305,5 +305,9 @@ export const TROPHY =
 
 // ---------------------------------------------------------------- ÉPILOGUE
 
-// Bas du décor : ne traverse pas les coordonnées de contact
-export const HORIZON = 'M0 968 H1600';
+// Bas du décor : une ligne de terminal (l'horizon sert de ligne de saisie,
+// invite et curseur qui clignote) ; ne traverse pas les coordonnées de contact.
+// L'invite est à droite : la moitié gauche est voilée derrière le texte.
+export const PROMPT = { text: 'aissatou@dakar:~$', x: 1220, y: 846 };
+export const CURSOR = { x: Math.round(1220 + 17 * 17 * 0.6 + 10), y: 830, w: 10, h: 20 };
+export const HORIZON = 'M0 862 H1600';

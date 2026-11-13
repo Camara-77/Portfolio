@@ -5,7 +5,7 @@ import * as P from './scene-paths';
  * Un décor au trait. `crop` : cadrage serré (dessin mobile) ;
  * sinon repère complet 1600 × 1000 (arrière-plan desktop).
  * Les éléments qui participent au morphing portent une classe
- * (s-dna, s-code, s-net, s-map) pour être masqués pendant la transition.
+ * (s-dna, s-code, s-editor, s-map) pour être masqués pendant la transition.
  */
 @Component({
   selector: 'app-scene',
@@ -20,32 +20,50 @@ import * as P from './scene-paths';
     >
       @switch (name()) {
         @case ('bio') {
-          <path class="s-soft" [attr.d]="p.BIO_CONTOURS" />
-          <g class="s-dna"><path class="s-line" [attr.d]="p.DNA_STRANDS" /></g>
-          <path class="s-line s-thin s-rungs" [attr.d]="p.DNA_RUNGS" />
-          <path class="s-accent-fill" [attr.d]="p.FLASK.liquid" />
-          <path class="s-line" [attr.d]="p.FLASK.outline" />
-          <path class="s-line s-thin" [attr.d]="p.FLASK.marks" />
-          @for (b of p.FLASK.bubbles; track $index) {
-            <circle class="s-line s-thin" [attr.cx]="b.cx" [attr.cy]="b.cy" [attr.r]="b.r" />
-          }
-          <path class="s-line" [attr.d]="p.TUBES.rack" />
-          <path class="s-line" [attr.d]="p.TUBES.tubes" />
-          <path class="s-line s-thin" [attr.d]="p.TUBES.levels" />
-          <path class="s-line" [attr.d]="p.SNAKE.body" />
-          <path class="s-line" [attr.d]="p.SNAKE.head" />
-          <path class="s-line s-thin" [attr.d]="p.SNAKE.tongue" />
-          <circle class="s-dot" cx="1534" cy="888" r="2.2" />
+          <g class="s-dna">
+            <path class="s-dna-line" [attr.d]="p.DNA_STRANDS" />
+            <path class="s-dna-line s-dna-rung" [attr.d]="p.DNA_RUNGS" />
+            <path class="s-dna-accent" [attr.d]="p.DNA_RUNGS_ACCENT" />
+          </g>
         }
         @case ('code') {
           <!-- Éditeur : vraies lignes de Python -->
-          <path class="s-line" [attr.d]="p.EDITOR.frame" />
+          <g class="s-editor"><path class="s-line" [attr.d]="p.EDITOR.frame" /></g>
           @for (x of p.EDITOR.dots; track x) {
             <circle class="s-line s-thin" [attr.cx]="x" cy="169" r="5" />
           }
           <g class="s-code"><path class="s-soft s-code-lines" [attr.d]="p.CODE_LINES" /></g>
           @for (line of p.CODE_TEXT; track $index; let i = $index) {
             <text class="s-type" [attr.x]="p.CODE_X" [attr.y]="p.CODE_Y(i)" [attr.data-text]="line">{{ line }}</text>
+          }
+          <!-- Terminal : vraies commandes de lancement -->
+          <path class="s-line" [attr.d]="p.TERMINAL.frame" />
+          @for (x of p.TERMINAL.dots; track x) {
+            <circle class="s-line s-thin" [attr.cx]="x" [attr.cy]="p.TERMINAL.dotsY" r="5" />
+          }
+          @for (cmd of p.TERMINAL.lines; track cmd; let i = $index) {
+            <text class="s-term" [attr.x]="p.TERMINAL.x" [attr.y]="p.TERMINAL.y(i)"><tspan class="s-prompt">$ </tspan>{{ cmd }}</text>
+          }
+          <!-- Architecture : les requêtes API circulent (points orange) -->
+          @for (b of p.ARCH.boxes; track b.label) {
+            <path class="s-line s-paper" [attr.d]="b.d" />
+            <text class="s-arch" [attr.x]="b.cx" [attr.y]="p.ARCH.textY">{{ b.label }}</text>
+          }
+          @for (l of p.ARCH.links; track l.x0; let i = $index) {
+            <path class="s-line s-thin" [attr.d]="l.d" />
+            <circle
+              class="s-packet"
+              [attr.cx]="l.x0 + 4"
+              [attr.cy]="p.ARCH.y"
+              r="4"
+              [style.--travel.px]="p.ARCH.travel"
+              [style.animation-delay.s]="i * 0.7"
+            />
+          }
+          <!-- Réseau de neurones -->
+          <path class="s-soft" [attr.d]="p.NET_EDGES" />
+          @for (n of p.NET_NODES; track $index) {
+            <circle class="s-line s-paper" [attr.cx]="n.cx" [attr.cy]="n.cy" [attr.r]="n.r" />
           }
           <!-- Robot (l'IA) qui écoute : onde orange depuis l'antenne -->
           <path class="s-accent-line s-waves" [attr.d]="p.ROBOT_WAVES" />
@@ -89,6 +107,9 @@ import * as P from './scene-paths';
           <path class="s-accent-line" [attr.d]="p.TROPHY" />
         }
         @case ('horizon') {
+          <!-- Ligne de terminal : invite, curseur qui clignote, horizon -->
+          <text class="s-term" [attr.x]="p.PROMPT.x" [attr.y]="p.PROMPT.y">{{ p.PROMPT.text }}</text>
+          <rect class="s-cursor" [attr.x]="p.CURSOR.x" [attr.y]="p.CURSOR.y" [attr.width]="p.CURSOR.w" [attr.height]="p.CURSOR.h" />
           <path class="s-line s-horizon" [attr.d]="p.HORIZON" />
         }
       }
@@ -115,6 +136,22 @@ import * as P from './scene-paths';
 
     .s-line {
       stroke: var(--stroke);
+      stroke-width: 1.5;
+    }
+
+    // Hélice : trait fin, noir à 60 %, trois barreaux orange
+    .s-dna-line {
+      stroke: var(--text);
+      stroke-opacity: 0.6;
+      stroke-width: 1.25;
+    }
+
+    .s-dna-rung {
+      stroke-width: 1;
+    }
+
+    .s-dna-accent {
+      stroke: var(--accent);
       stroke-width: 1.5;
     }
 
@@ -156,6 +193,69 @@ import * as P from './scene-paths';
       font-size: 17px;
       fill: var(--text);
       white-space: pre;
+    }
+
+    .s-term {
+      font-family: var(--font-mono);
+      font-size: 17px;
+      fill: var(--text-2);
+      white-space: pre;
+    }
+
+    .s-prompt {
+      fill: var(--text-3);
+    }
+
+    .s-arch {
+      font-family: var(--font-mono);
+      font-size: 15px;
+      fill: var(--text-2);
+      text-anchor: middle;
+    }
+
+    // Requête API : un point orange qui file d'une boîte à l'autre
+    .s-packet {
+      fill: var(--accent);
+      stroke: none;
+      animation: packet 2.1s cubic-bezier(0.45, 0, 0.55, 1) infinite backwards;
+    }
+
+    @keyframes packet {
+      0% {
+        transform: translateX(0);
+        opacity: 0;
+      }
+      15%,
+      80% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(var(--travel));
+        opacity: 0;
+      }
+    }
+
+    // Curseur du terminal (épilogue)
+    .s-cursor {
+      fill: var(--accent);
+      animation: blink 1.1s steps(1, end) infinite;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .s-packet {
+        animation: none;
+        transform: translateX(calc(var(--travel) / 2));
+      }
+
+      .s-cursor {
+        animation: none;
+      }
     }
 
     .s-route {

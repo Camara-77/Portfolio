@@ -13,6 +13,7 @@ import { gsap, ScrollTrigger } from '../../core/gsap';
 import { ChapterHead } from '../chapters/chapter-head';
 import { AwardGallery } from '../chapters/award-gallery/award-gallery';
 import { ProjectArt } from './project-art';
+import { CodeBackdrop } from './code-backdrop';
 import { Icon } from '../../shared/icon/icon';
 
 /**
@@ -24,7 +25,7 @@ import { Icon } from '../../shared/icon/icon';
  */
 @Component({
   selector: 'app-projects',
-  imports: [ChapterHead, AwardGallery, ProjectArt, Icon],
+  imports: [ChapterHead, AwardGallery, ProjectArt, Icon, CodeBackdrop],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './projects.html',
   styleUrl: './projects.scss',
